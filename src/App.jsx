@@ -1,17 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Title = styled.h1`
-  font-size: 10em;
-  text-align: center;
-  color: palevioletred;
-`;
+import { Outlet } from 'react-router-dom';
+
+import Footer from './components/Footer';
+import Header from './Components/Header';
 
 const App = () => {
   return (
-    <div>
-      <Title>Hello world!</Title>
-    </div>
+    <>
+      <Header />
+      {/* <Outlet /> */}
+      {/* <Footer /> */}
+    </>
   );
 };
 
