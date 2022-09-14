@@ -14,7 +14,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route index element={<Home />} />
+          <Route path="home" element={<Home />} />
           <Route path="user/:id" element={<Profile />} />
           <Route path="setting" element={<Setting />} />
           <Route path="community" element={<Community />} />
