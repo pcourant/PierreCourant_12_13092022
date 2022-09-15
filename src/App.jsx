@@ -4,8 +4,8 @@ import { normalize } from 'styled-normalize';
 
 import { Outlet } from 'react-router-dom';
 
-import Header from './Components/Header';
-import Sidebar from './Components/Sidebar';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 
 const GlobalStyle = createGlobalStyle`
   ${normalize}
@@ -25,14 +25,26 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const StyledMain = styled.main`
+  position: relative;
+  left: 117px;
+  padding-top: 68px;
+  padding-left: 109px;
+  padding-right: 90px;
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 77px;
+`;
+
 const App = () => {
   return (
     <>
       <GlobalStyle />
       <Header />
       <Sidebar />
-      {/* <Outlet /> */}
-      {/* <Footer /> */}
+      <StyledMain>
+        <Outlet />
+      </StyledMain>
     </>
   );
 };

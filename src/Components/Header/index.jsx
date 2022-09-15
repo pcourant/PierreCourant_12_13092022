@@ -4,9 +4,7 @@ import styled from 'styled-components';
 import colors from '../../utils/colors';
 
 const StyledHeader = styled.header`
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   z-index: 1;
   width: 100%;
   height: 91px;
@@ -38,12 +36,9 @@ const StyledNavLink = styled(NavLink)`
   font-size: 24px;
 
   &.active {
-    /* color: ${colors.secondary}; */
-    color: ${colors.backgroundDark};
-    /* text-decoration-line: underline; */
-    /* text-underline-position: under; */
+    color: ${colors.secondary};
+    text-underline-position: under;
     border-radius: 30px;
-    background-color: ${colors.secondary};
   }
 `;
 

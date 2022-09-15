@@ -9,7 +9,6 @@ const SidebarWrapper = styled.div`
   background-color: ${colors.backgroundDark};
   position: absolute;
   top: 0;
-  left: 0;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
@@ -23,6 +22,7 @@ const StyledNav = styled.nav`
   justify-content: center;
   align-items: center;
   row-gap: 20px;
+  margin-bottom: 14px;
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -34,11 +34,12 @@ const StyledNavLink = styled(NavLink)`
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 6px;
 `;
 
 const CopyrightWrapper = styled.p`
   position: absolute;
-  bottom: 59px;
+  bottom: 5.76vh;
   color: white;
   font-size: 12px;
   font-weight: 500;

@@ -15,7 +15,7 @@ root.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route path="home" element={<Home />} />
-          <Route path="user/:id" element={<Profile />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="setting" element={<Setting />} />
           <Route path="community" element={<Community />} />
           <Route path="*" element={<Error404 />} />
