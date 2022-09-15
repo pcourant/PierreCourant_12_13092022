@@ -4,11 +4,17 @@ import { normalize } from 'styled-normalize';
 
 import { Outlet } from 'react-router-dom';
 
-import Footer from './components/Footer';
 import Header from './Components/Header';
+import Sidebar from './Components/Sidebar';
 
 const GlobalStyle = createGlobalStyle`
   ${normalize}
+  html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
   body {
     font-family: 'Roboto', sans-serif;
     color: black;
@@ -24,6 +30,7 @@ const App = () => {
     <>
       <GlobalStyle />
       <Header />
+      <Sidebar />
       {/* <Outlet /> */}
       {/* <Footer /> */}
     </>
