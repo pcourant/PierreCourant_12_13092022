@@ -11,8 +11,7 @@ import {
   USER_AVERAGE_SESSIONS,
   USER_PERFORMANCE,
 } from '../../data/data';
-import ScatterPlot from '../../components/charts/ScatterPlot';
-import DoubleLinesChart from '../../components/charts/DoubleLinesChart';
+import DoubleLinesChart from '../../components/DoubleLinesChart';
 
 const StyledSection = styled.section`
   display: flex;
