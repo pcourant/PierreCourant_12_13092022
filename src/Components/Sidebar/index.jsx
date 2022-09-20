@@ -5,7 +5,8 @@ import colors from '../../utils/colors';
 
 const SidebarWrapper = styled.div`
   width: 117px;
-  height: 100vh;
+  /* height: 100vh; */
+  height: 1024px;
   background-color: ${colors.backgroundDark};
   position: absolute;
   top: 0;
@@ -39,7 +40,8 @@ const StyledNavLink = styled(NavLink)`
 
 const CopyrightWrapper = styled.p`
   position: absolute;
-  bottom: 5.76vh;
+  /* bottom: 5.76vh; */
+  bottom: 59px;
   color: white;
   font-size: 12px;
   font-weight: 500;
