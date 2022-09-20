@@ -38,7 +38,6 @@ const StyledSvg = styled.svg.attrs({
 
   .tick {
     color: #9b9eac;
-    /* color: #dedede; */
     font-size: 14px;
     font-weight: 500;
 
@@ -94,7 +93,6 @@ const DoubleLinesChart = (props) => {
         const y1Max = Math.ceil(y1Extent[1]);
 
         const y2Extent = extent(data, y2Value);
-        console.log('y2Extent', y2Extent);
 
         const xScale = scaleLinear()
           .domain(extent(data, xValue))

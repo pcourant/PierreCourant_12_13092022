@@ -12,6 +12,7 @@ import {
   USER_PERFORMANCE,
 } from '../../data/data';
 import DoubleLinesChart from '../../components/DoubleLinesChart';
+import LineChart from '../../components/LineChart';
 
 const StyledSection = styled.section`
   display: flex;
@@ -92,6 +93,7 @@ const Profile = (props) => {
               { x: 10, y1: 70.3, y2: 210 },
             ]}
           />
+          {/* <LineChart /> */}
         </ChartsContainer>
         <CardsContainer>
           <KeyInfoCard
