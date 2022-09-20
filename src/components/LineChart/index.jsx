@@ -20,8 +20,10 @@ const StyledSvg = styled.svg.attrs({
 
 const LineChart = (props) => {
   const title = props.title;
-  const { width, height } = props.sizes;
+  const { width, height, lineWidth, lineHeight } = props.sizes;
   const margins = props.margins;
+  const yTitleAndCaption = lineHeight / 2 + title.margins.top;
+  const xAxisPadding = props.paddings.xAxisPadding;
   const data = props.data;
 
   const d3Container = useRef(null);

@@ -66,9 +66,9 @@ const StyledSvg = styled.svg.attrs({
   }
 `;
 
-const DoubleLinesChart = (props) => {
+const DoubleBarsChart = (props) => {
   const title = props.title;
-  const { width, height, lineWidth, lineHeight } = props.sizes;
+  const { width, height, barWidth, lineHeight } = props.sizes;
   const margins = props.margins;
   const { xAxisPadding, linePadding } = props.paddings;
   const yTitleAndCaption = lineHeight / 2 + title.margins.top;
@@ -221,11 +221,11 @@ const DoubleLinesChart = (props) => {
           .data(marks)
           .join('line')
           .attr('class', 'y1-line')
-          .attr('x1', (d) => d.x - (linePadding / 2 + lineWidth / 2))
-          .attr('x2', (d) => d.x - (linePadding / 2 + lineWidth / 2))
+          .attr('x1', (d) => d.x - (linePadding / 2 + barWidth / 2))
+          .attr('x2', (d) => d.x - (linePadding / 2 + barWidth / 2))
           .attr('y1', height - margins.bottom)
           .attr('y2', (d) => d.y1 + 3)
-          .attr('stroke-width', lineWidth)
+          .attr('stroke-width', barWidth)
           .attr('marker-end', 'url(#y1-marker)')
           .append('title')
           .text((d) => `( ${d.p_x}, ${d.p_y1} )`);
@@ -236,11 +236,11 @@ const DoubleLinesChart = (props) => {
           .data(marks)
           .join('line')
           .attr('class', 'y2-line')
-          .attr('x1', (d) => d.x + (linePadding / 2 + lineWidth / 2))
-          .attr('x2', (d) => d.x + (linePadding / 2 + lineWidth / 2))
+          .attr('x1', (d) => d.x + (linePadding / 2 + barWidth / 2))
+          .attr('x2', (d) => d.x + (linePadding / 2 + barWidth / 2))
           .attr('y1', height - margins.bottom)
           .attr('y2', (d) => d.y2 + 3)
-          .attr('stroke-width', lineWidth)
+          .attr('stroke-width', barWidth)
           .attr('marker-end', 'url(#y2-marker)')
           .append('title')
           .text((d) => `( ${d.p_x}, ${d.p_y2} )`);
@@ -333,6 +333,6 @@ const DoubleLinesChart = (props) => {
   );
 };
 
-DoubleLinesChart.propTypes = {};
+DoubleBarsChart.propTypes = {};
 
-export default DoubleLinesChart;
+export default DoubleBarsChart;

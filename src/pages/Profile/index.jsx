@@ -11,7 +11,7 @@ import {
   USER_AVERAGE_SESSIONS,
   USER_PERFORMANCE,
 } from '../../data/data';
-import DoubleLinesChart from '../../components/DoubleLinesChart';
+import DoubleBarsChart from '../../components/DoubleBarsChart';
 import LineChart from '../../components/LineChart';
 
 const StyledSection = styled.section`
@@ -65,12 +65,12 @@ const Profile = (props) => {
       />
       <StyledSection>
         <ChartsContainer>
-          <DoubleLinesChart
+          <DoubleBarsChart
             title={{
               text: 'Activité quotidienne',
               margins: { top: 24, left: 32 },
             }}
-            sizes={{ width: 835, height: 320, lineWidth: 7, lineHeight: 24 }}
+            sizes={{ width: 835, height: 320, barWidth: 7, lineHeight: 24 }}
             margins={{ top: 112.5, right: 90, bottom: 62.5, left: 43 }}
             paddings={{ xAxisPadding: 11, linePadding: 8 }}
             labels={{
@@ -93,7 +93,32 @@ const Profile = (props) => {
               { x: 10, y1: 70.3, y2: 210 },
             ]}
           />
-          {/* <LineChart /> */}
+          <LineChart
+            title={{
+              text: 'Durée moyenne des sessions',
+              margins: { top: 29, left: 34 },
+            }}
+            sizes={{ width: 258, height: 263, lineWidth: 2, lineHeight: 24 }}
+            margins={{ top: 77, right: 0, bottom: 60, left: 0 }}
+            paddings={{ xAxisPadding: -13 }}
+            labels={{
+              x: '',
+              y: '',
+              tooltipY: ' min',
+            }}
+            data={[
+              { x: 1, y1: 70, y2: 240 },
+              { x: 2, y1: 69, y2: 220 },
+              { x: 3, y1: 70, y2: 280 },
+              { x: 4, y1: 68.8, y2: 500 },
+              { x: 5, y1: 69, y2: 160 },
+              { x: 6, y1: 69, y2: 162 },
+              { x: 7, y1: 69, y2: 390 },
+              { x: 8, y1: 68.5, y2: 390 },
+              { x: 9, y1: 68.2, y2: 390 },
+              { x: 10, y1: 70.3, y2: 210 },
+            ]}
+          />
         </ChartsContainer>
         <CardsContainer>
           <KeyInfoCard
