@@ -10,6 +10,7 @@ const StyledSvg = styled.svg.attrs({
   xmlnsXlink: 'http://www.w3.org/1999/xlink',
 })`
   background-color: ${colors.backgroundLight};
+  border-radius: 5px;
 
   .title {
     font-size: 15px;

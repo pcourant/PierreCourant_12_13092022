@@ -23,6 +23,9 @@ const StyledSection = styled.section`
 const ChartsContainer = styled.div`
   width: 835px;
   height: 600px;
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 30px;
 `;
 
 const CardsContainer = styled.div`
@@ -95,28 +98,26 @@ const Profile = (props) => {
           />
           <LineChart
             title={{
-              text: 'Durée moyenne des sessions',
+              text: 'Durée moyenne\ndes sessions',
               margins: { top: 29, left: 34 },
             }}
             sizes={{ width: 258, height: 263, lineWidth: 2, lineHeight: 24 }}
             margins={{ top: 77, right: 0, bottom: 60, left: 0 }}
-            paddings={{ xAxisPadding: -13 }}
             labels={{
               x: '',
               y: '',
               tooltipY: ' min',
             }}
             data={[
-              { x: 1, y1: 70, y2: 240 },
-              { x: 2, y1: 69, y2: 220 },
-              { x: 3, y1: 70, y2: 280 },
-              { x: 4, y1: 68.8, y2: 500 },
-              { x: 5, y1: 69, y2: 160 },
-              { x: 6, y1: 69, y2: 162 },
-              { x: 7, y1: 69, y2: 390 },
-              { x: 8, y1: 68.5, y2: 390 },
-              { x: 9, y1: 68.2, y2: 390 },
-              { x: 10, y1: 70.3, y2: 210 },
+              { x: 'D', y: 0 },
+              { x: 'L', y: 30 },
+              { x: 'M', y: 23 },
+              { x: 'M', y: 45 },
+              { x: 'J', y: 50 },
+              { x: 'V', y: 0 },
+              { x: 'S', y: 0 },
+              { x: 'D', y: 60 },
+              { x: 'L', y: 90 },
             ]}
           />
         </ChartsContainer>
