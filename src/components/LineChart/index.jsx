@@ -82,10 +82,10 @@ const wrap = function (text) {
 
 const LineChart = (props) => {
   const title = props.title;
-  const { width, height, lineWidth, lineHeight } = props.sizes;
-  const margins = props.margins;
-  const yTitleAndCaption = lineHeight / 2 + title.margins.top;
-  const xAxisPadding = (width - margins.left - margins.right) / 7 / 2;
+  const { width, height, lineWidth, lineHeight } = props.size;
+  const margin = props.margin;
+  const yTitleAndCaption = lineHeight / 2 + title.margin.top;
+  const xAxisPadding = (width - margin.left - margin.right) / 7 / 2;
   console.log(xAxisPadding);
   const labels = props.labels;
   const data = props.data;
@@ -118,13 +118,13 @@ const LineChart = (props) => {
         const xScale = scaleLinear()
           .domain(extent(meanData, xValue))
           .range([
-            margins.left - xAxisPadding,
-            width - margins.right + xAxisPadding,
+            margin.left - xAxisPadding,
+            width - margin.right + xAxisPadding,
           ]);
         const yScale = scaleLinear()
           // .domain([0, yExtent[1]])
           .domain(yExtent)
-          .range([height - margins.bottom, margins.top]);
+          .range([height - margin.bottom, margin.top]);
 
         const marks = meanData.map((d, index) => ({
           x: xScale(xValue(d, index)),
@@ -170,7 +170,7 @@ const LineChart = (props) => {
         svg
           .append('text')
           .text(title.text)
-          .attr('x', title.margins.left)
+          .attr('x', title.margin.left)
           .attr('y', yTitleAndCaption)
           .attr('width', 150)
           .attr('class', 'title')
@@ -186,7 +186,7 @@ const LineChart = (props) => {
         const xAxis = svg
           .append('g')
           .attr('class', 'x-axis')
-          .attr('transform', `translate(0,${height - margins.bottom})`)
+          .attr('transform', `translate(0,${height - margin.bottom})`)
           .call(xAxisGenerator);
         xAxis.selectAll('.domain').remove();
         xAxis.selectAll('.tick line').remove();
@@ -250,14 +250,14 @@ const LineChart = (props) => {
           .join('rect')
           .attr('class', 'bar')
           .attr('x', (d) => d.x - intervalWidth / 2)
-          .attr('y', margins.top)
+          .attr('y', margin.top)
           .attr('width', intervalWidth)
-          .attr('height', height - margins.top - margins.bottom)
+          .attr('height', height - margin.top - margin.bottom)
           .style('fill', 'transparent')
           .on('mouseover', function (event, d) {
-            console.log('d.x', d.x);
-            darkerBackground.attr('x', d.x);
-            maskLighten.attr('x', d.x);
+            // console.log('d.x', d.x);
+            darkerBackground.transition().duration(200).attr('x', d.x);
+            maskLighten.transition().duration(200).attr('x', d.x);
             overlayCircleOuter
               .transition()
               .duration(200)
@@ -287,8 +287,8 @@ const LineChart = (props) => {
               .text(`${Math.round(d.p_y).toFixed(0)}${labels.tooltipY}`);
           })
           .on('mouseout', function () {
-            darkerBackground.attr('x', width);
-            maskLighten.attr('x', width);
+            darkerBackground.transition().duration(200).attr('x', width);
+            maskLighten.transition().duration(200).attr('x', width);
             overlayCircleOuter
               .transition()
               .duration(200)

@@ -69,10 +69,10 @@ const StyledSvg = styled.svg.attrs({
 
 const DoubleBarsChart = (props) => {
   const title = props.title;
-  const { width, height, barWidth, lineHeight } = props.sizes;
-  const margins = props.margins;
-  const { xAxisPadding, linePadding } = props.paddings;
-  const yTitleAndCaption = lineHeight / 2 + title.margins.top;
+  const { width, height, barWidth, lineHeight } = props.size;
+  const margin = props.margin;
+  const { xAxisPadding, linePadding } = props.padding;
+  const yTitleAndCaption = lineHeight / 2 + title.margin.top;
   const labels = props.labels;
   const data = props.data;
 
@@ -98,15 +98,15 @@ const DoubleBarsChart = (props) => {
         const xScale = scaleLinear()
           .domain(extent(data, xValue))
           .range([
-            margins.left + xAxisPadding,
-            width - margins.right - xAxisPadding,
+            margin.left + xAxisPadding,
+            width - margin.right - xAxisPadding,
           ]);
         const y1Scale = scaleLinear()
           .domain([y1Min, y1Max])
-          .range([height - margins.bottom, margins.top]);
+          .range([height - margin.bottom, margin.top]);
         const y2Scale = scaleLinear()
           .domain([0, y2Extent[1]])
-          .range([height - margins.bottom, margins.top]);
+          .range([height - margin.bottom, margin.top]);
 
         const marks = data.map((d) => ({
           x: xScale(xValue(d)),
@@ -123,7 +123,7 @@ const DoubleBarsChart = (props) => {
         svg
           .append('text')
           .text(title.text)
-          .attr('x', title.margins.left)
+          .attr('x', title.margin.left)
           .attr('y', yTitleAndCaption)
           .attr('class', 'title');
 
@@ -159,7 +159,7 @@ const DoubleBarsChart = (props) => {
           .attr('class', 'overlay')
           .attr('opacity', 0.5)
           .attr('width', 50)
-          .attr('height', height - margins.top - margins.bottom)
+          .attr('height', height - margin.top - margin.bottom)
           .attr('fill', 'transparent');
 
         // Y1 axis construction
@@ -169,14 +169,14 @@ const DoubleBarsChart = (props) => {
 
         const y1AxisGenerator = axisRight(y1Scale)
           .tickPadding(45)
-          .tickSize(-(width - margins.left - margins.right))
+          .tickSize(-(width - margin.left - margin.right))
           .tickValues(y1AxisTicks)
           .tickFormat(format('d'));
 
         const y1Axis = svg
           .append('g')
           .attr('class', 'y1-axis')
-          .attr('transform', `translate(${width - margins.right},0)`)
+          .attr('transform', `translate(${width - margin.right},0)`)
           .call(y1AxisGenerator);
 
         y1Axis.selectAll('.domain').remove();
@@ -190,7 +190,7 @@ const DoubleBarsChart = (props) => {
         const xAxis = svg
           .append('g')
           .attr('class', 'x-axis')
-          .attr('transform', `translate(0,${height - margins.bottom})`)
+          .attr('transform', `translate(0,${height - margin.bottom})`)
           .call(xAxisGenerator);
 
         xAxis.selectAll('.domain').remove();
@@ -224,7 +224,7 @@ const DoubleBarsChart = (props) => {
           .attr('class', 'y1-line')
           .attr('x1', (d) => d.x - (linePadding / 2 + barWidth / 2))
           .attr('x2', (d) => d.x - (linePadding / 2 + barWidth / 2))
-          .attr('y1', height - margins.bottom)
+          .attr('y1', height - margin.bottom)
           .attr('y2', (d) => d.y1 + 3)
           .attr('stroke-width', barWidth)
           .attr('marker-end', 'url(#y1-marker)')
@@ -239,7 +239,7 @@ const DoubleBarsChart = (props) => {
           .attr('class', 'y2-line')
           .attr('x1', (d) => d.x + (linePadding / 2 + barWidth / 2))
           .attr('x2', (d) => d.x + (linePadding / 2 + barWidth / 2))
-          .attr('y1', height - margins.bottom)
+          .attr('y1', height - margin.bottom)
           .attr('y2', (d) => d.y2 + 3)
           .attr('stroke-width', barWidth)
           .attr('marker-end', 'url(#y2-marker)')
@@ -280,16 +280,16 @@ const DoubleBarsChart = (props) => {
           .join('rect')
           .attr('class', 'bar')
           .attr('x', (d) => d.x - 25)
-          .attr('y', margins.top)
+          .attr('y', margin.top)
           .attr('width', 50)
-          .attr('height', height - margins.top - margins.bottom)
+          .attr('height', height - margin.top - margin.bottom)
           .style('fill', 'transparent')
           .on('mouseover', function (event, d) {
             overlay
               .transition()
               .duration(0)
               .attr('x', d.x - 25)
-              .attr('y', margins.top)
+              .attr('y', margin.top)
               .attr('fill', '#C4C4C4');
 
             tooltip.transition().duration(0).attr('opacity', 1);
@@ -298,20 +298,20 @@ const DoubleBarsChart = (props) => {
               .transition()
               .duration(0)
               .attr('x', d.x - 25 + 57)
-              .attr('y', margins.top - 64 / 2);
+              .attr('y', margin.top - 64 / 2);
 
             tooltipY1
               .transition()
               .duration(0)
               .attr('x', d.x - 25 + 57 + 40 / 2)
-              .attr('y', margins.top - 64 / 2 + (64 / 4) * 1)
+              .attr('y', margin.top - 64 / 2 + (64 / 4) * 1)
               .text(`${d.p_y1}${labels.tooltipY1}`);
 
             tooltipY2
               .transition()
               .duration(0)
               .attr('x', d.x - 25 + 57 + 40 / 2)
-              .attr('y', margins.top - 64 / 2 + (64 / 4) * 3)
+              .attr('y', margin.top - 64 / 2 + (64 / 4) * 3)
               .text(`${d.p_y2}${labels.tooltipY2}`);
           })
           .on('mouseout', function () {

@@ -13,6 +13,7 @@ import {
 } from '../../data/data';
 import DoubleBarsChart from '../../components/DoubleBarsChart';
 import LineChart from '../../components/LineChart';
+import RadarChart from '../../components/RadarChart';
 
 const StyledSection = styled.section`
   display: flex;
@@ -71,11 +72,11 @@ const Profile = (props) => {
           <DoubleBarsChart
             title={{
               text: 'Activité quotidienne',
-              margins: { top: 24, left: 32 },
+              margin: { top: 24, left: 32 },
             }}
-            sizes={{ width: 835, height: 320, barWidth: 7, lineHeight: 24 }}
-            margins={{ top: 112.5, right: 90, bottom: 62.5, left: 43 }}
-            paddings={{ xAxisPadding: 11, linePadding: 8 }}
+            size={{ width: 835, height: 320, barWidth: 7, lineHeight: 24 }}
+            margin={{ top: 112.5, right: 90, bottom: 62.5, left: 43 }}
+            padding={{ xAxisPadding: 11, linePadding: 8 }}
             labels={{
               x: '',
               y1: 'Poids (kg)',
@@ -99,10 +100,10 @@ const Profile = (props) => {
           <LineChart
             title={{
               text: 'Durée moyenne\ndes sessions',
-              margins: { top: 29, left: 34 },
+              margin: { top: 29, left: 34 },
             }}
-            sizes={{ width: 258, height: 263, lineWidth: 2, lineHeight: 24 }}
-            margins={{ top: 77, right: 0, bottom: 60, left: 0 }}
+            size={{ width: 258, height: 263, lineWidth: 2, lineHeight: 24 }}
+            margin={{ top: 77, right: 0, bottom: 60, left: 0 }}
             labels={{
               x: '',
               y: '',
@@ -118,6 +119,29 @@ const Profile = (props) => {
               { x: 'S', y: 0 },
               { x: 'D', y: 60 },
               { x: 'L', y: 90 },
+            ]}
+          />
+          <RadarChart
+            title={{
+              text: '',
+              margin: {},
+            }}
+            size={{
+              width: 258,
+              height: 263,
+              radius: 90,
+              lineWidth: 1,
+              lineHeight: 24,
+            }}
+            margin={{ top: 41, right: 39, bottom: 42, left: 39 }}
+            levels={{ count: 5, max: 250 }}
+            data={[
+              { axis: 'Intensité', value: 90 },
+              { axis: 'Vitesse', value: 200 },
+              { axis: 'Force', value: 50 },
+              { axis: 'Endurance', value: 140 },
+              { axis: 'Énergie', value: 120 },
+              { axis: 'Cardio', value: 80 },
             ]}
           />
         </ChartsContainer>
