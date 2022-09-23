@@ -67,7 +67,7 @@ const StyledSvg = styled.svg.attrs({
   }
 `;
 
-const DoubleBarsChart = (props) => {
+const BarChart = (props) => {
   const title = props.title;
   const { width, height, barWidth, lineHeight } = props.size;
   const margin = props.margin;
@@ -334,6 +334,6 @@ const DoubleBarsChart = (props) => {
   );
 };
 
-DoubleBarsChart.propTypes = {};
+BarChart.propTypes = {};
 
-export default DoubleBarsChart;
+export default BarChart;

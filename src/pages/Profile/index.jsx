@@ -11,9 +11,10 @@ import {
   USER_AVERAGE_SESSIONS,
   USER_PERFORMANCE,
 } from '../../data/data';
-import DoubleBarsChart from '../../components/DoubleBarsChart';
+import BarChart from '../../components/BarChart';
 import LineChart from '../../components/LineChart';
 import RadarChart from '../../components/RadarChart';
+import RadialBarChart from '../../components/RadialBarChart';
 
 const StyledSection = styled.section`
   display: flex;
@@ -69,7 +70,7 @@ const Profile = (props) => {
       />
       <StyledSection>
         <ChartsContainer>
-          <DoubleBarsChart
+          <BarChart
             title={{
               text: 'Activité quotidienne',
               margin: { top: 24, left: 32 },
@@ -143,6 +144,20 @@ const Profile = (props) => {
               { axis: 'Énergie', value: 120 },
               { axis: 'Cardio', value: 80 },
             ]}
+          />
+          <RadialBarChart
+            title={{
+              text: 'Score',
+              margin: { top: 24, left: 30 },
+            }}
+            size={{
+              width: 258,
+              height: 263,
+              radius: 160 / 2 + 5,
+              lineWidth: 10,
+              lineHeight: 24,
+            }}
+            data={0.12}
           />
         </ChartsContainer>
         <CardsContainer>
