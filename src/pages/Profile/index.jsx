@@ -19,18 +19,18 @@ import RadialBarChart from '../../components/RadialBarChart';
 const StyledSection = styled.section`
   display: flex;
   flex-flow: row nowrap;
-  column-gap: 31px;
+  column-gap: 3%;
 `;
 
 const ChartsContainer = styled.div`
-  width: 835px;
-  height: 600px;
+  width: 74%;
   display: flex;
   flex-flow: row wrap;
   column-gap: 30px;
 `;
 
 const CardsContainer = styled.div`
+  width: 23%;
   display: flex;
   flex-flow: column nowrap;
   row-gap: 39px;
@@ -71,13 +71,7 @@ const Profile = (props) => {
       <StyledSection>
         <ChartsContainer>
           <BarChart
-            title={{
-              text: 'Activité quotidienne',
-              margin: { top: 24, left: 32 },
-            }}
-            size={{ width: 835, height: 320, barWidth: 7, lineHeight: 24 }}
-            margin={{ top: 112.5, right: 90, bottom: 62.5, left: 43 }}
-            padding={{ xAxisPadding: 11, linePadding: 8 }}
+            title={'Activité quotidienne'}
             labels={{
               x: '',
               y1: 'Poids (kg)',
