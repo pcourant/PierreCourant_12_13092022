@@ -9,6 +9,7 @@ const StyledHeader = styled.header`
   width: 100%;
   height: 91px;
   background-color: ${colors.backgroundDark};
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;

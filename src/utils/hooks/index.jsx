@@ -12,5 +12,5 @@ export function useUpdateWidth(chartContainerRef) {
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
-  return [width, setWidth];
+  return width;
 }

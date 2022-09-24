@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useUpdateWidth } from '../../utils/hooks';
 import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
-import { prorataWidth, prorataHeight } from '../../utils/charts';
+import { prorataScale } from '../../utils/charts';
 import PropTypes from 'prop-types';
 import { select, scaleLinear, extent, axisBottom, axisRight, format } from 'd3';
 
@@ -25,14 +25,14 @@ const StyledBarChart = styled.svg.attrs({
     fill: #20253a;
   }
 
-  .caption1 circle {
+  .y1Caption circle {
     fill: #20253a;
   }
-  .caption2 circle {
+  .y2Caption circle {
     fill: #e60000;
   }
-  .caption1 text,
-  .caption2 text {
+  .y1Caption text,
+  .y2Caption text {
     fill: #74798c;
     font-size: 14px;
     font-weight: 500;
@@ -83,10 +83,8 @@ const StyledBarChart = styled.svg.attrs({
   }
 `;
 
-// Constants from figma mockups
-const ratio = 0.383;
-const barChartWidth = 835;
-const barChartHeight = 320;
+const DIMENSION_RATIO = 0.383;
+const BARCHART_ORIGINAL_WIDTH = 835;
 
 const BarChart = (props) => {
   const title = props.title;
@@ -95,17 +93,12 @@ const BarChart = (props) => {
 
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
-  const [width, setWidth] = useUpdateWidth(chartContainerRef);
+  const width = useUpdateWidth(chartContainerRef);
 
   useEffect(
     () => {
-      // if (chartContainerRef.current) {
-      //   setWidth(chartContainerRef.current.offsetWidth);
-      //   if (!width) return;
-      // }
-
       if (chartRef.current) {
-        const height = width * ratio;
+        const height = width * DIMENSION_RATIO;
         const svg = select(chartRef.current);
         svg.attr('height', height);
 
@@ -118,18 +111,18 @@ const BarChart = (props) => {
         const lineHeight = 24;
         const yTitle = titleMargin.top + lineHeight / 2;
         const margin = {
-          top: prorataHeight(112.5, barChartHeight, height),
-          right: prorataWidth(90, barChartWidth, width),
-          bottom: prorataHeight(62.5, barChartHeight, height),
-          left: prorataWidth(43, barChartWidth, width),
+          top: prorataScale(112.5, width, BARCHART_ORIGINAL_WIDTH),
+          right: prorataScale(90, width, BARCHART_ORIGINAL_WIDTH),
+          bottom: prorataScale(62.5, width, BARCHART_ORIGINAL_WIDTH),
+          left: prorataScale(43, width, BARCHART_ORIGINAL_WIDTH),
         };
         const xAxisPadding = {
-          top: prorataHeight(100, barChartHeight, height),
-          side: prorataWidth(11, barChartWidth, width),
+          top: prorataScale(100, width, BARCHART_ORIGINAL_WIDTH),
+          side: prorataScale(11, width, BARCHART_ORIGINAL_WIDTH),
         };
-        const barsGap = prorataWidth(9, barChartWidth, width);
-        const barWidth = prorataWidth(7, barChartWidth, width);
-        const barCap = prorataHeight(3, barChartHeight, height);
+        const barsGap = prorataScale(9, width, BARCHART_ORIGINAL_WIDTH);
+        const barWidth = prorataScale(7, width, BARCHART_ORIGINAL_WIDTH);
+        const barCap = prorataScale(3, width, BARCHART_ORIGINAL_WIDTH);
         const captionRadius = 4;
         const xCaption1 = {
           point: width - 295,
@@ -140,19 +133,19 @@ const BarChart = (props) => {
           text: width - 181 + 10 + captionRadius,
         };
         const overlay = {
-          offset: prorataWidth(25, barChartWidth, width),
+          offset: prorataScale(25, width, BARCHART_ORIGINAL_WIDTH),
           y: margin.top - 1,
-          width: prorataWidth(50, barChartWidth, width),
+          width: prorataScale(50, width, BARCHART_ORIGINAL_WIDTH),
           height: height - margin.top - margin.bottom + 1,
         };
         const tick = {
-          xAxisPadding: prorataHeight(16, barChartHeight, height),
-          yAxisPadding: prorataWidth(45, barChartWidth, width),
+          xAxisPadding: prorataScale(16, width, BARCHART_ORIGINAL_WIDTH),
+          yAxisPadding: prorataScale(45, width, BARCHART_ORIGINAL_WIDTH),
         };
         const tooltip = {
-          offset: prorataWidth(57, barChartWidth, width),
-          width: prorataWidth(40, barChartWidth, width),
-          height: prorataHeight(64, barChartHeight, height),
+          offset: prorataScale(57, width, BARCHART_ORIGINAL_WIDTH),
+          width: prorataScale(40, width, BARCHART_ORIGINAL_WIDTH),
+          height: prorataScale(64, width, BARCHART_ORIGINAL_WIDTH),
         };
 
         //********************* DATA PROCESSING *********************
@@ -184,6 +177,8 @@ const BarChart = (props) => {
           x: xScale(xValue(d)),
           y1: y1Scale(y1Value(d)),
           y2: y2Scale(y2Value(d)),
+          y1Value: y1Value(d),
+          y2Value: y2Value(d),
         }));
 
         //********************* CHART CONSTRUCTION *********************
@@ -197,25 +192,25 @@ const BarChart = (props) => {
           .attr('id', 'title');
 
         // Captions
-        const caption1 = svg.append('g').attr('class', 'caption1');
-        caption1
+        const y1Caption = svg.append('g').attr('class', '  y1Caption');
+        y1Caption
           .append('circle')
           .attr('cx', xCaption1.point)
           .attr('cy', yTitle - captionRadius)
           .attr('r', captionRadius);
-        caption1
+        y1Caption
           .append('text')
           .text(labels.y1)
           .attr('x', xCaption1.text)
           .attr('y', yTitle);
 
-        const caption2 = svg.append('g').attr('class', 'caption2');
-        caption2
+        const y2Caption = svg.append('g').attr('class', 'y2Caption');
+        y2Caption
           .append('circle')
           .attr('cx', xCaption2.point)
           .attr('cy', yTitle - captionRadius)
           .attr('r', captionRadius);
-        caption2
+        y2Caption
           .append('text')
           .text(labels.y2)
           .attr('x', xCaption2.text)
@@ -349,7 +344,7 @@ const BarChart = (props) => {
           .attr('width', 50)
           .attr('height', height - margin.top - margin.bottom)
           .style('fill', 'transparent')
-          .on('mouseover', function (event, d) {
+          .on('mouseover', (event, d) => {
             overlayRect
               .transition()
               .duration(0)
@@ -375,7 +370,7 @@ const BarChart = (props) => {
                 'y',
                 margin.top - tooltip.height / 2 + (tooltip.height / 4) * 1
               )
-              .text(`${d.p_y1}${labels.tooltipY1}`);
+              .text(`${d.y1Value}${labels.tooltipY1}`);
 
             tooltipY2
               .transition()
@@ -388,16 +383,17 @@ const BarChart = (props) => {
                 'y',
                 margin.top - tooltip.height / 2 + (tooltip.height / 4) * 3
               )
-              .text(`${d.p_y2}${labels.tooltipY2}`);
+              .text(`${d.y2Value}${labels.tooltipY2}`);
           })
           // MOUSE OUT => Overlay and tooltip desapparition
-          .on('mouseout', function () {
+          .on('mouseout', () => {
             overlayRect.transition().duration(200).attr('opacity', 0);
             tooltipG.transition().duration(200).attr('opacity', 0);
           });
       }
 
       return () => {
+        // Delete the entire chart
         while (chartRef.current.firstChild) {
           chartRef.current.removeChild(chartRef.current.firstChild);
         }

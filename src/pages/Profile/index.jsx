@@ -19,22 +19,22 @@ import RadialBarChart from '../../components/RadialBarChart';
 const StyledSection = styled.section`
   display: flex;
   flex-flow: row nowrap;
-  column-gap: 3%;
+  justify-content: space-between;
 `;
 
 const ChartsContainer = styled.div`
   width: 74%;
   display: flex;
   flex-flow: row wrap;
-  column-gap: 30px;
+  gap: 2.08vw;
 `;
 
 const CardsContainer = styled.div`
   width: 23%;
   display: flex;
   flex-flow: column nowrap;
-  row-gap: 39px;
-  justify-content: center;
+  row-gap: 2.71vw;
+  justify-content: start;
   align-items: center;
 `;
 

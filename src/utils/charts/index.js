@@ -1,6 +1,4 @@
-export function prorataWidth(mockupValue, mockupWidth, currentWidth) {
-  return (currentWidth * mockupValue) / mockupWidth;
-}
-export function prorataHeight(mockupValue, mockupHeight, currentHeight) {
-  return (currentHeight * mockupValue) / mockupHeight;
+// Constants from figma mockups
+export function prorataScale(mockupValue, currentChartWidth, mockupChartWidth) {
+  return (currentChartWidth * mockupValue) / mockupChartWidth;
 }

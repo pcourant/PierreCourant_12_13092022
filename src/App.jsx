@@ -28,12 +28,12 @@ const GlobalStyle = createGlobalStyle`
 const StyledMain = styled.main`
   position: relative;
   left: 117px;
-  padding-top: 68px;
-  padding-left: 109px;
-  padding-right: 90px;
+  padding-top: 4.72vw;
+  padding-left: 7.57vw;
+  padding-right: 6.25vw;
   display: flex;
   flex-flow: column nowrap;
-  row-gap: 77px;
+  row-gap: 5.34vw;
 `;
 
 const App = () => {
