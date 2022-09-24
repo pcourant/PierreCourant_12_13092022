@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { useUpdateWidth } from '../../utils/hooks';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
+import colors from '../../utils/styles/colors';
+import { prorataWidth, prorataHeight } from '../../utils/charts';
 import PropTypes from 'prop-types';
 import { select, scaleLinear, extent, axisBottom, axisRight, format } from 'd3';
 
@@ -86,13 +88,6 @@ const ratio = 0.383;
 const barChartWidth = 835;
 const barChartHeight = 320;
 
-function prorataWidth(mockupValue, mockupWidth, currentWidth) {
-  return (currentWidth * mockupValue) / mockupWidth;
-}
-function prorataHeight(mockupValue, mockupHeight, currentHeight) {
-  return (currentHeight * mockupValue) / mockupHeight;
-}
-
 const BarChart = (props) => {
   const title = props.title;
   const labels = props.labels;
@@ -100,23 +95,14 @@ const BarChart = (props) => {
 
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
-  const [width, setWidth] = useState(0);
-
-  useEffect(() => {
-    function updateWidth() {
-      setWidth(chartContainerRef.current.offsetWidth);
-    }
-    window.addEventListener('resize', updateWidth);
-    updateWidth();
-    return () => window.removeEventListener('resize', updateWidth);
-  }, []);
+  const [width, setWidth] = useUpdateWidth(chartContainerRef);
 
   useEffect(
     () => {
-      if (chartContainerRef.current) {
-        setWidth(chartContainerRef.current.offsetWidth);
-        if (!width) return;
-      }
+      // if (chartContainerRef.current) {
+      //   setWidth(chartContainerRef.current.offsetWidth);
+      //   if (!width) return;
+      // }
 
       if (chartRef.current) {
         const height = width * ratio;

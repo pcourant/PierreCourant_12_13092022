@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
+import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
 import {
   select,

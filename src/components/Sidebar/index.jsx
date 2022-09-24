@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
+import colors from '../../utils/styles/colors';
 
 const SidebarWrapper = styled.div`
   width: 117px;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
+import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
 import HeaderMain from '../../components/HeaderMain';
 import KeyInfoCard from '../../components/KeyInfoCard';
@@ -45,9 +45,6 @@ const workoutIcon = new URL('../../assets/workout.svg', import.meta.url);
 
 const Profile = (props) => {
   const { userId } = useParams();
-
-  // console.log('userId: ', userId);
-  // console.log('USER_MAIN_DATA: ', USER_MAIN_DATA);
 
   const userMainData = USER_MAIN_DATA.find((element) => element.id === +userId);
   const userActivity = USER_ACTIVITY.find(

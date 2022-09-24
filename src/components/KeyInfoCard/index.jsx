@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
+import colors from '../../utils/styles/colors';
 
 const StyledCard = styled.article`
   width: 258px;
