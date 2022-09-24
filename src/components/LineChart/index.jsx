@@ -1,19 +1,24 @@
 import React, { useRef, useEffect } from 'react';
+import { useUpdateWidth } from '../../utils/hooks';
+import { prorataScale, wrap } from '../../utils/charts';
 import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
 import {
+  max,
   select,
   scaleLinear,
   extent,
   axisBottom,
-  axisRight,
-  format,
   line,
   curveCardinal,
 } from 'd3';
 
-const StyledSvg = styled.svg.attrs({
+const ChartContainer = styled.div`
+  width: 100%;
+`;
+
+const StyledLineChart = styled.svg.attrs({
   version: '1.1',
   xmlns: 'http://www.w3.org/2000/svg',
   xmlnsXlink: 'http://www.w3.org/1999/xlink',
@@ -40,103 +45,96 @@ const StyledSvg = styled.svg.attrs({
   }
 `;
 
-const wrap = function (text) {
-  text.each(function () {
-    var text = select(this);
-    var words = text.text().split(/\s+/).reverse();
-    var lineHeight = 20;
-    var width = parseFloat(text.attr('width'));
-    var y = parseFloat(text.attr('y'));
-    var x = text.attr('x');
-    var anchor = text.attr('text-anchor');
-
-    var tspan = text
-      .text(null)
-      .append('tspan')
-      .attr('x', x)
-      .attr('y', y)
-      .attr('text-anchor', anchor);
-    var lineNumber = 0;
-    var line = [];
-    var word = words.pop();
-
-    while (word) {
-      line.push(word);
-      tspan.text(line.join(' '));
-      if (tspan.node().getComputedTextLength() > width) {
-        lineNumber += 1;
-        line.pop();
-        tspan.text(line.join(' '));
-        line = [word];
-        tspan = text
-          .append('tspan')
-          .attr('x', x)
-          .attr('y', y + lineNumber * lineHeight)
-          .attr('anchor', anchor)
-          .text(word);
-      }
-      word = words.pop();
-    }
-  });
-};
+const DIMENSION_RATIO = 1.0194;
+const LINECHART_ORIGINAL_WIDTH = 258;
 
 const LineChart = (props) => {
-  const title = props.title;
-  const { width, height, lineWidth, lineHeight } = props.size;
-  const margin = props.margin;
-  const yTitleAndCaption = lineHeight / 2 + title.margin.top;
-  const xAxisPadding = (width - margin.left - margin.right) / 7 / 2;
-  console.log(xAxisPadding);
-  const labels = props.labels;
-  const data = props.data;
-
-  const d3Container = useRef(null);
+  const chartContainerRef = useRef(null);
+  const chartRef = useRef(null);
+  const width = useUpdateWidth(chartContainerRef);
 
   useEffect(
     () => {
-      if (data && d3Container.current) {
-        const svg = select(d3Container.current);
+      if (chartRef.current) {
+        const height = width * DIMENSION_RATIO;
+        const svg = select(chartRef.current);
+        svg.attr('height', height);
+
+        //********************* DIMENSION PROCESSING *********************
+        const labels = props.labels;
+        const data = props.data;
+
+        const title = {
+          text: props.title,
+          margin: {
+            top: prorataScale(29, width, LINECHART_ORIGINAL_WIDTH),
+            left: prorataScale(34, width, LINECHART_ORIGINAL_WIDTH),
+          },
+          width: prorataScale(150, width, LINECHART_ORIGINAL_WIDTH),
+        };
+        const lineHeight = 24;
+        const lineWidth = 2;
+        const margin = {
+          top: prorataScale(77, width, LINECHART_ORIGINAL_WIDTH),
+          right: prorataScale(0, width, LINECHART_ORIGINAL_WIDTH),
+          bottom: prorataScale(60, width, LINECHART_ORIGINAL_WIDTH),
+          left: prorataScale(0, width, LINECHART_ORIGINAL_WIDTH),
+        };
+        const xAxisPadding = {
+          top: 0,
+          side: (width - margin.left - margin.right) / 7 / 2,
+        };
+        const tick = {
+          xAxisPadding: prorataScale(20, width, LINECHART_ORIGINAL_WIDTH),
+          labels: ['D', 'L', 'M', 'M', 'J', 'V', 'S', 'D', 'L'],
+        };
+        const point = {
+          innerCircle: 4,
+          outerCircle: 9,
+        };
+        const tooltip = {
+          offset: {
+            x: prorataScale(5, width, LINECHART_ORIGINAL_WIDTH),
+            y: prorataScale(7, width, LINECHART_ORIGINAL_WIDTH),
+          },
+          width: 39,
+          height: 25,
+        };
 
         //********************* DATA PROCESSING *********************
 
-        meanData = data.map((d, i) => {
-          let sum = 0;
-          for (let j = 0; j <= i; j++) {
-            sum += data[j].y;
-          }
-          return { x: d.x, y: sum / (i + 1) };
-        });
-        console.log('data', data);
-        console.log('meanData', meanData);
+        // meanData = data.map((d, i) => {
+        //   let sum = 0;
+        //   for (let j = 0; j <= i; j++) {
+        //     sum += data[j].y;
+        //   }
+        //   return { x: d.x, y: sum / (i + 1) };
+        // });
+        // console.log('meanData', meanData);
 
         const xValue = (d, i) => i;
-        const yValue = (d, i) => d.y;
+        const yValue = (d) => d;
 
-        const xExtent = extent(meanData, xValue);
-        const yExtent = extent(meanData, yValue);
+        const xExtent = [0, data.length - 1];
+        const yExtent = [0, max(data)];
 
         const xScale = scaleLinear()
-          .domain(extent(meanData, xValue))
+          .domain(xExtent)
           .range([
-            margin.left - xAxisPadding,
-            width - margin.right + xAxisPadding,
+            margin.left - xAxisPadding.side,
+            width - margin.right + xAxisPadding.side,
           ]);
         const yScale = scaleLinear()
-          // .domain([0, yExtent[1]])
           .domain(yExtent)
           .range([height - margin.bottom, margin.top]);
 
-        const marks = meanData.map((d, index) => ({
-          x: xScale(xValue(d, index)),
-          y: yScale(yValue(d)),
-          p_x: d.x,
-          p_y: yValue(d),
+        const marks = data.map((d, i) => ({
+          x: xScale(xValue(d, i)),
+          y: yScale(yValue(d, i)),
+          yValue: yValue(d),
         }));
 
-        console.log('marks', marks);
-
-        //********************* DATA VISUALIZATION *********************
-
+        //********************* CHART CONSTRUCTION *********************
         // Darker background construction
         const darkerBackground = svg
           .append('rect')
@@ -171,17 +169,17 @@ const LineChart = (props) => {
           .append('text')
           .text(title.text)
           .attr('x', title.margin.left)
-          .attr('y', yTitleAndCaption)
-          .attr('width', 150)
+          .attr('y', title.margin.top)
+          .attr('dominant-baseline', 'hanging')
+          .attr('width', title.width)
           .attr('class', 'title')
           .attr('opacity', 0.5)
-          .call(wrap);
-        // .attr('mask', 'url(#mask)');
+          .call(wrap, lineHeight);
 
         // X axis construction
         const xAxisGenerator = axisBottom(xScale)
-          .tickPadding(20)
-          .tickFormat((d, i) => marks[i].p_x);
+          .tickPadding(tick.xAxisPadding)
+          .tickFormat((d, i) => tick.labels[i]);
 
         const xAxis = svg
           .append('g')
@@ -195,8 +193,9 @@ const LineChart = (props) => {
           .attr('fill', 'white')
           .attr('opacity', 0.5);
 
+        //********************* DATA VISUALIZATION *********************
+
         // Line construction
-        // it generates horizantal and vertical lines for x and y axis
         const lineGenerator = line()
           .x((d) => d.x) //coordinates in pixels
           .y((d) => d.y) //coordinates in pixels
@@ -216,34 +215,34 @@ const LineChart = (props) => {
         const overlayCircleOuter = svg
           .append('circle')
           .attr('class', 'overlay')
-          .attr('r', 9)
+          .attr('r', point.outerCircle)
           .attr('fill', 'transparent');
         const overlayCircleInner = svg
           .append('circle')
           .attr('class', 'overlay')
-          .attr('r', 4)
+          .attr('r', point.innerCircle)
           .attr('fill', 'transparent');
 
         // Tooltip box construction
-        const tooltip = svg.append('g').attr('opacity', 0);
+        const tooltipG = svg.append('g').attr('opacity', 0);
 
-        const tooltipRect = tooltip
+        const tooltipRect = tooltipG
           .append('rect')
-          .attr('width', 39)
-          .attr('height', 25)
+          .attr('width', tooltip.width)
+          .attr('height', tooltip.height)
           .attr('fill', 'white');
 
-        const tooltipText = tooltip
+        const tooltipText = tooltipG
           .append('text')
           .attr('class', 'tooltipText')
-          .attr('x', 39 / 2)
-          .attr('y', 25 / 2)
+          .attr('x', tooltip.width / 2)
+          .attr('y', tooltip.height / 2)
           .attr('dominant-baseline', 'middle')
           .attr('text-anchor', 'middle')
           .attr('fill', 'black');
 
-        // Overylay and tooltip apparition
-        const intervalWidth = xAxisPadding * 2;
+        //********************* TOOLTIP AND OVERLAY  *********************
+        const intervalWidth = xAxisPadding.side * 2;
         svg
           .selectAll('rect .bar')
           .data(marks)
@@ -255,7 +254,6 @@ const LineChart = (props) => {
           .attr('height', height - margin.top - margin.bottom)
           .style('fill', 'transparent')
           .on('mouseover', function (event, d) {
-            // console.log('d.x', d.x);
             darkerBackground.transition().duration(200).attr('x', d.x);
             maskLighten.transition().duration(200).attr('x', d.x);
             overlayCircleOuter
@@ -272,19 +270,32 @@ const LineChart = (props) => {
               .attr('cy', d.y)
               .attr('fill', 'white');
 
-            const dx = d.x + 5 + 39 > width ? d.x - 5 - 39 : d.x + 5;
-            tooltip.transition().duration(0).attr('opacity', 1);
+            const dx =
+              d.x + tooltip.offset.x + tooltip.width > width
+                ? d.x - tooltip.offset.x - tooltip.width
+                : d.x + tooltip.offset.x;
+            tooltipG.transition().duration(0).attr('opacity', 1);
             tooltipRect
               .transition()
               .duration(200)
               .attr('x', dx)
-              .attr('y', d.y - 25 - 7 - 4);
+              .attr(
+                'y',
+                d.y - tooltip.height - tooltip.offset.y - point.innerCircle / 2
+              );
             tooltipText
               .transition()
               .duration(200)
-              .attr('x', dx + 39 / 2)
-              .attr('y', d.y - 25 - 7 - 4 + 25 / 2)
-              .text(`${Math.round(d.p_y).toFixed(0)}${labels.tooltipY}`);
+              .attr('x', dx + tooltip.width / 2)
+              .attr(
+                'y',
+                d.y -
+                  tooltip.height -
+                  tooltip.offset.y -
+                  point.innerCircle / 2 +
+                  tooltip.height / 2
+              )
+              .text(`${Math.round(d.yValue).toFixed(0)}${labels.tooltipY}`);
           })
           .on('mouseout', function () {
             darkerBackground.transition().duration(200).attr('x', width);
@@ -297,21 +308,25 @@ const LineChart = (props) => {
               .transition()
               .duration(200)
               .attr('fill', 'transparent');
-            tooltip.transition().duration(200).attr('opacity', 0);
+            tooltipG.transition().duration(200).attr('opacity', 0);
           });
       }
+
+      return () => {
+        // Delete the entire chart
+        while (chartRef.current.firstChild) {
+          chartRef.current.removeChild(chartRef.current.firstChild);
+        }
+      };
     },
     // Dependency array
-    [props, d3Container.current]
+    [props, width]
   );
 
   return (
-    <StyledSvg
-      className="d3-component"
-      width={width}
-      height={height}
-      ref={d3Container}
-    />
+    <ChartContainer ref={chartContainerRef}>
+      <StyledLineChart width={'100%'} ref={chartRef} />
+    </ChartContainer>
   );
 };
 

@@ -29,6 +29,10 @@ const ChartsContainer = styled.div`
   gap: 2.08vw;
 `;
 
+const SquaredChart = styled.div`
+  width: 33%;
+`;
+
 const CardsContainer = styled.div`
   width: 23%;
   display: flex;
@@ -89,30 +93,17 @@ const Profile = (props) => {
               { x: 10, y1: 70.3, y2: 210 },
             ]}
           />
-          <LineChart
-            title={{
-              text: 'Durée moyenne\ndes sessions',
-              margin: { top: 29, left: 34 },
-            }}
-            size={{ width: 258, height: 263, lineWidth: 2, lineHeight: 24 }}
-            margin={{ top: 77, right: 0, bottom: 60, left: 0 }}
-            labels={{
-              x: '',
-              y: '',
-              tooltipY: ' min',
-            }}
-            data={[
-              { x: 'D', y: 0 },
-              { x: 'L', y: 30 },
-              { x: 'M', y: 23 },
-              { x: 'M', y: 45 },
-              { x: 'J', y: 50 },
-              { x: 'V', y: 0 },
-              { x: 'S', y: 0 },
-              { x: 'D', y: 60 },
-              { x: 'L', y: 90 },
-            ]}
-          />
+          <SquaredChart>
+            <LineChart
+              title={'Durée moyenne des sessions'}
+              labels={{
+                x: '',
+                y: '',
+                tooltipY: ' min',
+              }}
+              data={[0, 30, 23, 45, 50, 0, 0, 60, 90]}
+            />
+          </SquaredChart>
           <RadarChart
             title={{
               text: '',

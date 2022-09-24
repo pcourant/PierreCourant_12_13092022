@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import { useUpdateWidth } from '../../utils/hooks';
+import { prorataScale } from '../../utils/charts';
 import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
-import { prorataScale } from '../../utils/charts';
 import PropTypes from 'prop-types';
 import { select, scaleLinear, extent, axisBottom, axisRight, format } from 'd3';
 
@@ -87,10 +87,6 @@ const DIMENSION_RATIO = 0.383;
 const BARCHART_ORIGINAL_WIDTH = 835;
 
 const BarChart = (props) => {
-  const title = props.title;
-  const labels = props.labels;
-  const data = props.data;
-
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
   const width = useUpdateWidth(chartContainerRef);
@@ -104,12 +100,17 @@ const BarChart = (props) => {
 
         //********************* DIMENSION PROCESSING *********************
 
-        const titleMargin = {
-          top: 24,
-          left: 32,
+        const labels = props.labels;
+        const data = props.data;
+
+        const title = {
+          text: props.title,
+          margin: {
+            top: prorataScale(24, width, BARCHART_ORIGINAL_WIDTH),
+            left: prorataScale(32, width, BARCHART_ORIGINAL_WIDTH),
+          },
         };
         const lineHeight = 24;
-        const yTitle = titleMargin.top + lineHeight / 2;
         const margin = {
           top: prorataScale(112.5, width, BARCHART_ORIGINAL_WIDTH),
           right: prorataScale(90, width, BARCHART_ORIGINAL_WIDTH),
@@ -144,8 +145,8 @@ const BarChart = (props) => {
         };
         const tooltip = {
           offset: prorataScale(57, width, BARCHART_ORIGINAL_WIDTH),
-          width: prorataScale(40, width, BARCHART_ORIGINAL_WIDTH),
-          height: prorataScale(64, width, BARCHART_ORIGINAL_WIDTH),
+          width: 40,
+          height: 64,
         };
 
         //********************* DATA PROCESSING *********************
@@ -186,9 +187,10 @@ const BarChart = (props) => {
         // Title
         svg
           .append('text')
-          .text(title)
-          .attr('x', titleMargin.left)
-          .attr('y', yTitle)
+          .text(title.text)
+          .attr('x', title.margin.left)
+          .attr('y', title.margin.top)
+          .attr('dominant-baseline', 'hanging')
           .attr('id', 'title');
 
         // Captions
@@ -196,25 +198,27 @@ const BarChart = (props) => {
         y1Caption
           .append('circle')
           .attr('cx', xCaption1.point)
-          .attr('cy', yTitle - captionRadius)
+          .attr('cy', title.margin.top + 14 / 2) // 14 is 14px the font-size of caption text
           .attr('r', captionRadius);
         y1Caption
           .append('text')
           .text(labels.y1)
           .attr('x', xCaption1.text)
-          .attr('y', yTitle);
+          .attr('y', title.margin.top)
+          .attr('dominant-baseline', 'hanging');
 
         const y2Caption = svg.append('g').attr('class', 'y2Caption');
         y2Caption
           .append('circle')
           .attr('cx', xCaption2.point)
-          .attr('cy', yTitle - captionRadius)
+          .attr('cy', title.margin.top + 14 / 2) // 14 is 14px the font-size of caption text
           .attr('r', captionRadius);
         y2Caption
           .append('text')
           .text(labels.y2)
           .attr('x', xCaption2.text)
-          .attr('y', yTitle);
+          .attr('y', title.margin.top)
+          .attr('dominant-baseline', 'hanging');
 
         // Overlay
         const overlayRect = svg
@@ -308,7 +312,7 @@ const BarChart = (props) => {
           .attr('stroke-width', barWidth)
           .attr('marker-end', 'url(#y2-marker)');
 
-        //********************* ANIMATION *********************
+        //********************* TOOLTIP AND OVERLAY  *********************
         // Tooltip box construction
         const tooltipG = svg
           .append('g')
