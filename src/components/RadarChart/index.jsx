@@ -1,4 +1,6 @@
 import React, { useRef, useEffect } from 'react';
+import { useUpdateWidth } from '../../utils/hooks';
+import { prorataScale } from '../../utils/charts';
 import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
@@ -12,7 +14,11 @@ import {
   line,
 } from 'd3';
 
-const StyledSvg = styled.svg.attrs({
+const ChartContainer = styled.div`
+  width: 100%;
+`;
+
+const StyledRadarChart = styled.svg.attrs({
   version: '1.1',
   xmlns: 'http://www.w3.org/2000/svg',
   xmlnsXlink: 'http://www.w3.org/1999/xlink',
@@ -32,16 +38,29 @@ const StyledSvg = styled.svg.attrs({
   }
 `;
 
+const DIMENSION_RATIO = 1.0194;
+const SQUAREDCHART_ORIGINAL_WIDTH = 258;
+
 const RadarChart = (props) => {
-  const { width, height, radius, lineWidth, lineHeight } = props.size;
-  const margin = props.margin;
-  const data = props.data;
-  const d3Container = useRef(null);
+  const chartContainerRef = useRef(null);
+  const chartRef = useRef(null);
+  const width = useUpdateWidth(chartContainerRef);
 
   useEffect(
     () => {
-      if (data && d3Container.current) {
-        const svg = select(d3Container.current);
+      if (chartRef.current) {
+        const height = width * DIMENSION_RATIO;
+        const svg = select(chartRef.current);
+        svg.attr('height', height);
+
+        //********************* DIMENSION PROCESSING *********************
+
+        const { radius, lineWidth } = props.size;
+        const margin = props.margin;
+        const labels = props.labels;
+        const data = props.data;
+
+        const lineHeight = 24;
 
         //********************* DATA PROCESSING *********************
         const levels = [];
@@ -71,7 +90,7 @@ const RadarChart = (props) => {
 
         console.log('marks', marks);
 
-        //********************* DATA VISUALIZATION *********************
+        //********************* CHART CONSTRUCTION *********************
 
         function getCoordinates(radius, axis) {
           var angle_deg = 60 * axis - 30;
@@ -217,6 +236,8 @@ const RadarChart = (props) => {
               .text((d) => `( ${marks[i].axis}, ${marks[i].value} )`);
           }
 
+          //********************* PLOTTING DATA *********************
+
           function getPathCoordinates() {
             let coordinates = [];
             for (var i = 0; i < marks.length; i++) {
@@ -242,18 +263,22 @@ const RadarChart = (props) => {
           // .attr('opacity', 0.7);
         });
       }
+
+      return () => {
+        // Delete the entire chart
+        while (chartRef.current.firstChild) {
+          chartRef.current.removeChild(chartRef.current.firstChild);
+        }
+      };
     },
     // Dependency array
-    [props, d3Container.current]
+    [props, width]
   );
 
   return (
-    <StyledSvg
-      className="d3-component"
-      width={width}
-      height={height}
-      ref={d3Container}
-    />
+    <ChartContainer ref={chartContainerRef}>
+      <StyledRadarChart width={'100%'} ref={chartRef} />
+    </ChartContainer>
   );
 };
 

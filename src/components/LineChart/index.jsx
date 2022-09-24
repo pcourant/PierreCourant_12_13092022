@@ -46,7 +46,7 @@ const StyledLineChart = styled.svg.attrs({
 `;
 
 const DIMENSION_RATIO = 1.0194;
-const LINECHART_ORIGINAL_WIDTH = 258;
+const SQUAREDCHART_ORIGINAL_WIDTH = 258;
 
 const LineChart = (props) => {
   const chartContainerRef = useRef(null);
@@ -67,25 +67,25 @@ const LineChart = (props) => {
         const title = {
           text: props.title,
           margin: {
-            top: prorataScale(29, width, LINECHART_ORIGINAL_WIDTH),
-            left: prorataScale(34, width, LINECHART_ORIGINAL_WIDTH),
+            top: prorataScale(29, width, SQUAREDCHART_ORIGINAL_WIDTH),
+            left: prorataScale(34, width, SQUAREDCHART_ORIGINAL_WIDTH),
           },
-          width: prorataScale(150, width, LINECHART_ORIGINAL_WIDTH),
+          width: prorataScale(150, width, SQUAREDCHART_ORIGINAL_WIDTH),
         };
         const lineHeight = 24;
         const lineWidth = 2;
         const margin = {
-          top: prorataScale(77, width, LINECHART_ORIGINAL_WIDTH),
-          right: prorataScale(0, width, LINECHART_ORIGINAL_WIDTH),
-          bottom: prorataScale(60, width, LINECHART_ORIGINAL_WIDTH),
-          left: prorataScale(0, width, LINECHART_ORIGINAL_WIDTH),
+          top: prorataScale(77, width, SQUAREDCHART_ORIGINAL_WIDTH),
+          right: prorataScale(0, width, SQUAREDCHART_ORIGINAL_WIDTH),
+          bottom: prorataScale(60, width, SQUAREDCHART_ORIGINAL_WIDTH),
+          left: prorataScale(0, width, SQUAREDCHART_ORIGINAL_WIDTH),
         };
         const xAxisPadding = {
           top: 0,
           side: (width - margin.left - margin.right) / 7 / 2,
         };
         const tick = {
-          xAxisPadding: prorataScale(20, width, LINECHART_ORIGINAL_WIDTH),
+          xAxisPadding: prorataScale(20, width, SQUAREDCHART_ORIGINAL_WIDTH),
           labels: ['D', 'L', 'M', 'M', 'J', 'V', 'S', 'D', 'L'],
         };
         const point = {
@@ -94,8 +94,8 @@ const LineChart = (props) => {
         };
         const tooltip = {
           offset: {
-            x: prorataScale(5, width, LINECHART_ORIGINAL_WIDTH),
-            y: prorataScale(7, width, LINECHART_ORIGINAL_WIDTH),
+            x: prorataScale(5, width, SQUAREDCHART_ORIGINAL_WIDTH),
+            y: prorataScale(7, width, SQUAREDCHART_ORIGINAL_WIDTH),
           },
           width: 39,
           height: 25,
@@ -193,8 +193,7 @@ const LineChart = (props) => {
           .attr('fill', 'white')
           .attr('opacity', 0.5);
 
-        //********************* DATA VISUALIZATION *********************
-
+        //********************* PLOTTING DATA *********************
         // Line construction
         const lineGenerator = line()
           .x((d) => d.x) //coordinates in pixels

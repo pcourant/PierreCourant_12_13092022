@@ -134,9 +134,8 @@ const BarChart = (props) => {
           text: width - 181 + 10 + captionRadius,
         };
         const overlay = {
-          offset: prorataScale(25, width, BARCHART_ORIGINAL_WIDTH),
           y: margin.top - 1,
-          width: prorataScale(50, width, BARCHART_ORIGINAL_WIDTH),
+          width: prorataScale(56, width, BARCHART_ORIGINAL_WIDTH),
           height: height - margin.top - margin.bottom + 1,
         };
         const tick = {
@@ -144,7 +143,7 @@ const BarChart = (props) => {
           yAxisPadding: prorataScale(45, width, BARCHART_ORIGINAL_WIDTH),
         };
         const tooltip = {
-          offset: prorataScale(57, width, BARCHART_ORIGINAL_WIDTH),
+          offset: prorataScale(7, width, BARCHART_ORIGINAL_WIDTH),
           width: 40,
           height: 64,
         };
@@ -184,6 +183,15 @@ const BarChart = (props) => {
 
         //********************* CHART CONSTRUCTION *********************
 
+        // Overlay
+        const overlayRect = svg
+          .append('rect')
+          .attr('id', 'overlay')
+          .attr('y', overlay.y)
+          .attr('width', overlay.width)
+          .attr('height', overlay.height)
+          .attr('opacity', 0);
+
         // Title
         svg
           .append('text')
@@ -220,15 +228,6 @@ const BarChart = (props) => {
           .attr('y', title.margin.top)
           .attr('dominant-baseline', 'hanging');
 
-        // Overlay
-        const overlayRect = svg
-          .append('rect')
-          .attr('id', 'overlay')
-          .attr('y', overlay.y)
-          .attr('width', overlay.width)
-          .attr('height', overlay.height)
-          .attr('opacity', 0);
-
         // Y1 axis construction
         const y1AxisTicks = y1Scale
           .ticks()
@@ -252,9 +251,15 @@ const BarChart = (props) => {
         y1Axis.select('.tick line').attr('stroke-dasharray', null);
 
         // X axis construction
-        const xAxisGenerator = axisBottom(xScale).tickPadding(
-          tick.xAxisPadding
-        );
+        const xAxisTicks = xScale
+          .ticks()
+          .filter((tick) => Number.isInteger(tick));
+
+        const xAxisGenerator = axisBottom(xScale)
+          .tickPadding(tick.xAxisPadding)
+          .tickValues(xAxisTicks)
+          .tickFormat(format('d'));
+
         const xAxis = svg
           .append('g')
           .attr('class', 'x-axis')
@@ -343,33 +348,36 @@ const BarChart = (props) => {
           .data(marks)
           .join('rect')
           .attr('class', 'bar')
-          .attr('x', (d) => d.x - overlay.offset)
+          .attr('x', (d) => d.x - overlay.width / 2)
           .attr('y', margin.top)
-          .attr('width', 50)
+          .attr('width', overlay.width)
           .attr('height', height - margin.top - margin.bottom)
           .style('fill', 'transparent')
           .on('mouseover', (event, d) => {
             overlayRect
               .transition()
               .duration(0)
-              .attr('x', d.x - overlay.offset)
+              .attr('x', d.x - overlay.width / 2)
               .attr('opacity', 0.5);
 
             tooltipG.transition().duration(0).attr('opacity', 1);
 
+            const dx =
+              d.x + overlay.width / 2 + tooltip.offset + tooltip.width >
+              width - margin.right
+                ? d.x - overlay.width / 2 - tooltip.offset - tooltip.width
+                : d.x + overlay.width / 2 + tooltip.offset;
+
             tooltipRect
               .transition()
               .duration(0)
-              .attr('x', d.x - overlay.offset + tooltip.offset)
+              .attr('x', dx)
               .attr('y', margin.top - tooltip.height / 2);
 
             tooltipY1
               .transition()
               .duration(0)
-              .attr(
-                'x',
-                d.x - overlay.offset + tooltip.offset + tooltip.width / 2
-              )
+              .attr('x', dx + tooltip.width / 2)
               .attr(
                 'y',
                 margin.top - tooltip.height / 2 + (tooltip.height / 4) * 1
@@ -379,10 +387,7 @@ const BarChart = (props) => {
             tooltipY2
               .transition()
               .duration(0)
-              .attr(
-                'x',
-                d.x - overlay.offset + tooltip.offset + tooltip.width / 2
-              )
+              .attr('x', dx + tooltip.width / 2)
               .attr(
                 'y',
                 margin.top - tooltip.height / 2 + (tooltip.height / 4) * 3

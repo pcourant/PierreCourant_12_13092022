@@ -27,7 +27,7 @@ const GlobalStyle = createGlobalStyle`
 
 const StyledMain = styled.main`
   position: relative;
-  left: 117px;
+  margin-left: 117px;
   padding-top: 4.72vw;
   padding-left: 7.57vw;
   padding-right: 6.25vw;

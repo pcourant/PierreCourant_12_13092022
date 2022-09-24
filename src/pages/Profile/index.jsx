@@ -30,7 +30,7 @@ const ChartsContainer = styled.div`
 `;
 
 const SquaredChart = styled.div`
-  width: 33%;
+  width: 31%;
 `;
 
 const CardsContainer = styled.div`
@@ -104,29 +104,26 @@ const Profile = (props) => {
               data={[0, 30, 23, 45, 50, 0, 0, 60, 90]}
             />
           </SquaredChart>
-          <RadarChart
-            title={{
-              text: '',
-              margin: {},
-            }}
-            size={{
-              width: 258,
-              height: 263,
-              radius: 90,
-              lineWidth: 1,
-              lineHeight: 24,
-            }}
-            margin={{ top: 41, right: 39, bottom: 42, left: 39 }}
-            levels={{ count: 5, max: 250 }}
-            data={[
-              { axis: 'Intensité', value: 90 },
-              { axis: 'Vitesse', value: 200 },
-              { axis: 'Force', value: 50 },
-              { axis: 'Endurance', value: 140 },
-              { axis: 'Énergie', value: 120 },
-              { axis: 'Cardio', value: 80 },
-            ]}
-          />
+          <SquaredChart>
+            <RadarChart
+              title={''}
+              size={{
+                radius: 90,
+                lineWidth: 1,
+              }}
+              margin={{ top: 41, right: 39, bottom: 42, left: 39 }}
+              levels={{ count: 5, max: 250 }}
+              labels={[
+                'Intensité',
+                'Vitesse',
+                'Force',
+                'Endurance',
+                'Énergie',
+                'Cardio',
+              ]}
+              data={[90, 200, 50, 140, 120, 80]}
+            />
+          </SquaredChart>
           <RadialBarChart
             title={{
               text: 'Score',
