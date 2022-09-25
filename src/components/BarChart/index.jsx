@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { useUpdateWidth } from '../../utils/hooks';
-import { prorataScale } from '../../utils/charts';
+import { RECT_DIMENSION_RATIO, scaleRectChart } from '../../utils/charts';
 import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
@@ -83,9 +83,6 @@ const StyledBarChart = styled.svg.attrs({
   }
 `;
 
-const DIMENSION_RATIO = 0.383;
-const BARCHART_ORIGINAL_WIDTH = 835;
-
 const BarChart = (props) => {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
@@ -94,7 +91,7 @@ const BarChart = (props) => {
   useEffect(
     () => {
       if (chartRef.current) {
-        const height = width * DIMENSION_RATIO;
+        const height = width * RECT_DIMENSION_RATIO;
         const svg = select(chartRef.current);
         svg.attr('height', height);
 
@@ -106,24 +103,24 @@ const BarChart = (props) => {
         const title = {
           text: props.title,
           margin: {
-            top: prorataScale(24, width, BARCHART_ORIGINAL_WIDTH),
-            left: prorataScale(32, width, BARCHART_ORIGINAL_WIDTH),
+            top: scaleRectChart(24, width),
+            left: scaleRectChart(32, width),
           },
         };
         const lineHeight = 24;
         const margin = {
-          top: prorataScale(112.5, width, BARCHART_ORIGINAL_WIDTH),
-          right: prorataScale(90, width, BARCHART_ORIGINAL_WIDTH),
-          bottom: prorataScale(62.5, width, BARCHART_ORIGINAL_WIDTH),
-          left: prorataScale(43, width, BARCHART_ORIGINAL_WIDTH),
+          top: scaleRectChart(112.5, width),
+          right: scaleRectChart(90, width),
+          bottom: scaleRectChart(62.5, width),
+          left: scaleRectChart(43, width),
         };
         const xAxisPadding = {
-          top: prorataScale(100, width, BARCHART_ORIGINAL_WIDTH),
-          side: prorataScale(11, width, BARCHART_ORIGINAL_WIDTH),
+          top: scaleRectChart(100, width),
+          side: scaleRectChart(11, width),
         };
-        const barsGap = prorataScale(9, width, BARCHART_ORIGINAL_WIDTH);
-        const barWidth = prorataScale(7, width, BARCHART_ORIGINAL_WIDTH);
-        const barCap = prorataScale(3, width, BARCHART_ORIGINAL_WIDTH);
+        const barsGap = scaleRectChart(9, width);
+        const barWidth = scaleRectChart(7, width);
+        const barCap = scaleRectChart(3, width);
         const captionRadius = 4;
         const xCaption1 = {
           point: width - 295,
@@ -135,15 +132,15 @@ const BarChart = (props) => {
         };
         const overlay = {
           y: margin.top - 1,
-          width: prorataScale(56, width, BARCHART_ORIGINAL_WIDTH),
+          width: scaleRectChart(56, width),
           height: height - margin.top - margin.bottom + 1,
         };
         const tick = {
-          xAxisPadding: prorataScale(16, width, BARCHART_ORIGINAL_WIDTH),
-          yAxisPadding: prorataScale(45, width, BARCHART_ORIGINAL_WIDTH),
+          xAxisPadding: scaleRectChart(16, width),
+          yAxisPadding: scaleRectChart(45, width),
         };
         const tooltip = {
-          offset: prorataScale(7, width, BARCHART_ORIGINAL_WIDTH),
+          offset: scaleRectChart(7, width),
           width: 40,
           height: 64,
         };

@@ -106,14 +106,9 @@ const Profile = (props) => {
           </SquaredChart>
           <SquaredChart>
             <RadarChart
-              title={''}
-              size={{
-                radius: 90,
-                lineWidth: 1,
-              }}
               margin={{ top: 41, right: 39, bottom: 42, left: 39 }}
               levels={{ count: 5, max: 250 }}
-              labels={[
+              features={[
                 'Intensité',
                 'Vitesse',
                 'Force',
@@ -121,7 +116,7 @@ const Profile = (props) => {
                 'Énergie',
                 'Cardio',
               ]}
-              data={[90, 200, 50, 140, 120, 80]}
+              data={[100, 200, 50, 150, 250, 30]}
             />
           </SquaredChart>
           <RadialBarChart

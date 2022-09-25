@@ -1,6 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { useUpdateWidth } from '../../utils/hooks';
-import { prorataScale, wrap } from '../../utils/charts';
+import {
+  SQUARE_DIMENSION_RATIO,
+  scaleSquaredChart,
+  wrap,
+} from '../../utils/charts';
 import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
@@ -27,7 +31,6 @@ const StyledLineChart = styled.svg.attrs({
   border-radius: 5px;
 
   .title {
-    font-size: 15px;
     font-weight: 500;
     line-height: 24px;
     fill: #ffffff;
@@ -45,9 +48,6 @@ const StyledLineChart = styled.svg.attrs({
   }
 `;
 
-const DIMENSION_RATIO = 1.0194;
-const SQUAREDCHART_ORIGINAL_WIDTH = 258;
-
 const LineChart = (props) => {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
@@ -56,7 +56,7 @@ const LineChart = (props) => {
   useEffect(
     () => {
       if (chartRef.current) {
-        const height = width * DIMENSION_RATIO;
+        const height = width * SQUARE_DIMENSION_RATIO;
         const svg = select(chartRef.current);
         svg.attr('height', height);
 
@@ -66,26 +66,27 @@ const LineChart = (props) => {
 
         const title = {
           text: props.title,
+          fontSize: scaleSquaredChart(15, width),
           margin: {
-            top: prorataScale(29, width, SQUAREDCHART_ORIGINAL_WIDTH),
-            left: prorataScale(34, width, SQUAREDCHART_ORIGINAL_WIDTH),
+            top: scaleSquaredChart(29, width),
+            left: scaleSquaredChart(34, width),
           },
-          width: prorataScale(150, width, SQUAREDCHART_ORIGINAL_WIDTH),
+          width: scaleSquaredChart(150, width),
         };
         const lineHeight = 24;
         const lineWidth = 2;
         const margin = {
-          top: prorataScale(77, width, SQUAREDCHART_ORIGINAL_WIDTH),
-          right: prorataScale(0, width, SQUAREDCHART_ORIGINAL_WIDTH),
-          bottom: prorataScale(60, width, SQUAREDCHART_ORIGINAL_WIDTH),
-          left: prorataScale(0, width, SQUAREDCHART_ORIGINAL_WIDTH),
+          top: scaleSquaredChart(77, width),
+          right: scaleSquaredChart(0, width),
+          bottom: scaleSquaredChart(60, width),
+          left: scaleSquaredChart(0, width),
         };
         const xAxisPadding = {
           top: 0,
           side: (width - margin.left - margin.right) / 7 / 2,
         };
         const tick = {
-          xAxisPadding: prorataScale(20, width, SQUAREDCHART_ORIGINAL_WIDTH),
+          xAxisPadding: scaleSquaredChart(20, width),
           labels: ['D', 'L', 'M', 'M', 'J', 'V', 'S', 'D', 'L'],
         };
         const point = {
@@ -94,8 +95,8 @@ const LineChart = (props) => {
         };
         const tooltip = {
           offset: {
-            x: prorataScale(5, width, SQUAREDCHART_ORIGINAL_WIDTH),
-            y: prorataScale(7, width, SQUAREDCHART_ORIGINAL_WIDTH),
+            x: scaleSquaredChart(5, width),
+            y: scaleSquaredChart(7, width),
           },
           width: 39,
           height: 25,
@@ -173,6 +174,7 @@ const LineChart = (props) => {
           .attr('dominant-baseline', 'hanging')
           .attr('width', title.width)
           .attr('class', 'title')
+          .attr('font-size', `${title.fontSize}px`)
           .attr('opacity', 0.5)
           .call(wrap, lineHeight);
 
@@ -201,9 +203,9 @@ const LineChart = (props) => {
           .curve(curveCardinal);
 
         svg
+          .datum(marks)
           .append('path')
           .attr('class', 'path-line')
-          .datum(marks)
           .attr('d', lineGenerator)
           .attr('fill', 'none')
           .attr('stroke', 'white')
