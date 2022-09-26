@@ -2,10 +2,17 @@ import { select } from 'd3';
 
 export const RECT_DIMENSION_RATIO = 0.383;
 export const SQUARE_DIMENSION_RATIO = 1.0194;
+export const KEYINFO_DIMENSION_RATIO = 0.4806;
+export const SIDEBAR_DIMENSION_RATIO = 0.4806;
 
 // Constants from figma mockups
 export function prorataScale(mockupValue, currentChartWidth, mockupChartWidth) {
   return (currentChartWidth * mockupValue) / mockupChartWidth;
+}
+
+const WINDOW_ORIGINAL_WIDTH = 1440;
+export function prorataWindowScale(mockupValue, currentChartWidth) {
+  return prorataScale(mockupValue, currentChartWidth, WINDOW_ORIGINAL_WIDTH);
 }
 
 const RECTCHART_ORIGINAL_WIDTH = 835;
@@ -13,12 +20,12 @@ export function scaleRectChart(mockupValue, currentChartWidth) {
   return prorataScale(mockupValue, currentChartWidth, RECTCHART_ORIGINAL_WIDTH);
 }
 
-const SQUAREDCHART_ORIGINAL_WIDTH = 258;
-export function scaleSquaredChart(mockupValue, currentChartWidth) {
+const SPAN1_CHART_ORIGINAL_WIDTH = 258;
+export function scale1spanChart(mockupValue, currentChartWidth) {
   return prorataScale(
     mockupValue,
     currentChartWidth,
-    SQUAREDCHART_ORIGINAL_WIDTH
+    SPAN1_CHART_ORIGINAL_WIDTH
   );
 }
 

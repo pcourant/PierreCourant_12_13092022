@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { useUpdateWidth } from '../../utils/hooks';
 import {
   SQUARE_DIMENSION_RATIO,
-  scaleSquaredChart,
+  scale1spanChart,
   wrap,
   describeArc,
 } from '../../utils/charts';
@@ -74,24 +74,24 @@ const RadialBarChart = (props) => {
 
         //********************* DIMENSION PROCESSING *********************
 
-        const lineWidth = scaleSquaredChart(10, width);
+        const lineWidth = scale1spanChart(10, width);
         const title = {
           text: props.title,
-          fontSize: scaleSquaredChart(15, width),
-          lineHeight: scaleSquaredChart(24, width),
+          fontSize: scale1spanChart(15, width),
+          lineHeight: scale1spanChart(24, width),
           margin: {
-            top: scaleSquaredChart(24, width),
-            left: scaleSquaredChart(30, width),
+            top: scale1spanChart(24, width),
+            left: scale1spanChart(30, width),
           },
         };
-        const radius = scaleSquaredChart(160 / 2, width) + lineWidth / 2;
+        const radius = scale1spanChart(160 / 2, width) + lineWidth / 2;
         const data = props.data;
         const legend = {
           text: props.legend,
-          fontSize: scaleSquaredChart(16, width),
-          lineHeight: scaleSquaredChart(26, width),
-          width: scaleSquaredChart(95, width),
-          dataFontSize: scaleSquaredChart(26, width),
+          fontSize: scale1spanChart(16, width),
+          lineHeight: scale1spanChart(26, width),
+          width: scale1spanChart(95, width),
+          dataFontSize: scale1spanChart(26, width),
         };
 
         //********************* DATA PROCESSING *********************

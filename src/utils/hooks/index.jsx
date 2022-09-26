@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 
 export function useUpdateWidth(chartContainerRef) {
   const [width, setWidth] = useState(0);
@@ -13,4 +13,17 @@ export function useUpdateWidth(chartContainerRef) {
   }, []);
 
   return width;
+}
+
+export function useWindowSize() {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
 }

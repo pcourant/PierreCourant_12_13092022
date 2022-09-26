@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { useUpdateWidth } from '../../utils/hooks';
 import {
   SQUARE_DIMENSION_RATIO,
-  scaleSquaredChart,
+  scale1spanChart,
   wrap,
 } from '../../utils/charts';
 import styled from 'styled-components';
@@ -65,37 +65,37 @@ const LineChart = (props) => {
 
         const title = {
           text: props.title,
-          fontSize: scaleSquaredChart(15, width),
-          lineHeight: scaleSquaredChart(24, width),
+          fontSize: scale1spanChart(15, width),
+          lineHeight: scale1spanChart(24, width),
           margin: {
-            top: scaleSquaredChart(29, width),
-            left: scaleSquaredChart(34, width),
+            top: scale1spanChart(29, width),
+            left: scale1spanChart(34, width),
           },
-          width: scaleSquaredChart(150, width),
+          width: scale1spanChart(150, width),
         };
         const margin = {
-          top: scaleSquaredChart(77, width),
-          right: scaleSquaredChart(0, width),
-          bottom: scaleSquaredChart(60, width),
-          left: scaleSquaredChart(0, width),
+          top: scale1spanChart(77, width),
+          right: scale1spanChart(0, width),
+          bottom: scale1spanChart(60, width),
+          left: scale1spanChart(0, width),
         };
         const xAxisPadding = {
           top: 0,
           side: (width - margin.left - margin.right) / 7 / 2,
         };
         const tick = {
-          xAxisPadding: scaleSquaredChart(20, width),
+          xAxisPadding: scale1spanChart(20, width),
           labels: ['D', 'L', 'M', 'M', 'J', 'V', 'S', 'D', 'L'],
         };
         const point = {
           innerCircle: 4,
           outerCircle: 9,
         };
-        const lineWidth = scaleSquaredChart(2, width);
+        const lineWidth = scale1spanChart(2, width);
         const tooltip = {
           offset: {
-            x: scaleSquaredChart(5, width),
-            y: scaleSquaredChart(7, width),
+            x: scale1spanChart(5, width),
+            y: scale1spanChart(7, width),
           },
           width: 39,
           height: 25,

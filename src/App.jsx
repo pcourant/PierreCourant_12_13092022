@@ -27,13 +27,15 @@ const GlobalStyle = createGlobalStyle`
 
 const StyledMain = styled.main`
   position: relative;
-  margin-left: 117px;
-  padding-top: 4.72vw;
+  margin-left: 8.125vw;
+  /* margin-left: 117px; */
+  padding-top: 2.5vw;
   padding-left: 7.57vw;
   padding-right: 6.25vw;
   display: flex;
   flex-flow: column nowrap;
-  row-gap: 5.34vw;
+  row-gap: 3.5vw;
+  /* row-gap: 5.34vw; */
 `;
 
 const App = () => {

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { useUpdateWidth } from '../../utils/hooks';
 import {
   SQUARE_DIMENSION_RATIO,
-  scaleSquaredChart,
+  scale1spanChart,
   getCoordinates,
   getHexagonPoints,
   pointsToPath,
@@ -57,26 +57,26 @@ const RadarChart = (props) => {
 
         const levels = props.levels;
         const data = props.data;
-        const radius = Math.round(scaleSquaredChart(90, width));
+        const radius = Math.round(scale1spanChart(90, width));
         const features = {
           length: props.features.length,
           labels: props.features,
-          fontSize: scaleSquaredChart(12, width),
+          fontSize: scale1spanChart(12, width),
           offset: [
             {
               dx: 0,
-              dy: scaleSquaredChart(-10, width),
+              dy: scale1spanChart(-10, width),
               dominantBaseline: 'Auto',
               textAnchor: 'middle',
             },
             {
-              dx: scaleSquaredChart(5, width),
+              dx: scale1spanChart(5, width),
               dy: 0,
               dominantBaseline: 'middle',
               textAnchor: 'start',
             },
             {
-              dx: scaleSquaredChart(5, width),
+              dx: scale1spanChart(5, width),
               dy: 0,
               dominantBaseline: 'hanging',
               textAnchor: 'start',
@@ -88,13 +88,13 @@ const RadarChart = (props) => {
               textAnchor: 'middle',
             },
             {
-              dx: scaleSquaredChart(-5, width),
+              dx: scale1spanChart(-5, width),
               dy: 0,
               dominantBaseline: 'hanging',
               textAnchor: 'end',
             },
             {
-              dx: scaleSquaredChart(-5, width),
+              dx: scale1spanChart(-5, width),
               dy: 0,
               dominantBaseline: 'middle',
               textAnchor: 'end',

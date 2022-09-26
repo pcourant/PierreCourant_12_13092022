@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
 
 const StyledTitle = styled.h1`
-  font-size: 48px;
+  font-size: 3.333vw;
+  /* font-size: 48px; */
   font-weight: 500;
 `;
 

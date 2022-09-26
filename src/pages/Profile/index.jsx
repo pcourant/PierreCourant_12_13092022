@@ -16,29 +16,25 @@ import LineChart from '../../components/LineChart';
 import RadarChart from '../../components/RadarChart';
 import RadialBarChart from '../../components/RadialBarChart';
 
-const StyledSection = styled.section`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
+const StyledSection = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  gap: 2vw;
 `;
 
-const ChartsContainer = styled.div`
-  width: 74%;
-  display: flex;
-  flex-flow: row wrap;
-  gap: 2.08vw;
+const ChartRectContainer = styled.div`
+  grid-row: 1 / 1;
+  grid-column: 1 / span 3;
 `;
 
-const SquaredChart = styled.div`
-  width: 31%;
-`;
+const KeysInfoContainer = styled.div`
+  grid-row: 1 / span 2;
+  grid-column: 4 / 5;
 
-const CardsContainer = styled.div`
-  width: 23%;
   display: flex;
   flex-flow: column nowrap;
-  row-gap: 2.71vw;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -70,7 +66,7 @@ const Profile = (props) => {
         subtitle={'Félicitation ! Vous avez explosé vos objectifs hier 👏'}
       />
       <StyledSection>
-        <ChartsContainer>
+        <ChartRectContainer>
           <BarChart
             title={'Activité quotidienne'}
             labels={{
@@ -93,41 +89,35 @@ const Profile = (props) => {
               { x: 10, y1: 70.3, y2: 210 },
             ]}
           />
-          <SquaredChart>
-            <LineChart
-              title={'Durée moyenne des sessions'}
-              labels={{
-                x: '',
-                y: '',
-                tooltipY: ' min',
-              }}
-              data={[0, 30, 23, 45, 50, 0, 0, 60, 90]}
-            />
-          </SquaredChart>
-          <SquaredChart>
-            <RadarChart
-              margin={{ top: 41, right: 39, bottom: 42, left: 39 }}
-              levels={{ count: 5, max: 250 }}
-              features={[
-                'Intensité',
-                'Vitesse',
-                'Force',
-                'Endurance',
-                'Énergie',
-                'Cardio',
-              ]}
-              data={[100, 200, 50, 150, 250, 30]}
-            />
-          </SquaredChart>
-          <SquaredChart>
-            <RadialBarChart
-              title={'Score'}
-              legend={'de votre objectif'}
-              data={0.12}
-            />
-          </SquaredChart>
-        </ChartsContainer>
-        <CardsContainer>
+        </ChartRectContainer>
+        <LineChart
+          title={'Durée moyenne des sessions'}
+          labels={{
+            x: '',
+            y: '',
+            tooltipY: ' min',
+          }}
+          data={[0, 30, 23, 45, 50, 0, 0, 60, 90]}
+        />
+        <RadarChart
+          margin={{ top: 41, right: 39, bottom: 42, left: 39 }}
+          levels={{ count: 5, max: 250 }}
+          features={[
+            'Intensité',
+            'Vitesse',
+            'Force',
+            'Endurance',
+            'Énergie',
+            'Cardio',
+          ]}
+          data={[100, 200, 50, 150, 250, 30]}
+        />
+        <RadialBarChart
+          title={'Score'}
+          legend={'de votre objectif'}
+          data={0.12}
+        />
+        <KeysInfoContainer>
           <KeyInfoCard
             value={'1,930kCal'}
             title={'Calories'}
@@ -136,7 +126,7 @@ const Profile = (props) => {
           <KeyInfoCard />
           <KeyInfoCard />
           <KeyInfoCard />
-        </CardsContainer>
+        </KeysInfoContainer>
       </StyledSection>
     </>
   );
