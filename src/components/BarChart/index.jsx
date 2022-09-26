@@ -19,9 +19,7 @@ const StyledBarChart = styled.svg.attrs({
   border-radius: 5px;
 
   #title {
-    font-size: 15px;
     font-weight: 500;
-    line-height: 24px;
     fill: #20253a;
   }
 
@@ -34,9 +32,7 @@ const StyledBarChart = styled.svg.attrs({
   .y1Caption text,
   .y2Caption text {
     fill: #74798c;
-    font-size: 14px;
     font-weight: 500;
-    line-height: 24px;
   }
 
   .x-axis {
@@ -102,12 +98,13 @@ const BarChart = (props) => {
 
         const title = {
           text: props.title,
+          fontSize: scaleRectChart(15, width),
+          lineHeight: scaleRectChart(24, width),
           margin: {
             top: scaleRectChart(24, width),
             left: scaleRectChart(32, width),
           },
         };
-        const lineHeight = 24;
         const margin = {
           top: scaleRectChart(112.5, width),
           right: scaleRectChart(90, width),
@@ -121,14 +118,18 @@ const BarChart = (props) => {
         const barsGap = scaleRectChart(9, width);
         const barWidth = scaleRectChart(7, width);
         const barCap = scaleRectChart(3, width);
-        const captionRadius = 4;
-        const xCaption1 = {
-          point: width - 295,
-          text: width - 295 + 10 + captionRadius,
+        const captionRadius = scaleRectChart(4, width);
+        const caption1 = {
+          point: 0.642 * width,
+          text: 0.658 * width,
+          fontSize: scaleRectChart(14, width),
+          lineHeight: scaleRectChart(24, width),
         };
-        const xCaption2 = {
-          point: width - 181,
-          text: width - 181 + 10 + captionRadius,
+        const caption2 = {
+          point: 0.778 * width,
+          text: 0.797 * width,
+          fontSize: scaleRectChart(14, width),
+          lineHeight: scaleRectChart(24, width),
         };
         const overlay = {
           y: margin.top - 1,
@@ -196,34 +197,40 @@ const BarChart = (props) => {
           .attr('x', title.margin.left)
           .attr('y', title.margin.top)
           .attr('dominant-baseline', 'hanging')
+          .attr('font-size', `${title.fontSize}px`)
+          .attr('line-height', `${title.lineHeight}px`)
           .attr('id', 'title');
 
         // Captions
         const y1Caption = svg.append('g').attr('class', '  y1Caption');
         y1Caption
           .append('circle')
-          .attr('cx', xCaption1.point)
-          .attr('cy', title.margin.top + 14 / 2) // 14 is 14px the font-size of caption text
+          .attr('cx', caption1.point)
+          .attr('cy', title.margin.top + caption1.fontSize / 2) // 14 is 14px the font-size of caption text
           .attr('r', captionRadius);
         y1Caption
           .append('text')
           .text(labels.y1)
-          .attr('x', xCaption1.text)
+          .attr('x', caption1.text)
           .attr('y', title.margin.top)
-          .attr('dominant-baseline', 'hanging');
+          .attr('dominant-baseline', 'hanging')
+          .attr('font-size', `${caption1.fontSize}px`)
+          .attr('line-height', `${caption1.lineHeight}px`);
 
         const y2Caption = svg.append('g').attr('class', 'y2Caption');
         y2Caption
           .append('circle')
-          .attr('cx', xCaption2.point)
-          .attr('cy', title.margin.top + 14 / 2) // 14 is 14px the font-size of caption text
+          .attr('cx', caption2.point)
+          .attr('cy', title.margin.top + caption2.fontSize / 2) // 14 is 14px the font-size of caption text
           .attr('r', captionRadius);
         y2Caption
           .append('text')
           .text(labels.y2)
-          .attr('x', xCaption2.text)
+          .attr('x', caption2.text)
           .attr('y', title.margin.top)
-          .attr('dominant-baseline', 'hanging');
+          .attr('dominant-baseline', 'hanging')
+          .attr('font-size', `${caption2.fontSize}px`)
+          .attr('line-height', `${caption2.lineHeight}px`);
 
         // Y1 axis construction
         const y1AxisTicks = y1Scale

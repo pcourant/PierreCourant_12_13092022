@@ -119,20 +119,13 @@ const Profile = (props) => {
               data={[100, 200, 50, 150, 250, 30]}
             />
           </SquaredChart>
-          <RadialBarChart
-            title={{
-              text: 'Score',
-              margin: { top: 24, left: 30 },
-            }}
-            size={{
-              width: 258,
-              height: 263,
-              radius: 160 / 2 + 5,
-              lineWidth: 10,
-              lineHeight: 24,
-            }}
-            data={0.12}
-          />
+          <SquaredChart>
+            <RadialBarChart
+              title={'Score'}
+              legend={'de votre objectif'}
+              data={0.12}
+            />
+          </SquaredChart>
         </ChartsContainer>
         <CardsContainer>
           <KeyInfoCard

@@ -32,7 +32,6 @@ const StyledLineChart = styled.svg.attrs({
 
   .title {
     font-weight: 500;
-    line-height: 24px;
     fill: #ffffff;
   }
 
@@ -67,14 +66,13 @@ const LineChart = (props) => {
         const title = {
           text: props.title,
           fontSize: scaleSquaredChart(15, width),
+          lineHeight: scaleSquaredChart(24, width),
           margin: {
             top: scaleSquaredChart(29, width),
             left: scaleSquaredChart(34, width),
           },
           width: scaleSquaredChart(150, width),
         };
-        const lineHeight = 24;
-        const lineWidth = 2;
         const margin = {
           top: scaleSquaredChart(77, width),
           right: scaleSquaredChart(0, width),
@@ -93,6 +91,7 @@ const LineChart = (props) => {
           innerCircle: 4,
           outerCircle: 9,
         };
+        const lineWidth = scaleSquaredChart(2, width);
         const tooltip = {
           offset: {
             x: scaleSquaredChart(5, width),
@@ -175,8 +174,9 @@ const LineChart = (props) => {
           .attr('width', title.width)
           .attr('class', 'title')
           .attr('font-size', `${title.fontSize}px`)
+          .attr('line-height', `${title.lineHeight}px`)
           .attr('opacity', 0.5)
-          .call(wrap, lineHeight);
+          .call(wrap, title.lineHeight);
 
         // X axis construction
         const xAxisGenerator = axisBottom(xScale)

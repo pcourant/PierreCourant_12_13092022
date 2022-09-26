@@ -1,19 +1,21 @@
 import React, { useRef, useEffect } from 'react';
+import { useUpdateWidth } from '../../utils/hooks';
+import {
+  SQUARE_DIMENSION_RATIO,
+  scaleSquaredChart,
+  wrap,
+  describeArc,
+} from '../../utils/charts';
 import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
-import {
-  select,
-  scaleLinear,
-  extent,
-  axisBottom,
-  axisRight,
-  format,
-  line,
-  curveCardinal,
-} from 'd3';
+import { select } from 'd3';
 
-const StyledSvg = styled.svg.attrs({
+const ChartContainer = styled.div`
+  width: 100%;
+`;
+
+const StyledRadarChart = styled.svg.attrs({
   version: '1.1',
   xmlns: 'http://www.w3.org/2000/svg',
   xmlnsXlink: 'http://www.w3.org/1999/xlink',
@@ -22,9 +24,7 @@ const StyledSvg = styled.svg.attrs({
   border-radius: 5px;
 
   .title {
-    font-size: 15px;
     font-weight: 500;
-    line-height: 24px;
     fill: #20253a;
   }
 
@@ -45,161 +45,140 @@ const StyledSvg = styled.svg.attrs({
     fill: white;
   }
 
-  #arc {
+  #arcPath {
     fill: transparent;
+    stroke-linecap: round;
+    stroke: red;
+  }
+
+  #legend {
+    fill: #74798c;
+  }
+  #data-legend {
+    font-weight: 700;
+    fill: #282d30;
   }
 `;
 
-function wrap(text, lineHeight) {
-  text.each(function () {
-    var text = select(this);
-    var words = text.text().split(/\s+/).reverse();
-    var width = parseFloat(text.attr('width'));
-    var y = parseFloat(text.attr('y'));
-    var x = text.attr('x');
-    var anchor = text.attr('text-anchor');
-
-    var tspan = text
-      .text(null)
-      .append('tspan')
-      .attr('x', x)
-      .attr('y', y)
-      .attr('text-anchor', anchor);
-    var lineNumber = 0;
-    var line = [];
-    var word = words.pop();
-
-    while (word) {
-      line.push(word);
-      tspan.text(line.join(' '));
-      if (tspan.node().getComputedTextLength() > width) {
-        lineNumber += 1;
-        line.pop();
-        tspan.text(line.join(' '));
-        line = [word];
-        tspan = text
-          .append('tspan')
-          .attr('x', x)
-          .attr('y', y + lineNumber * lineHeight)
-          .attr('anchor', anchor)
-          .text(word);
-      }
-      word = words.pop();
-    }
-  });
-}
-
 const RadialBarChart = (props) => {
-  const title = props.title;
-  const { width, height, radius, lineWidth, lineHeight } = props.size;
-  const margin = props.margin;
-  const data = props.data;
-
-  const d3Container = useRef(null);
+  const chartContainerRef = useRef(null);
+  const chartRef = useRef(null);
+  const width = useUpdateWidth(chartContainerRef);
 
   useEffect(
     () => {
-      if (data && d3Container.current) {
-        const svg = select(d3Container.current);
+      if (chartRef.current) {
+        const height = width * SQUARE_DIMENSION_RATIO;
+        const svg = select(chartRef.current);
+        svg.attr('height', height);
+
+        //********************* DIMENSION PROCESSING *********************
+
+        const lineWidth = scaleSquaredChart(10, width);
+        const title = {
+          text: props.title,
+          fontSize: scaleSquaredChart(15, width),
+          lineHeight: scaleSquaredChart(24, width),
+          margin: {
+            top: scaleSquaredChart(24, width),
+            left: scaleSquaredChart(30, width),
+          },
+        };
+        const radius = scaleSquaredChart(160 / 2, width) + lineWidth / 2;
+        const data = props.data;
+        const legend = {
+          text: props.legend,
+          fontSize: scaleSquaredChart(16, width),
+          lineHeight: scaleSquaredChart(26, width),
+          width: scaleSquaredChart(95, width),
+          dataFontSize: scaleSquaredChart(26, width),
+        };
 
         //********************* DATA PROCESSING *********************
-        const scale = scaleLinear()
-          .domain([0, 1])
-          .range([0, 2 * Math.PI * 1]);
 
         const mark = {
           angle: 360 * data,
           value: data,
         };
 
-        console.log('scale', scale);
-        console.log('mark', mark);
-
         //********************* DATA VISUALIZATION ********************
 
-        // Title
-        const yTitle = lineHeight / 2 + title.margin.top;
         svg
           .append('text')
           .text(title.text)
           .attr('x', title.margin.left)
-          .attr('y', yTitle)
-          .attr('class', 'title');
+          .attr('y', title.margin.top)
+          .attr('dominant-baseline', 'hanging')
+          .attr('width', title.width)
+          .attr('class', 'title')
+          .attr('font-size', `${title.fontSize}px`)
+          .attr('line-height', `${title.lineHeight}px`)
+          .call(wrap, title.lineHeight);
 
-        svg
+        const chart = svg
+          .append('g')
+          .attr('transform', `translate(${width / 2},${height / 2})`);
+
+        chart
           .append('circle')
           .attr('id', 'innerCircle')
-          .attr('cx', width / 2)
-          .attr('cy', height / 2)
           .attr('r', radius - lineWidth / 2);
 
-        function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
-          var angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
+        //********************* PLOTTING DATA *********************
 
-          return {
-            x: centerX + radius * Math.cos(angleInRadians),
-            y: centerY + radius * Math.sin(angleInRadians),
-          };
-        }
+        const arcPath = describeArc(0, 0, radius, 360 - mark.angle, 360);
 
-        function describeArc(cx, cy, radius, startAngle, endAngle) {
-          var start = polarToCartesian(cx, cy, radius, endAngle);
-          var end = polarToCartesian(cx, cy, radius, startAngle);
-
-          console.log('start', start);
-          console.log('end', end);
-
-          var largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
-
-          var d = [
-            'M',
-            start.x,
-            start.y,
-            'A',
-            radius,
-            radius,
-            0,
-            largeArcFlag,
-            0,
-            end.x,
-            end.y,
-          ].join(' ');
-
-          return d;
-        }
-
-        const pathD = describeArc(
-          width / 2,
-          height / 2,
-          radius,
-          360 - mark.angle,
-          360
-        );
-        console.log('pathD', pathD);
-
-        // Plotting marks
-        svg
-          .selectAll('path .mark')
+        // Visualization arc
+        chart
+          .selectAll('path #arcPath')
           .data([mark])
           .join('path')
-          .attr('id', 'arc')
-          .attr('d', pathD)
-          .attr('stroke-linecap', 'round')
-          .attr('stroke-width', lineWidth)
-          .attr('stroke', 'red');
+          .attr('id', 'arcPath')
+          .attr('d', arcPath)
+          .attr('stroke-width', lineWidth);
+
+        // Chart legend
+        const legendGroup = chart.append('g');
+
+        legendGroup
+          .append('text')
+          .text(`${data * 100}%`)
+          .attr('x', 0)
+          .attr('y', -legend.lineHeight / 2)
+          .attr('dominant-baseline', 'middle')
+          .attr('text-anchor', 'middle')
+          .attr('id', 'data-legend')
+          .attr('font-size', `${legend.dataFontSize}px`)
+          .attr('line-height', `${legend.lineHeight}px`);
+        legendGroup
+          .append('text')
+          .text(`${legend.text}`)
+          .attr('x', 0)
+          .attr('y', legend.lineHeight / 2)
+          .attr('dominant-baseline', 'middle')
+          .attr('text-anchor', 'middle')
+          .attr('width', legend.width)
+          .attr('id', 'legend')
+          .attr('font-size', `${legend.fontSize}px`)
+          .attr('line-height', `${legend.lineHeight}px`)
+          .call(wrap, legend.lineHeight);
       }
+
+      return () => {
+        // Delete the entire chart
+        while (chartRef.current.firstChild) {
+          chartRef.current.removeChild(chartRef.current.firstChild);
+        }
+      };
     },
     // Dependency array
-    [props, d3Container.current]
+    [props, width]
   );
 
   return (
-    <StyledSvg
-      className="d3-component"
-      width={width}
-      height={height}
-      ref={d3Container}
-    />
+    <ChartContainer ref={chartContainerRef}>
+      <StyledRadarChart width={'100%'} ref={chartRef} />
+    </ChartContainer>
   );
 };
 

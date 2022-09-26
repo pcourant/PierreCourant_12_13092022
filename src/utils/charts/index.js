@@ -24,16 +24,16 @@ export function scaleSquaredChart(mockupValue, currentChartWidth) {
 
 export const wrap = function (text, lineHeight) {
   text.each(function () {
-    var text = select(this),
-      words = text.text().split(/\s+/).reverse(),
-      word,
-      lineNumber = 0,
-      line = [],
-      width = parseFloat(text.attr('width')),
-      y = parseFloat(text.attr('y')),
-      x = text.attr('x'),
-      textAnchor = text.attr('text-anchor');
-    tspan = text
+    const text = select(this);
+    const words = text.text().split(/\s+/).reverse();
+    let word;
+    let lineNumber = 0;
+    let line = [];
+    const width = parseFloat(text.attr('width'));
+    const y = parseFloat(text.attr('y'));
+    const x = text.attr('x');
+    const textAnchor = text.attr('text-anchor');
+    let tspan = text
       .text(null)
       .append('tspan')
       .attr('x', x)
@@ -58,3 +58,58 @@ export const wrap = function (text, lineHeight) {
     }
   });
 };
+
+export function getCoordinates(value, radius, index) {
+  const angle = Math.PI / 2 + (2 * Math.PI * -index) / HEXAGONAL_POINTS;
+  const x = Math.cos(angle) * value;
+  const y = Math.sin(angle) * value;
+  return { x: radius + x, y: radius - y };
+}
+
+const HEXAGONAL_POINTS = 6;
+
+export function getHexagonPoints(hexagonRadius, containerRadius) {
+  const hexagonPoints = [];
+  for (let i = 0; i < HEXAGONAL_POINTS; i++) {
+    const coordinates = getCoordinates(hexagonRadius, containerRadius, i);
+    hexagonPoints.push([coordinates.x, coordinates.y]);
+  }
+
+  return hexagonPoints;
+}
+
+export function pointsToPath(points) {
+  return points.map((p) => p.join(',')).join(' ');
+}
+
+function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+  const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
+
+  return {
+    x: centerX + radius * Math.cos(angleInRadians),
+    y: centerY + radius * Math.sin(angleInRadians),
+  };
+}
+
+export function describeArc(cx, cy, radius, startAngle, endAngle) {
+  const start = polarToCartesian(cx, cy, radius, endAngle);
+  const end = polarToCartesian(cx, cy, radius, startAngle);
+
+  const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
+
+  const d = [
+    'M',
+    start.x,
+    start.y,
+    'A',
+    radius,
+    radius,
+    0,
+    largeArcFlag,
+    0,
+    end.x,
+    end.y,
+  ].join(' ');
+
+  return d;
+}
