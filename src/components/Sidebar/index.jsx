@@ -10,8 +10,8 @@ import colors from '../../utils/styles/colors';
 
 const SidebarWrapper = styled.div`
   width: 8.125vw;
-  /* width: ${(props) => prorataWindowScale(117, props.windowWidth)}; */
-  height: ${(props) => prorataWindowScale(1024, props.windowWidth)};
+  /* width: ${(props) => prorataWindowScale(117, props.windowwidth)}; */
+  height: ${(props) => prorataWindowScale(1024, props.windowwidth)};
   /* width: 117px; */
   /* height: 100vh; */
   /* height: 1024px; */
@@ -30,16 +30,16 @@ const StyledNav = styled.nav`
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  row-gap: ${(props) => prorataWindowScale(20, props.windowWidth)}px;
+  row-gap: ${(props) => prorataWindowScale(20, props.windowwidth)}px;
   /* row-gap: 20px; */
-  margin-bottom: ${(props) => prorataWindowScale(14, props.windowWidth)};
+  margin-bottom: ${(props) => prorataWindowScale(14, props.windowwidth)};
   /* margin-bottom: 14px; */
 `;
 
 const StyledNavLink = styled(NavLink)`
-  width: ${(props) => prorataWindowScale(64, props.windowWidth)};
+  width: ${(props) => prorataWindowScale(64, props.windowwidth)};
   /* width: 64px; */
-  height: ${(props) => prorataWindowScale(64, props.windowWidth)};
+  height: ${(props) => prorataWindowScale(64, props.windowwidth)};
   /* height: 64px; */
   color: ${colors.secondary};
   background-color: white;
@@ -53,7 +53,7 @@ const StyledNavLink = styled(NavLink)`
 const CopyrightWrapper = styled.p`
   position: absolute;
   /* bottom: 5.76vh; */
-  bottom: ${(props) => prorataWindowScale(59, props.windowWidth)};
+  bottom: ${(props) => prorataWindowScale(59, props.windowwidth)};
   /* bottom: 59px; */
   color: white;
   font-size: 12px;
@@ -68,45 +68,45 @@ const bikeIcon = new URL('../../assets/bike.svg', import.meta.url);
 const workoutIcon = new URL('../../assets/workout.svg', import.meta.url);
 
 const Sidebar = () => {
-  const [windowWidth] = useWindowSize();
+  const [windowwidth] = useWindowSize();
 
   return (
-    <SidebarWrapper windowWidth={windowWidth}>
-      <StyledNav windowWidth={windowWidth}>
-        <StyledNavLink windowWidth={windowWidth}>
+    <SidebarWrapper windowwidth={windowwidth}>
+      <StyledNav windowwidth={windowwidth}>
+        <StyledNavLink windowwidth={windowwidth}>
           <img
             src={yogaIcon}
             alt="yoga icon"
-            width={prorataWindowScale(36, windowWidth)}
-            height={prorataWindowScale(32, windowWidth)}
+            width={prorataWindowScale(36, windowwidth)}
+            height={prorataWindowScale(32, windowwidth)}
           />
         </StyledNavLink>
-        <StyledNavLink windowWidth={windowWidth}>
+        <StyledNavLink windowwidth={windowwidth}>
           <img
             src={swimIcon}
             alt="swim icon"
-            width={prorataWindowScale(32, windowWidth)}
-            height={prorataWindowScale(32, windowWidth)}
+            width={prorataWindowScale(32, windowwidth)}
+            height={prorataWindowScale(32, windowwidth)}
           />
         </StyledNavLink>
-        <StyledNavLink windowWidth={windowWidth}>
+        <StyledNavLink windowwidth={windowwidth}>
           <img
             src={bikeIcon}
             alt="bike icon"
-            width={prorataWindowScale(38, windowWidth)}
-            height={prorataWindowScale(32, windowWidth)}
+            width={prorataWindowScale(38, windowwidth)}
+            height={prorataWindowScale(32, windowwidth)}
           />
         </StyledNavLink>
-        <StyledNavLink windowWidth={windowWidth}>
+        <StyledNavLink windowwidth={windowwidth}>
           <img
             src={workoutIcon}
             alt="workout icon"
-            width={prorataWindowScale(32, windowWidth)}
-            height={prorataWindowScale(32, windowWidth)}
+            width={prorataWindowScale(32, windowwidth)}
+            height={prorataWindowScale(32, windowwidth)}
           />
         </StyledNavLink>
       </StyledNav>
-      <CopyrightWrapper windowWidth={windowWidth}>
+      <CopyrightWrapper windowwidth={windowwidth}>
         Copiryght, SportSee 2020
       </CopyrightWrapper>
     </SidebarWrapper>
