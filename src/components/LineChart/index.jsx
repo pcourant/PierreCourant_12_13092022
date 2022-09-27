@@ -54,7 +54,7 @@ const LineChart = (props) => {
 
   useEffect(
     () => {
-      if (chartRef.current) {
+      if (chartContainerRef?.current && chartRef?.current) {
         const height = width * SQUARE_DIMENSION_RATIO;
         const svg = select(chartRef.current);
         svg.attr('height', height);
@@ -315,7 +315,7 @@ const LineChart = (props) => {
 
       return () => {
         // Delete the entire chart
-        while (chartRef.current.firstChild) {
+        while (chartRef?.current?.firstChild) {
           chartRef.current.removeChild(chartRef.current.firstChild);
         }
       };

@@ -86,7 +86,7 @@ const BarChart = (props) => {
 
   useEffect(
     () => {
-      if (chartRef.current) {
+      if (chartContainerRef?.current && chartRef?.current) {
         const height = width * RECT_DIMENSION_RATIO;
         const svg = select(chartRef.current);
         svg.attr('height', height);
@@ -407,7 +407,7 @@ const BarChart = (props) => {
 
       return () => {
         // Delete the entire chart
-        while (chartRef.current.firstChild) {
+        while (chartRef?.current?.firstChild) {
           chartRef.current.removeChild(chartRef.current.firstChild);
         }
       };

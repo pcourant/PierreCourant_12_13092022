@@ -1,4 +1,5 @@
 import { useState, useEffect, useLayoutEffect } from 'react';
+import axios from 'axios';
 
 export function useUpdateWidth(chartContainerRef) {
   const [width, setWidth] = useState(0);
@@ -26,4 +27,28 @@ export function useWindowSize() {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
   return size;
+}
+
+export function useAxiosGet(url) {
+  const [data, setData] = useState({});
+  const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState(undefined);
+
+  useEffect(() => {
+    if (!url) return;
+    setLoading(true);
+    async function axiosGet() {
+      try {
+        const response = await axios.get(url);
+        setData(response.data.data);
+      } catch (err) {
+        console.error(err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    axiosGet();
+  }, [url]);
+  return { isLoading, data, error };
 }

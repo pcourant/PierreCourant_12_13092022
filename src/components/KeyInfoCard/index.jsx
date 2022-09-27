@@ -55,7 +55,7 @@ const KeyInfoCard = (props) => {
 
   useEffect(
     () => {
-      if (chartRef.current) {
+      if (chartContainerRef?.current && chartRef?.current) {
         const height = width * KEYINFO_DIMENSION_RATIO;
         const svg = select(chartRef.current);
         svg.attr('height', height);

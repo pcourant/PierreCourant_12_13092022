@@ -3,12 +3,13 @@
   "source": "src/index.html",
   "scripts": {
     "lint:css": "stylelint './src/**/*.js'",
-    "start": "parcel --open -p 3000",
+    "start": "parcel --open -p 3001",
     "build": "parcel build"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "babel-plugin-styled-components": "^2.0.7",
+    "buffer": "^6.0.3",
     "eslint": "^8.23.1",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
@@ -25,6 +26,7 @@
     "stylelint-processor-styled-components": "^1.10.0"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "d3": "^7.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

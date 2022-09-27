@@ -9,12 +9,19 @@ const StyledTitle = styled.h1`
   font-weight: 500;
 `;
 
+const StyledFirstName = styled.span`
+  color: ${colors.secondary};
+`;
+
 const StyledSubtitle = styled.p``;
 
-const HeaderMain = ({ title, subtitle }) => {
+const HeaderMain = ({ title, firstName, subtitle }) => {
   return (
     <header>
-      <StyledTitle>{title}</StyledTitle>
+      <StyledTitle>
+        {title}
+        <StyledFirstName>{firstName}</StyledFirstName>
+      </StyledTitle>
       <StyledSubtitle>{subtitle}</StyledSubtitle>
     </header>
   );
