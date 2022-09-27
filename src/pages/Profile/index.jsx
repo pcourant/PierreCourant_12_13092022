@@ -38,10 +38,13 @@ const KeysInfoContainer = styled.div`
   align-items: center;
 `;
 
-const yogaIcon = new URL('../../assets/yoga.svg', import.meta.url);
-const swimIcon = new URL('../../assets/swim.svg', import.meta.url);
-const bikeIcon = new URL('../../assets/bike.svg', import.meta.url);
-const workoutIcon = new URL('../../assets/workout.svg', import.meta.url);
+const energyIcon = new URL('../../assets/energy.svg', import.meta.url);
+const chickenIcon = new URL('../../assets/chicken.svg', import.meta.url);
+const cheeseburgerIcon = new URL(
+  '../../assets/cheeseburger.svg',
+  import.meta.url
+);
+const appleIcon = new URL('../../assets/apple.svg', import.meta.url);
 
 const Profile = (props) => {
   const { userId } = useParams();
@@ -119,13 +122,13 @@ const Profile = (props) => {
         />
         <KeysInfoContainer>
           <KeyInfoCard
-            value={'1,930kCal'}
             title={'Calories'}
-            icon={{ color: '#FF0000', icon: yogaIcon }}
+            data={'1,930kCal'}
+            icon={energyIcon}
           />
-          <KeyInfoCard />
-          <KeyInfoCard />
-          <KeyInfoCard />
+          <KeyInfoCard title={'Proteines'} data={'155g'} icon={chickenIcon} />
+          <KeyInfoCard title={'Glucides'} data={'290g'} icon={appleIcon} />
+          <KeyInfoCard title={'Lipides'} data={'50g'} icon={cheeseburgerIcon} />
         </KeysInfoContainer>
       </StyledSection>
     </>
