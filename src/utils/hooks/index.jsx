@@ -1,6 +1,8 @@
 import { useState, useEffect, useLayoutEffect } from 'react';
 import axios from 'axios';
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export function useUpdateWidth(chartContainerRef) {
   const [width, setWidth] = useState(0);
 
@@ -45,6 +47,7 @@ export function useAxiosGet(url) {
         console.error(err);
         setError(err);
       } finally {
+        await sleep(1000);
         setLoading(false);
       }
     }

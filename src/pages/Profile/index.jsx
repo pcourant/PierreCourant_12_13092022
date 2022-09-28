@@ -17,6 +17,7 @@ import LineChart from '../../components/LineChart';
 import RadarChart from '../../components/RadarChart';
 import RadialBarChart from '../../components/RadialBarChart';
 import ErrorAPI from '../../components/ErrorAPI';
+import Loader from '../../components/Loader';
 
 const StyledSection = styled.div`
   display: grid;
@@ -55,110 +56,110 @@ const Profile = (props) => {
   );
   const userData = data;
 
-  // console.log(userData);
-  // console.log(userData?.userInfos?.firstName);
-  // console.log(error);
-  // console.log(error?.response);
-  console.log(error?.response?.status);
-  console.log(error?.response?.statusText);
-  console.log(error?.response?.data);
-
-  const userMainData = USER_MAIN_DATA.find((element) => element.id === +userId);
-  const userActivity = USER_ACTIVITY.find(
-    (element) => element.userId === +userId
-  );
-  const userAverageSessions = USER_AVERAGE_SESSIONS.find(
-    (element) => element.userId === +userId
-  );
-  const userPerformance = USER_PERFORMANCE.find(
-    (element) => element.userId === +userId
-  );
+  console.log(isLoading);
+  console.log(userData);
+  console.log(userData?.userInfos?.firstName);
+  // console.log(error?.response?.status);
+  // console.log(error?.response?.statusText);
+  // console.log(error?.response?.data);
 
   return (
     <>
-      {error ? (
-        <ErrorAPI
-          status={`${error?.response?.status} ${error?.response?.statusText}`}
-          message={error?.response?.data}
-        />
+      {isLoading ? (
+        <Loader />
       ) : (
         <>
-          <HeaderMain
-            title={`Bonjour `}
-            firstName={userData?.userInfos?.firstName}
-            subtitle={'Félicitation ! Vous avez explosé vos objectifs hier 👏'}
-          />
-          <StyledSection>
-            <ChartRectContainer>
-              <BarChart
-                title={'Activité quotidienne'}
-                labels={{
-                  x: '',
-                  y1: 'Poids (kg)',
-                  y2: 'Calories brûlées (kCal)',
-                  tooltipY1: 'kg',
-                  tooltipY2: 'Kcal',
-                }}
-                data={[
-                  { x: 1, y1: 70, y2: 240 },
-                  { x: 2, y1: 69, y2: 220 },
-                  { x: 3, y1: 70, y2: 280 },
-                  { x: 4, y1: 68.8, y2: 500 },
-                  { x: 5, y1: 69, y2: 160 },
-                  { x: 6, y1: 69, y2: 162 },
-                  { x: 7, y1: 69, y2: 390 },
-                  { x: 8, y1: 68.5, y2: 390 },
-                  { x: 9, y1: 68.2, y2: 390 },
-                  { x: 10, y1: 70.3, y2: 210 },
-                ]}
-              />
-            </ChartRectContainer>
-            <LineChart
-              title={'Durée moyenne des sessions'}
-              labels={{
-                x: '',
-                y: '',
-                tooltipY: ' min',
-              }}
-              data={[0, 30, 23, 45, 50, 0, 0, 60, 90]}
+          {error ? (
+            <ErrorAPI
+              status={`${error?.response?.status} ${error?.response?.statusText}`}
+              message={error?.response?.data}
             />
-            <RadarChart
-              margin={{ top: 41, right: 39, bottom: 42, left: 39 }}
-              levels={{ count: 5, max: 250 }}
-              features={[
-                'Intensité',
-                'Vitesse',
-                'Force',
-                'Endurance',
-                'Énergie',
-                'Cardio',
-              ]}
-              data={[100, 200, 50, 150, 250, 30]}
-            />
-            <RadialBarChart
-              title={'Score'}
-              legend={'de votre objectif'}
-              data={0.12}
-            />
-            <KeysInfoContainer>
-              <KeyInfoCard
-                title={'Calories'}
-                data={'1,930kCal'}
-                icon={energyIcon}
+          ) : (
+            <>
+              <HeaderMain
+                title={`Bonjour `}
+                firstName={userData?.userInfos?.firstName}
+                subtitle={
+                  'Félicitation ! Vous avez explosé vos objectifs hier 👏'
+                }
               />
-              <KeyInfoCard
-                title={'Proteines'}
-                data={'155g'}
-                icon={chickenIcon}
-              />
-              <KeyInfoCard title={'Glucides'} data={'290g'} icon={appleIcon} />
-              <KeyInfoCard
-                title={'Lipides'}
-                data={'50g'}
-                icon={cheeseburgerIcon}
-              />
-            </KeysInfoContainer>
-          </StyledSection>
+              <StyledSection>
+                <ChartRectContainer>
+                  <BarChart
+                    title={'Activité quotidienne'}
+                    labels={{
+                      x: '',
+                      y1: 'Poids (kg)',
+                      y2: 'Calories brûlées (kCal)',
+                      tooltipY1: 'kg',
+                      tooltipY2: 'Kcal',
+                    }}
+                    data={[
+                      { x: 1, y1: 70, y2: 240 },
+                      { x: 2, y1: 69, y2: 220 },
+                      { x: 3, y1: 70, y2: 280 },
+                      { x: 4, y1: 68.8, y2: 500 },
+                      { x: 5, y1: 69, y2: 160 },
+                      { x: 6, y1: 69, y2: 162 },
+                      { x: 7, y1: 69, y2: 390 },
+                      { x: 8, y1: 68.5, y2: 390 },
+                      { x: 9, y1: 68.2, y2: 390 },
+                      { x: 10, y1: 70.3, y2: 210 },
+                    ]}
+                  />
+                </ChartRectContainer>
+                <LineChart
+                  title={'Durée moyenne des sessions'}
+                  labels={{
+                    x: '',
+                    y: '',
+                    tooltipY: ' min',
+                  }}
+                  data={[0, 30, 23, 45, 50, 0, 0, 60, 90]}
+                />
+                <RadarChart
+                  margin={{ top: 41, right: 39, bottom: 42, left: 39 }}
+                  levels={{ count: 5, max: 250 }}
+                  features={[
+                    'Intensité',
+                    'Vitesse',
+                    'Force',
+                    'Endurance',
+                    'Énergie',
+                    'Cardio',
+                  ]}
+                  data={[100, 200, 50, 150, 250, 30]}
+                />
+                <RadialBarChart
+                  title={'Score'}
+                  legend={'de votre objectif'}
+                  data={0.12}
+                />
+                <KeysInfoContainer>
+                  <KeyInfoCard
+                    title={'Calories'}
+                    data={'1,930kCal'}
+                    icon={energyIcon}
+                  />
+                  <KeyInfoCard
+                    title={'Proteines'}
+                    data={'155g'}
+                    icon={chickenIcon}
+                  />
+                  <KeyInfoCard
+                    title={'Glucides'}
+                    data={'290g'}
+                    icon={appleIcon}
+                  />
+                  <KeyInfoCard
+                    title={'Lipides'}
+                    data={'50g'}
+                    icon={cheeseburgerIcon}
+                  />
+                </KeysInfoContainer>
+              </StyledSection>
+            </>
+          )}
         </>
       )}
     </>
