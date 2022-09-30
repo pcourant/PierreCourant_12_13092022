@@ -6,12 +6,6 @@ import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
 import HeaderMain from '../../components/HeaderMain';
 import KeyInfoCard from '../../components/KeyInfoCard';
-import {
-  USER_MAIN_DATA,
-  USER_ACTIVITY,
-  USER_AVERAGE_SESSIONS,
-  USER_PERFORMANCE,
-} from '../../data/data';
 import BarChart from '../../components/BarChart';
 import LineChart from '../../components/LineChart';
 import RadarChart from '../../components/RadarChart';
@@ -49,36 +43,100 @@ const cheeseburgerIcon = new URL(
 );
 const appleIcon = new URL('../../assets/apple.svg', import.meta.url);
 
+function formatPerformanceData(data, kind) {
+  if (data && kind) {
+    const dataSorted = [
+      'intensity',
+      'speed',
+      'strength',
+      'endurance',
+      'energy',
+      'cardio',
+    ];
+    for (const [key, k] of Object.entries(kind)) {
+      const value = data.find((obj) => obj.kind === +key)?.value;
+      // console.log(value);
+      if (value !== undefined) {
+        const index = dataSorted.indexOf(k);
+        // console.log(k, index);
+        if (index > -1) {
+          dataSorted[index] = value;
+          // console.log(dataSorted[index]);
+        }
+      }
+    }
+    return dataSorted;
+  }
+}
+
+function formatActivityData(data) {
+  return data?.map((activity) => ({
+    x: new Date(activity?.day).getDate(),
+    y1: activity?.kilogram,
+    y2: activity?.calories,
+  }));
+}
+
+function formatAverageSessionsData(sessions) {
+  const dayOfWeek = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+
+  const result = sessions?.map((session) => ({
+    xTick: dayOfWeek[session?.day % 7],
+    value: session?.sessionLength,
+  }));
+
+  if (result?.length < 9) {
+    result.unshift(result[0]);
+  }
+  if (result?.length < 9) {
+    result.push(result[result.length - 1]);
+  }
+
+  return result;
+}
+
 const Profile = (props) => {
   const { userId } = useParams();
-  const { isLoading, data, error } = useAxiosGet(
-    `http://localhost:3000/user/${userId}`
+  const user = useAxiosGet(`http://localhost:3000/user/${userId}`);
+  const userActivity = useAxiosGet(
+    `http://localhost:3000/user/${userId}/activity`
   );
-  const userData = data;
+  const userPerformance = useAxiosGet(
+    `http://localhost:3000/user/${userId}/performance`
+  );
+  const userAverageSessions = useAxiosGet(
+    `http://localhost:3000/user/${userId}/average-sessions`
+  );
+  const userInfos = user?.data?.userInfos;
+  const userTodayScore = user?.data?.todayScore ?? user?.data?.score;
+  const userKeyInfos = user?.data?.keyData;
+  // const userKeyInfos = user?.data?.keyData;
 
-  console.log(isLoading);
-  console.log(userData);
-  console.log(userData?.userInfos?.firstName);
-  // console.log(error?.response?.status);
-  // console.log(error?.response?.statusText);
-  // console.log(error?.response?.data);
+  // console.log(user?.isLoading);
+  // console.log(userAverageSessions?.data?.sessions);
+  // console.log(formatAverageSessionsData(userAverageSessions?.data?.sessions));
+  // console.log(userAverageSessions?.data);
+  console.log(user?.data);
+  // console.log(user?.error?.response?.status);
+  // console.log(user?.error?.response?.statusText);
+  // console.log(user?.error?.response?.data);
 
   return (
     <>
-      {isLoading ? (
+      {user?.isLoading ? (
         <Loader />
       ) : (
         <>
-          {error ? (
+          {user?.error ? (
             <ErrorAPI
-              status={`${error?.response?.status} ${error?.response?.statusText}`}
-              message={error?.response?.data}
+              status={`${user?.error?.response?.status} ${user?.error?.response?.statusText}`}
+              message={user?.error?.response?.data}
             />
           ) : (
             <>
               <HeaderMain
                 title={`Bonjour `}
-                firstName={userData?.userInfos?.firstName}
+                firstName={userInfos?.firstName}
                 subtitle={
                   'Félicitation ! Vous avez explosé vos objectifs hier 👏'
                 }
@@ -94,28 +152,17 @@ const Profile = (props) => {
                       tooltipY1: 'kg',
                       tooltipY2: 'Kcal',
                     }}
-                    data={[
-                      { x: 1, y1: 70, y2: 240 },
-                      { x: 2, y1: 69, y2: 220 },
-                      { x: 3, y1: 70, y2: 280 },
-                      { x: 4, y1: 68.8, y2: 500 },
-                      { x: 5, y1: 69, y2: 160 },
-                      { x: 6, y1: 69, y2: 162 },
-                      { x: 7, y1: 69, y2: 390 },
-                      { x: 8, y1: 68.5, y2: 390 },
-                      { x: 9, y1: 68.2, y2: 390 },
-                      { x: 10, y1: 70.3, y2: 210 },
-                    ]}
+                    data={formatActivityData(userActivity?.data?.sessions)}
                   />
                 </ChartRectContainer>
                 <LineChart
                   title={'Durée moyenne des sessions'}
                   labels={{
-                    x: '',
-                    y: '',
                     tooltipY: ' min',
                   }}
-                  data={[0, 30, 23, 45, 50, 0, 0, 60, 90]}
+                  data={formatAverageSessionsData(
+                    userAverageSessions?.data?.sessions
+                  )}
                 />
                 <RadarChart
                   margin={{ top: 41, right: 39, bottom: 42, left: 39 }}
@@ -128,32 +175,35 @@ const Profile = (props) => {
                     'Énergie',
                     'Cardio',
                   ]}
-                  data={[100, 200, 50, 150, 250, 30]}
+                  data={formatPerformanceData(
+                    userPerformance?.data?.data,
+                    userPerformance?.data?.kind
+                  )}
                 />
                 <RadialBarChart
                   title={'Score'}
                   legend={'de votre objectif'}
-                  data={0.12}
+                  data={userTodayScore}
                 />
                 <KeysInfoContainer>
                   <KeyInfoCard
                     title={'Calories'}
-                    data={'1,930kCal'}
+                    data={`${userKeyInfos?.calorieCount}kCal`}
                     icon={energyIcon}
                   />
                   <KeyInfoCard
                     title={'Proteines'}
-                    data={'155g'}
+                    data={`${userKeyInfos?.proteinCount}g`}
                     icon={chickenIcon}
                   />
                   <KeyInfoCard
                     title={'Glucides'}
-                    data={'290g'}
+                    data={`${userKeyInfos?.carbohydrateCount}g`}
                     icon={appleIcon}
                   />
                   <KeyInfoCard
                     title={'Lipides'}
-                    data={'50g'}
+                    data={`${userKeyInfos?.lipidCount}g`}
                     icon={cheeseburgerIcon}
                   />
                 </KeysInfoContainer>

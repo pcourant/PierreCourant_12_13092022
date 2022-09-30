@@ -74,18 +74,17 @@ const LineChart = (props) => {
           width: scale1spanChart(150, width),
         };
         const margin = {
-          top: scale1spanChart(77, width),
+          top: scale1spanChart(90, width),
           right: scale1spanChart(0, width),
-          bottom: scale1spanChart(60, width),
+          bottom: scale1spanChart(70, width),
           left: scale1spanChart(0, width),
         };
         const xAxisPadding = {
-          top: 0,
           side: (width - margin.left - margin.right) / 7 / 2,
         };
         const tick = {
-          xAxisPadding: scale1spanChart(20, width),
-          labels: ['D', 'L', 'M', 'M', 'J', 'V', 'S', 'D', 'L'],
+          xAxisPadding: scale1spanChart(30, width),
+          labels: data.map((d) => d.xTick),
         };
         const point = {
           innerCircle: 4,
@@ -113,10 +112,10 @@ const LineChart = (props) => {
         // console.log('meanData', meanData);
 
         const xValue = (d, i) => i;
-        const yValue = (d) => d;
+        const yValue = (d) => d.value;
 
         const xExtent = [0, data.length - 1];
-        const yExtent = [0, max(data)];
+        const yExtent = extent(data.map((d) => d.value));
 
         const xScale = scaleLinear()
           .domain(xExtent)
