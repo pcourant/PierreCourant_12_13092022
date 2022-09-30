@@ -86,7 +86,7 @@ export function getHexagonPoints(hexagonRadius, containerRadius) {
 }
 
 export function pointsToPath(points) {
-  return points.map((p) => p.join(',')).join(' ');
+  return points?.map((p) => p.join(',')).join(' ');
 }
 
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
@@ -119,4 +119,56 @@ export function describeArc(cx, cy, radius, startAngle, endAngle) {
   ].join(' ');
 
   return d;
+}
+
+export function formatPerformanceData(data, kind) {
+  if (data && kind) {
+    const dataSorted = [
+      'intensity',
+      'speed',
+      'strength',
+      'endurance',
+      'energy',
+      'cardio',
+    ];
+    for (const [key, k] of Object.entries(kind)) {
+      const value = data.find((obj) => obj.kind === +key)?.value;
+      // console.log(value);
+      if (value !== undefined) {
+        const index = dataSorted.indexOf(k);
+        // console.log(k, index);
+        if (index > -1) {
+          dataSorted[index] = value;
+          // console.log(dataSorted[index]);
+        }
+      }
+    }
+    return dataSorted;
+  }
+}
+
+export function formatActivityData(data) {
+  return data?.map((activity) => ({
+    x: new Date(activity?.day).getDate(),
+    y1: activity?.kilogram,
+    y2: activity?.calories,
+  }));
+}
+
+export function formatAverageSessionsData(sessions) {
+  const dayOfWeek = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+
+  const result = sessions?.map((session) => ({
+    xTick: dayOfWeek[session?.day % 7],
+    value: session?.sessionLength,
+  }));
+
+  if (result?.length < 9) {
+    result.unshift(result[0]);
+  }
+  if (result?.length < 9) {
+    result.push(result[result.length - 1]);
+  }
+
+  return result;
 }

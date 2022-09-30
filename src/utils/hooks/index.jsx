@@ -39,7 +39,7 @@ export function useAxiosGet(url) {
   useEffect(() => {
     if (!url) return;
     setLoading(true);
-    async function axiosGet() {
+    const axiosGet = async () => {
       try {
         const response = await axios.get(url);
         setData(response.data.data);
@@ -48,9 +48,16 @@ export function useAxiosGet(url) {
         setError(err);
       } finally {
         await sleep(1000);
+        if (
+          url.includes('activity') ||
+          url.includes('performance') ||
+          url.includes('average-sessions')
+        ) {
+          await sleep(1000);
+        }
         setLoading(false);
       }
-    }
+    };
     axiosGet();
   }, [url]);
   return { isLoading, data, error };

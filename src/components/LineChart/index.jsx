@@ -54,7 +54,7 @@ const LineChart = (props) => {
 
   useEffect(
     () => {
-      if (chartContainerRef?.current && chartRef?.current) {
+      if (chartContainerRef?.current && chartRef?.current && props.data) {
         const height = width * SQUARE_DIMENSION_RATIO;
         const svg = select(chartRef.current);
         svg.attr('height', height);
