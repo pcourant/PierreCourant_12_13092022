@@ -88,9 +88,9 @@ const Profile = (props) => {
               />
               <StyledSection>
                 <ChartRectContainer>
-                  {userActivity.isLoading ? (
+                  {userActivity?.isLoading ? (
                     <Loader />
-                  ) : userActivity.error ? (
+                  ) : userActivity?.error ? (
                     <ErrorAPI
                       status={`${user.error.response?.status} ${user.error.response?.statusText}`}
                       message={user.error.response?.data}
@@ -105,13 +105,13 @@ const Profile = (props) => {
                         tooltipY1: 'kg',
                         tooltipY2: 'Kcal',
                       }}
-                      data={formatActivityData(userActivity.sessions)}
+                      data={formatActivityData(userActivity?.sessions)}
                     />
                   )}
                 </ChartRectContainer>
-                {userAverageSessions.isLoading ? (
+                {userAverageSessions?.isLoading ? (
                   <Loader />
-                ) : userAverageSessions.error ? (
+                ) : userAverageSessions?.error ? (
                   <ErrorAPI
                     status={`${user.error.response?.status} ${user.error.response?.statusText}`}
                     message={user.error.response?.data}
@@ -123,13 +123,13 @@ const Profile = (props) => {
                       tooltipY: ' min',
                     }}
                     data={formatAverageSessionsData(
-                      userAverageSessions.sessions
+                      userAverageSessions?.sessions
                     )}
                   />
                 )}
-                {userPerformance.isLoading ? (
+                {userPerformance?.isLoading ? (
                   <Loader />
-                ) : userPerformance.error ? (
+                ) : userPerformance?.error ? (
                   <ErrorAPI
                     status={`${user.error.response?.status} ${user.error.response?.statusText}`}
                     message={user.error.response?.data}

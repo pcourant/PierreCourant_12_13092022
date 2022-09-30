@@ -1,3 +1,9 @@
+import {
+  USER_MAIN_DATA,
+  USER_ACTIVITY,
+  USER_AVERAGE_SESSIONS,
+  USER_PERFORMANCE,
+} from '../data';
 import { useAxiosGet } from '../utils/hooks';
 
 const UserServices = {
@@ -49,5 +55,64 @@ const UserServices = {
     };
   },
 };
+
+// const UserServices = {
+//   useUser: function (userId) {
+//     const user = USER_MAIN_DATA.find((user) => user.id === +userId);
+
+//     return {
+//       isLoading: false,
+//       error: user
+//         ? null
+//         : { response: { status: 404, statusText: 'User not found' } },
+//       infos: user?.userInfos,
+//       todayScore: user?.todayScore ?? user?.score,
+//       keyInfos: user?.keyData,
+//     };
+//   },
+
+//   useActivity: function (userId) {
+//     const activity = USER_ACTIVITY.find((user) => user.userId === +userId);
+
+//     return {
+//       isLoading: false,
+//       error: activity
+//         ? null
+//         : { response: { status: 404, statusText: 'User not found' } },
+//       sessions: activity?.sessions,
+//     };
+//   },
+
+//   usePerformance: function (userId) {
+//     const performance = USER_PERFORMANCE.find(
+//       (user) => user.userId === +userId
+//     );
+
+//     return {
+//       isLoading: false,
+//       error: performance
+//         ? null
+//         : { response: { status: 404, statusText: 'User not found' } },
+//       performance: {
+//         data: performance?.data,
+//         kind: performance?.kind,
+//       },
+//     };
+//   },
+
+//   useAverageSessions: function (userId) {
+//     const averageSessions = USER_AVERAGE_SESSIONS.find(
+//       (user) => user.userId === +userId
+//     );
+
+//     return {
+//       isLoading: false,
+//       error: averageSessions
+//         ? null
+//         : { response: { status: 404, statusText: 'User not found' } },
+//       sessions: averageSessions?.sessions,
+//     };
+//   },
+// };
 
 export default UserServices;

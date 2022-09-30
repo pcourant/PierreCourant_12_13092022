@@ -44,7 +44,7 @@ export function useAxiosGet(url) {
         const response = await axios.get(url);
         setData(response.data.data);
       } catch (err) {
-        console.error(err);
+        // console.error(err);
         setError(err);
       } finally {
         await sleep(1000);
