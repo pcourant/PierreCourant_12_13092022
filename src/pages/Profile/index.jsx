@@ -64,8 +64,18 @@ const Profile = (props) => {
         <>
           {user.error ? (
             <ErrorAPI
-              status={`${user.error.response?.status} ${user.error.response?.statusText}`}
-              message={user.error.response?.data}
+              status={
+                user.error.response?.status
+                  ? `${user.error.response?.status} ${user.error.response?.statusText}`
+                  : `${user.error.code}`
+              }
+              message={
+                user.error.response?.status
+                  ? user.error.response?.data
+                  : user.error.message
+              }
+              // status={`${user.error.message}`}
+              // message={user.error.response?.data}
             />
           ) : (
             <>
