@@ -6,8 +6,6 @@ import {
   formatActivityData,
 } from '../../utils/charts';
 import styled from 'styled-components';
-import colors from '../../utils/styles/colors';
-import PropTypes from 'prop-types';
 import HeaderMain from '../../components/HeaderMain';
 import KeyInfoCard from '../../components/KeyInfoCard';
 import BarChart from '../../components/BarChart';
@@ -48,9 +46,13 @@ const cheeseburgerIcon = new URL(
 );
 const appleIcon = new URL('../../assets/apple.svg', import.meta.url);
 
-const Profile = (props) => {
+/**
+ * Render the Profile page of userId
+ */
+const Profile = () => {
   const { userId } = useParams();
 
+  // Get all user information
   const user = UserServices.useUser(userId);
   const userActivity = UserServices.useActivity(userId);
   const userPerformance = UserServices.usePerformance(userId);
@@ -74,8 +76,6 @@ const Profile = (props) => {
                   ? user.error.response?.data
                   : user.error.message
               }
-              // status={`${user.error.message}`}
-              // message={user.error.response?.data}
             />
           ) : (
             <>
@@ -187,7 +187,5 @@ const Profile = (props) => {
     </>
   );
 };
-
-Profile.propTypes = {};
 
 export default Profile;

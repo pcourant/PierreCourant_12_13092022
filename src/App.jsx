@@ -38,6 +38,9 @@ const StyledMain = styled.main`
   /* row-gap: 5.34vw; */
 `;
 
+/**
+ * The skeleton of the SPA.
+ */
 const App = () => {
   return (
     <>

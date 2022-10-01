@@ -1,7 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import HeaderMain from '../../components/HeaderMain';
 
+/**
+ * Render Home page
+ */
 const Home = () => {
   return (
     <>

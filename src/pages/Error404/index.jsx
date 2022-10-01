@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import HeaderMain from '../../components/HeaderMain';
 import colors from '../../utils/styles/colors';
 
 const MainWrapper = styled.div`
@@ -22,6 +21,9 @@ const StyledText = styled.p`
   margin-bottom: 100px;
 `;
 
+/**
+ * Render the default 404 page
+ */
 const Error404 = () => {
   return (
     <MainWrapper>
