@@ -2,6 +2,16 @@
 
 # SportSee : the sport coaching app
 
+## Technologies
+
+- Parcel
+- JS
+- CSS
+- React
+- Styled-components
+- D3
+- Axios
+
 ## Installation
 
 ```console
@@ -18,15 +28,9 @@ Finally, open your local browser : [http://localhost:3001/](http://localhost:300
 
 For the users data, install the Back-end app [here](https://github.com/OpenClassrooms-Student-Center/P9-front-end-dashboard)
 
-## Technologies
+## Documentation
 
-- Parcel
-- JS
-- CSS
-- React
-- Styled-components
-- D3
-- Axios
+See the documentation [here](/docs/index.html)
 
 ## Author
 
