@@ -59,7 +59,7 @@ const Profile = () => {
             <>
               <HeaderMain
                 title={`Bonjour `}
-                highlightTitle={user.infos?.firstName}
+                highlightTitle={user.userInfos?.firstName}
                 subtitle={
                   'Félicitation ! Vous avez explosé vos objectifs hier 👏'
                 }
@@ -136,22 +136,22 @@ const Profile = () => {
                 <KeysInfoContainer>
                   <KeyInfoCard
                     title={'Calories'}
-                    data={`${user.keyInfos?.calorieCount}kCal`}
+                    data={`${user.keyData?.calorieCount}kCal`}
                     icon={energyIcon}
                   />
                   <KeyInfoCard
                     title={'Proteines'}
-                    data={`${user.keyInfos?.proteinCount}g`}
+                    data={`${user.keyData?.proteinCount}g`}
                     icon={chickenIcon}
                   />
                   <KeyInfoCard
                     title={'Glucides'}
-                    data={`${user.keyInfos?.carbohydrateCount}g`}
+                    data={`${user.keyData?.carbohydrateCount}g`}
                     icon={appleIcon}
                   />
                   <KeyInfoCard
                     title={'Lipides'}
-                    data={`${user.keyInfos?.lipidCount}g`}
+                    data={`${user.keyData?.lipidCount}g`}
                     icon={cheeseburgerIcon}
                   />
                 </KeysInfoContainer>
