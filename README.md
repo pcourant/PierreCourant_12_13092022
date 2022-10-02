@@ -30,7 +30,7 @@ For the users data, install the Back-end app [here](https://github.com/OpenClass
 
 ## Documentation
 
-See the documentation, open in your browser: [a relative link](docs/index.html)
+See the documentation, open in your browser: [docs/index.html](docs/index.html)
 
 ## Author
 
