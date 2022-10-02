@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/hooks/index.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/hooks/index.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useState, useEffect, useLayoutEffect } from 'react';
+import axios from 'axios';
+
+/**
+ * Pause the calling function during the specified number of milliseconds
+ * @param {Integer} ms - The number of milliseconds to block the calling function
+ * @returns {Promise} - A promise which will be resolved after the specified number of milliseconds
+ */
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
+ * Custom Hooks that get the width of a DOM element after each window resizing
+ * @param {A useRef() Object} chartContainerRef - a mutable ref of a DOM element
+ * @returns {Number} - The current width of chartContainerRef after the last window resizing
+ */
+export function useUpdateWidth(chartContainerRef) {
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    function updateWidth() {
+      setWidth(chartContainerRef.current.offsetWidth);
+    }
+    window.addEventListener('resize', updateWidth);
+    updateWidth();
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
+
+  return width;
+}
+
+/**
+ * Custom Hooks that get the size of th window after each window resizing
+ * @returns {Number[]} - The current size [width, height] of ths window after the last window resizing
+ */
+export function useWindowSize() {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
+}
+
+/**
+ * Custom Hooks that wrap a Axios GET request from a specified URL
+ * @param {String} url - the URL to fetch data from
+ * @returns {Object.&lt;isLoading: Boolean, error: Object, data: Object>}
+ */
+export function useAxiosGet(url) {
+  const [data, setData] = useState({});
+  const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState(undefined);
+
+  useEffect(() => {
+    if (!url) return;
+    setLoading(true);
+    const axiosGet = async () => {
+      try {
+        const response = await axios.get(url);
+        setData(response.data.data);
+      } catch (err) {
+        // console.error(err);
+        setError(err);
+      } finally {
+        await sleep(1000);
+        if (
+          url.includes('activity') ||
+          url.includes('performance') ||
+          url.includes('average-sessions')
+        ) {
+          await sleep(1000);
+        }
+        setLoading(false);
+      }
+    };
+    axiosGet();
+  }, [url]);
+  return { isLoading, error, data };
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BarChart">BarChart</a></li><li><a href="global.html#Community">Community</a></li><li><a href="global.html#describeArc">describeArc</a></li><li><a href="global.html#Error404">Error404</a></li><li><a href="global.html#ErrorAPI">ErrorAPI</a></li><li><a href="global.html#formatActivityData">formatActivityData</a></li><li><a href="global.html#formatAverageSessionsData">formatAverageSessionsData</a></li><li><a href="global.html#formatPerformanceData">formatPerformanceData</a></li><li><a href="global.html#getCoordinates">getCoordinates</a></li><li><a href="global.html#getHexagonPoints">getHexagonPoints</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HeaderMain">HeaderMain</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#KeyInfoCard">KeyInfoCard</a></li><li><a href="global.html#LineChart">LineChart</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#pointsToPath">pointsToPath</a></li><li><a href="global.html#polarToCartesian">polarToCartesian</a></li><li><a href="global.html#Profile">Profile</a></li><li><a href="global.html#prorataScale">prorataScale</a></li><li><a href="global.html#prorataWindowScale">prorataWindowScale</a></li><li><a href="global.html#RadarChart">RadarChart</a></li><li><a href="global.html#RadialBarChart">RadialBarChart</a></li><li><a href="global.html#scale1spanChart">scale1spanChart</a></li><li><a href="global.html#scaleRectChart">scaleRectChart</a></li><li><a href="global.html#Setting">Setting</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#useAxiosGet">useAxiosGet</a></li><li><a href="global.html#UserServices">UserServices</a></li><li><a href="global.html#useUpdateWidth">useUpdateWidth</a></li><li><a href="global.html#useWindowSize">useWindowSize</a></li><li><a href="global.html#wrap">wrap</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Sun Oct 02 2022 12:42:11 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

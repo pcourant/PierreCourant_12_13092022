@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Sidebar/index.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Sidebar/index.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import { useWindowSize } from '../../utils/hooks';
+import { NavLink } from 'react-router-dom';
+import { prorataWindowScale } from '../../utils/charts';
+import styled from 'styled-components';
+import colors from '../../utils/styles/colors';
+
+const yogaIcon = new URL('../../assets/yoga.svg', import.meta.url);
+const swimIcon = new URL('../../assets/swim.svg', import.meta.url);
+const bikeIcon = new URL('../../assets/bike.svg', import.meta.url);
+const workoutIcon = new URL('../../assets/workout.svg', import.meta.url);
+
+/**
+ * Render the Sidebar, visible on all pages
+ */
+const Sidebar = () => {
+  // 'windowwith' because camelCase 'windowWidth' triggers a console error at runtime
+  const [windowwidth] = useWindowSize();
+
+  return (
+    &lt;SidebarWrapper windowwidth={windowwidth}>
+      &lt;StyledNav windowwidth={windowwidth}>
+        &lt;StyledNavLink windowwidth={windowwidth}>
+          &lt;img
+            src={yogaIcon}
+            alt="yoga icon"
+            width={prorataWindowScale(36, windowwidth)}
+            height={prorataWindowScale(32, windowwidth)}
+          />
+        &lt;/StyledNavLink>
+        &lt;StyledNavLink windowwidth={windowwidth}>
+          &lt;img
+            src={swimIcon}
+            alt="swim icon"
+            width={prorataWindowScale(32, windowwidth)}
+            height={prorataWindowScale(32, windowwidth)}
+          />
+        &lt;/StyledNavLink>
+        &lt;StyledNavLink windowwidth={windowwidth}>
+          &lt;img
+            src={bikeIcon}
+            alt="bike icon"
+            width={prorataWindowScale(38, windowwidth)}
+            height={prorataWindowScale(32, windowwidth)}
+          />
+        &lt;/StyledNavLink>
+        &lt;StyledNavLink windowwidth={windowwidth}>
+          &lt;img
+            src={workoutIcon}
+            alt="workout icon"
+            width={prorataWindowScale(32, windowwidth)}
+            height={prorataWindowScale(32, windowwidth)}
+          />
+        &lt;/StyledNavLink>
+      &lt;/StyledNav>
+      &lt;CopyrightWrapper windowwidth={windowwidth}>
+        Copyright, SportSee 2022
+      &lt;/CopyrightWrapper>
+    &lt;/SidebarWrapper>
+  );
+};
+
+export default Sidebar;
+
+const SidebarWrapper = styled.div`
+  width: 8.125vw;
+  height: ${(props) => prorataWindowScale(1024, props.windowwidth)};
+  background-color: ${colors.backgroundDark};
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledNav = styled.nav`
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  row-gap: ${(props) => prorataWindowScale(20, props.windowwidth)}px;
+  margin-bottom: ${(props) => prorataWindowScale(14, props.windowwidth)};
+`;
+
+const StyledNavLink = styled(NavLink)`
+  width: ${(props) => prorataWindowScale(64, props.windowwidth)};
+  height: ${(props) => prorataWindowScale(64, props.windowwidth)};
+  color: ${colors.secondary};
+  background-color: white;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+`;
+
+const CopyrightWrapper = styled.p`
+  position: absolute;
+  bottom: ${(props) => prorataWindowScale(59, props.windowwidth)};
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  writing-mode: vertical-rl;
+  transform: rotate(-180deg);
+`;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BarChart">BarChart</a></li><li><a href="global.html#Community">Community</a></li><li><a href="global.html#describeArc">describeArc</a></li><li><a href="global.html#Error404">Error404</a></li><li><a href="global.html#ErrorAPI">ErrorAPI</a></li><li><a href="global.html#formatActivityData">formatActivityData</a></li><li><a href="global.html#formatAverageSessionsData">formatAverageSessionsData</a></li><li><a href="global.html#formatPerformanceData">formatPerformanceData</a></li><li><a href="global.html#getCoordinates">getCoordinates</a></li><li><a href="global.html#getHexagonPoints">getHexagonPoints</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HeaderMain">HeaderMain</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#KeyInfoCard">KeyInfoCard</a></li><li><a href="global.html#LineChart">LineChart</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#pointsToPath">pointsToPath</a></li><li><a href="global.html#polarToCartesian">polarToCartesian</a></li><li><a href="global.html#Profile">Profile</a></li><li><a href="global.html#prorataScale">prorataScale</a></li><li><a href="global.html#prorataWindowScale">prorataWindowScale</a></li><li><a href="global.html#RadarChart">RadarChart</a></li><li><a href="global.html#RadialBarChart">RadialBarChart</a></li><li><a href="global.html#scale1spanChart">scale1spanChart</a></li><li><a href="global.html#scaleRectChart">scaleRectChart</a></li><li><a href="global.html#Setting">Setting</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#useAxiosGet">useAxiosGet</a></li><li><a href="global.html#UserServices">UserServices</a></li><li><a href="global.html#useUpdateWidth">useUpdateWidth</a></li><li><a href="global.html#useWindowSize">useWindowSize</a></li><li><a href="global.html#wrap">wrap</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Sun Oct 02 2022 12:42:11 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

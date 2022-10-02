@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/user.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/user.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// ************************* API call on port 3000 *******************************
+import { useAxiosGet } from '../utils/hooks';
+
+/**
+ * Services to fetch user data
+ * @see {@link https://github.com/OpenClassrooms-Student-Center/P9-front-end-dashboard|Backend API} for further information.
+ */
+const UserServices = {
+  /**
+   * Fetch information from a user
+   * @param {Number} userId
+   * @returns {Object.&lt;isLoading: Boolean, error: Boolean, userInfos: Object.&lt;firstName: String, lastName: String, age: Integer>, todayScore: Number{0-1}, keyData: Object.&lt;calorieCount: Number, proteinCount: Number, carbohydrateCount: Number, lipidCount: Number>>}
+   */
+  useUser: function (userId) {
+    const user = useAxiosGet(`http://localhost:3000/user/${userId}`);
+
+    return {
+      isLoading: user.isLoading,
+      error: user.error,
+      userInfos: user.data?.userInfos,
+      todayScore: user.data?.todayScore ?? user?.data?.score,
+      keyData: user.data?.keyData,
+    };
+  },
+
+  /**
+   * Fetch user's activity day by day with kilograms and calories
+   * @param {Number} userId
+   * @returns {Object.&lt;isLoading: Boolean, error: Boolean, sessions: Array.&lt;{day: String, kilogram: Number, calories: Number}>>}
+   */
+  useActivity: function (userId) {
+    const activity = useAxiosGet(
+      `http://localhost:3000/user/${userId}/activity`
+    );
+    return {
+      isLoading: activity.isLoading,
+      error: activity.error,
+      sessions: activity.data?.sessions,
+    };
+  },
+
+  /**
+   * Fetch the average sessions of a user per day. The week starts on Monday.
+   * @param {Number} userId
+   * @returns {Object.&lt;isLoading: Boolean, error: Boolean, sessions: Array.&lt;{day: Integer, sessionLength: Number}>>}
+   */
+  useAverageSessions: function (userId) {
+    const averageSessions = useAxiosGet(
+      `http://localhost:3000/user/${userId}/average-sessions`
+    );
+    return {
+      isLoading: averageSessions.isLoading,
+      error: averageSessions.error,
+      sessions: averageSessions.data?.sessions,
+    };
+  },
+
+  /**
+   * Fetch a user's performance (energy, endurance, etc.).
+   * @param {Number} userId
+   * @returns {Object.&lt;isLoading: Boolean, error: Boolean, kind: Object.&lt;1: String, 2: String, 3: String, 4: String, 5: String, 6: String>, data: Array.&lt;{value: Number, kind: Integer}>>}
+   */
+  usePerformance: function (userId) {
+    const performance = useAxiosGet(
+      `http://localhost:3000/user/${userId}/performance`
+    );
+    return {
+      isLoading: performance.isLoading,
+      error: performance.error,
+      performance: {
+        kind: performance.data?.kind,
+        data: performance.data?.data,
+      },
+    };
+  },
+};
+
+// ************************* Mocked API *******************************
+// import {
+//   USER_MAIN_DATA,
+//   USER_ACTIVITY,
+//   USER_AVERAGE_SESSIONS,
+//   USER_PERFORMANCE,
+// } from '../data';
+// const UserServices = {
+//   useUser: function (userId) {
+//     const user = USER_MAIN_DATA.find((user) => user.id === +userId);
+
+//     return {
+//       isLoading: false,
+//       error: user
+//         ? null
+//         : { response: { status: 404, statusText: 'User not found' } },
+//       userInfos: user?.userInfos,
+//       todayScore: user?.todayScore ?? user?.score,
+//       keyData: user?.keyData,
+//     };
+//   },
+
+//   useActivity: function (userId) {
+//     const activity = USER_ACTIVITY.find((user) => user.userId === +userId);
+
+//     return {
+//       isLoading: false,
+//       error: activity
+//         ? null
+//         : { response: { status: 404, statusText: 'User not found' } },
+//       sessions: activity?.sessions,
+//     };
+//   },
+
+//   usePerformance: function (userId) {
+//     const performance = USER_PERFORMANCE.find(
+//       (user) => user.userId === +userId
+//     );
+
+//     return {
+//       isLoading: false,
+//       error: performance
+//         ? null
+//         : { response: { status: 404, statusText: 'User not found' } },
+//       performance: {
+//         data: performance?.data,
+//         kind: performance?.kind,
+//       },
+//     };
+//   },
+
+//   useAverageSessions: function (userId) {
+//     const averageSessions = USER_AVERAGE_SESSIONS.find(
+//       (user) => user.userId === +userId
+//     );
+
+//     return {
+//       isLoading: false,
+//       error: averageSessions
+//         ? null
+//         : { response: { status: 404, statusText: 'User not found' } },
+//       sessions: averageSessions?.sessions,
+//     };
+//   },
+// };
+
+export default UserServices;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BarChart">BarChart</a></li><li><a href="global.html#Community">Community</a></li><li><a href="global.html#describeArc">describeArc</a></li><li><a href="global.html#Error404">Error404</a></li><li><a href="global.html#ErrorAPI">ErrorAPI</a></li><li><a href="global.html#formatActivityData">formatActivityData</a></li><li><a href="global.html#formatAverageSessionsData">formatAverageSessionsData</a></li><li><a href="global.html#formatPerformanceData">formatPerformanceData</a></li><li><a href="global.html#getCoordinates">getCoordinates</a></li><li><a href="global.html#getHexagonPoints">getHexagonPoints</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HeaderMain">HeaderMain</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#KeyInfoCard">KeyInfoCard</a></li><li><a href="global.html#LineChart">LineChart</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#pointsToPath">pointsToPath</a></li><li><a href="global.html#polarToCartesian">polarToCartesian</a></li><li><a href="global.html#Profile">Profile</a></li><li><a href="global.html#prorataScale">prorataScale</a></li><li><a href="global.html#prorataWindowScale">prorataWindowScale</a></li><li><a href="global.html#RadarChart">RadarChart</a></li><li><a href="global.html#RadialBarChart">RadialBarChart</a></li><li><a href="global.html#scale1spanChart">scale1spanChart</a></li><li><a href="global.html#scaleRectChart">scaleRectChart</a></li><li><a href="global.html#Setting">Setting</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#useAxiosGet">useAxiosGet</a></li><li><a href="global.html#UserServices">UserServices</a></li><li><a href="global.html#useUpdateWidth">useUpdateWidth</a></li><li><a href="global.html#useWindowSize">useWindowSize</a></li><li><a href="global.html#wrap">wrap</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Sun Oct 02 2022 12:42:11 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

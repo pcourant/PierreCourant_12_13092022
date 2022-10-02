@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/Profile/index.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/Profile/index.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import { useParams } from 'react-router-dom';
+import {
+  formatPerformanceData,
+  formatAverageSessionsData,
+  formatActivityData,
+} from '../../utils/charts';
+import styled from 'styled-components';
+import HeaderMain from '../../components/HeaderMain';
+import KeyInfoCard from '../../components/KeyInfoCard';
+import BarChart from '../../components/BarChart';
+import LineChart from '../../components/LineChart';
+import RadarChart from '../../components/RadarChart';
+import RadialBarChart from '../../components/RadialBarChart';
+import ErrorAPI from '../../components/ErrorAPI';
+import Loader from '../../components/Loader';
+import UserServices from '../../services/user';
+
+const energyIcon = new URL('../../assets/energy.svg', import.meta.url);
+const chickenIcon = new URL('../../assets/chicken.svg', import.meta.url);
+const cheeseburgerIcon = new URL(
+  '../../assets/cheeseburger.svg',
+  import.meta.url
+);
+const appleIcon = new URL('../../assets/apple.svg', import.meta.url);
+
+/**
+ * Render the Profile page of userId
+ */
+const Profile = () => {
+  const { userId } = useParams();
+
+  // Get all user information with UserServices through API calls
+  const user = UserServices.useUser(userId);
+  const userActivity = UserServices.useActivity(userId);
+  const userPerformance = UserServices.usePerformance(userId);
+  const userAverageSessions = UserServices.useAverageSessions(userId);
+
+  return (
+    &lt;>
+      {user.isLoading ? (
+        &lt;Loader />
+      ) : (
+        &lt;>
+          {user.error ? (
+            &lt;ErrorAPI
+              status={
+                user.error.response?.status
+                  ? `${user.error.response?.status} ${user.error.response?.statusText}`
+                  : `${user.error.code}`
+              }
+              message={
+                user.error.response?.status
+                  ? user.error.response?.data
+                  : user.error.message
+              }
+            />
+          ) : (
+            &lt;>
+              &lt;HeaderMain
+                title={`Bonjour `}
+                highlightTitle={user.userInfos?.firstName}
+                subtitle={
+                  'Félicitation ! Vous avez explosé vos objectifs hier 👏'
+                }
+              />
+              &lt;StyledSection>
+                &lt;ChartRectContainer>
+                  {userActivity?.isLoading ? (
+                    &lt;Loader />
+                  ) : userActivity?.error ? (
+                    &lt;ErrorAPI
+                      status={`${user.error.response?.status} ${user.error.response?.statusText}`}
+                      message={user.error.response?.data}
+                    />
+                  ) : (
+                    &lt;BarChart
+                      title={'Activité quotidienne'}
+                      labels={{
+                        y1: 'Poids (kg)',
+                        y2: 'Calories brûlées (kCal)',
+                        tooltipY1: 'kg',
+                        tooltipY2: 'Kcal',
+                      }}
+                      data={formatActivityData(userActivity?.sessions)}
+                    />
+                  )}
+                &lt;/ChartRectContainer>
+                {userAverageSessions?.isLoading ? (
+                  &lt;Loader />
+                ) : userAverageSessions?.error ? (
+                  &lt;ErrorAPI
+                    status={`${user.error.response?.status} ${user.error.response?.statusText}`}
+                    message={user.error.response?.data}
+                  />
+                ) : (
+                  &lt;LineChart
+                    title={'Durée moyenne des sessions'}
+                    labels={{
+                      tooltipY: ' min',
+                    }}
+                    data={formatAverageSessionsData(
+                      userAverageSessions?.sessions
+                    )}
+                  />
+                )}
+                {userPerformance?.isLoading ? (
+                  &lt;Loader />
+                ) : userPerformance?.error ? (
+                  &lt;ErrorAPI
+                    status={`${user.error.response?.status} ${user.error.response?.statusText}`}
+                    message={user.error.response?.data}
+                  />
+                ) : (
+                  &lt;RadarChart
+                    levels={{ count: 5, max: 250 }}
+                    features={[
+                      'Intensité',
+                      'Vitesse',
+                      'Force',
+                      'Endurance',
+                      'Énergie',
+                      'Cardio',
+                    ]}
+                    data={formatPerformanceData(
+                      userPerformance?.performance?.data,
+                      userPerformance?.performance?.kind
+                    )}
+                  />
+                )}
+                &lt;RadialBarChart
+                  title={'Score'}
+                  legend={'de votre objectif'}
+                  data={user.todayScore}
+                />
+                &lt;KeysInfoContainer>
+                  &lt;KeyInfoCard
+                    title={'Calories'}
+                    data={`${user.keyData?.calorieCount}kCal`}
+                    icon={energyIcon}
+                  />
+                  &lt;KeyInfoCard
+                    title={'Proteines'}
+                    data={`${user.keyData?.proteinCount}g`}
+                    icon={chickenIcon}
+                  />
+                  &lt;KeyInfoCard
+                    title={'Glucides'}
+                    data={`${user.keyData?.carbohydrateCount}g`}
+                    icon={appleIcon}
+                  />
+                  &lt;KeyInfoCard
+                    title={'Lipides'}
+                    data={`${user.keyData?.lipidCount}g`}
+                    icon={cheeseburgerIcon}
+                  />
+                &lt;/KeysInfoContainer>
+              &lt;/StyledSection>
+            &lt;/>
+          )}
+        &lt;/>
+      )}
+    &lt;/>
+  );
+};
+
+export default Profile;
+
+const StyledSection = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  gap: 2vw;
+`;
+
+const ChartRectContainer = styled.div`
+  grid-row: 1 / 1;
+  grid-column: 1 / span 3;
+`;
+
+const KeysInfoContainer = styled.div`
+  grid-row: 1 / span 2;
+  grid-column: 4 / 5;
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+`;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BarChart">BarChart</a></li><li><a href="global.html#Community">Community</a></li><li><a href="global.html#describeArc">describeArc</a></li><li><a href="global.html#Error404">Error404</a></li><li><a href="global.html#ErrorAPI">ErrorAPI</a></li><li><a href="global.html#formatActivityData">formatActivityData</a></li><li><a href="global.html#formatAverageSessionsData">formatAverageSessionsData</a></li><li><a href="global.html#formatPerformanceData">formatPerformanceData</a></li><li><a href="global.html#getCoordinates">getCoordinates</a></li><li><a href="global.html#getHexagonPoints">getHexagonPoints</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HeaderMain">HeaderMain</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#KeyInfoCard">KeyInfoCard</a></li><li><a href="global.html#LineChart">LineChart</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#pointsToPath">pointsToPath</a></li><li><a href="global.html#polarToCartesian">polarToCartesian</a></li><li><a href="global.html#Profile">Profile</a></li><li><a href="global.html#prorataScale">prorataScale</a></li><li><a href="global.html#prorataWindowScale">prorataWindowScale</a></li><li><a href="global.html#RadarChart">RadarChart</a></li><li><a href="global.html#RadialBarChart">RadialBarChart</a></li><li><a href="global.html#scale1spanChart">scale1spanChart</a></li><li><a href="global.html#scaleRectChart">scaleRectChart</a></li><li><a href="global.html#Setting">Setting</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#useAxiosGet">useAxiosGet</a></li><li><a href="global.html#UserServices">UserServices</a></li><li><a href="global.html#useUpdateWidth">useUpdateWidth</a></li><li><a href="global.html#useWindowSize">useWindowSize</a></li><li><a href="global.html#wrap">wrap</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Sun Oct 02 2022 12:42:11 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
