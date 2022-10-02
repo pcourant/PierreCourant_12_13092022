@@ -7,7 +7,9 @@ import PropTypes from 'prop-types';
 import { select, scaleLinear, extent, axisBottom, axisRight, format } from 'd3';
 
 /**
- * Render a bar chart constructed with D3 library
+ * Render a double bar chart constructed with D3 library
+ *
+ * @component
  */
 const BarChart = (props) => {
   const chartContainerRef = useRef(null);
@@ -265,14 +267,14 @@ const BarChart = (props) => {
           .append('rect')
           .attr('width', tooltip.width)
           .attr('height', tooltip.height);
-        const tooltipY1 = tooltipG
+        const y1Unit = tooltipG
           .append('text')
           .attr('class', 'tooltipText')
           .attr('x', tooltip.width / 2)
           .attr('y', tooltip.height / 4)
           .attr('dominant-baseline', 'middle')
           .attr('text-anchor', 'middle');
-        const tooltipY2 = tooltipG
+        const y2Unit = tooltipG
           .append('text')
           .attr('class', 'tooltipText')
           .attr('x', tooltip.width / 2)
@@ -312,7 +314,7 @@ const BarChart = (props) => {
               .attr('x', dx)
               .attr('y', margin.top - tooltip.height / 2);
 
-            tooltipY1
+            y1Unit
               .transition()
               .duration(0)
               .attr('x', dx + tooltip.width / 2)
@@ -320,9 +322,9 @@ const BarChart = (props) => {
                 'y',
                 margin.top - tooltip.height / 2 + (tooltip.height / 4) * 1
               )
-              .text(`${d.y1Value}${labels.tooltipY1}`);
+              .text(`${d.y1Value}${labels.y1Unit}`);
 
-            tooltipY2
+            y2Unit
               .transition()
               .duration(0)
               .attr('x', dx + tooltip.width / 2)
@@ -330,7 +332,7 @@ const BarChart = (props) => {
                 'y',
                 margin.top - tooltip.height / 2 + (tooltip.height / 4) * 3
               )
-              .text(`${d.y2Value}${labels.tooltipY2}`);
+              .text(`${d.y2Value}${labels.y2Unit}`);
           })
 
           // MOUSE OUT => Overlay and tooltip desapparition
@@ -359,13 +361,22 @@ const BarChart = (props) => {
 };
 
 BarChart.propTypes = {
+  /**
+   * Title
+   */
   title: PropTypes.string,
+  /**
+   * y1 & y2 captions and units
+   */
   labels: PropTypes.exact({
     y1: PropTypes.string,
     y2: PropTypes.string,
-    tooltipY1: PropTypes.string,
-    tooltipY2: PropTypes.string,
+    y1Unit: PropTypes.string,
+    y2Unit: PropTypes.string,
   }),
+  /**
+   * array of data to plot
+   */
   data: PropTypes.arrayOf(
     PropTypes.exact({
       x: PropTypes.number,
@@ -375,14 +386,17 @@ BarChart.propTypes = {
   ),
 };
 BarChart.defaultProps = {
-  title: '',
+  title: 'title',
   labels: {
     y1: 'y1 caption',
     y2: 'y2 caption',
-    tooltipY1: 'y1 unit',
-    tooltipY2: 'y2 unit',
+    y1Unit: 'y1 unit',
+    y2Unit: 'y2 unit',
   },
-  data: [],
+  data: [
+    { x: 1, y1: 10, y2: 100 },
+    { x: 2, y1: 15, y2: 150 },
+  ],
 };
 
 export default BarChart;

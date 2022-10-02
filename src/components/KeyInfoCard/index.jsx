@@ -8,6 +8,8 @@ import { select, xml } from 'd3';
 
 /**
  * Render a key info card constructed with D3 library
+ *
+ * @component
  */
 const KeyInfoCard = (props) => {
   const chartContainerRef = useRef(null);
@@ -132,11 +134,14 @@ const KeyInfoCard = (props) => {
 KeyInfoCard.propTypes = {
   title: PropTypes.string,
   data: PropTypes.string,
+  /**
+   * URL of the icon
+   */
   icon: PropTypes.instanceOf(URL),
 };
 KeyInfoCard.defaultProps = {
-  title: '',
-  data: '',
+  title: 'Calories',
+  data: '1999 Kcal',
   icon: null,
 };
 

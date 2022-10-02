@@ -6,7 +6,9 @@ import colors from '../../utils/styles/colors';
 const logo = new URL('../../assets/logo.svg', import.meta.url);
 
 /**
- * Render the header, visible on all pages
+ * Render the header, visible on top of all pages
+ *
+ * @component
  */
 const Header = () => {
   return (

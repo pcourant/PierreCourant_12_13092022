@@ -13,6 +13,8 @@ import { select, scaleLinear } from 'd3';
 
 /**
  * Render a hexagonal radar chart constructed with D3 library
+ *
+ * @component
  */
 const RadarChart = (props) => {
   const chartContainerRef = useRef(null);

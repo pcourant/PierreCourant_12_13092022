@@ -9,6 +9,8 @@ import Sidebar from './components/Sidebar';
 
 /**
  * The skeleton of the SPA.
+ *
+ * @component
  */
 const App = () => {
   return (

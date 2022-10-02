@@ -5,13 +5,13 @@ import { useAxiosGet } from '../utils/hooks';
  * Services to fetch user data
  * @see {@link https://github.com/OpenClassrooms-Student-Center/P9-front-end-dashboard|Backend API} for further information.
  */
-const UserServices = {
+class UserServices {
   /**
    * Fetch information from a user
    * @param {Number} userId
    * @returns {Object.<isLoading: Boolean, error: Boolean, userInfos: Object.<firstName: String, lastName: String, age: Integer>, todayScore: Number{0-1}, keyData: Object.<calorieCount: Number, proteinCount: Number, carbohydrateCount: Number, lipidCount: Number>>}
    */
-  useUser: function (userId) {
+  static useUser(userId) {
     const user = useAxiosGet(`http://localhost:3000/user/${userId}`);
 
     return {
@@ -21,14 +21,14 @@ const UserServices = {
       todayScore: user.data?.todayScore ?? user?.data?.score,
       keyData: user.data?.keyData,
     };
-  },
+  }
 
   /**
    * Fetch user's activity day by day with kilograms and calories
    * @param {Number} userId
    * @returns {Object.<isLoading: Boolean, error: Boolean, sessions: Array.<{day: String, kilogram: Number, calories: Number}>>}
    */
-  useActivity: function (userId) {
+  static useActivity(userId) {
     const activity = useAxiosGet(
       `http://localhost:3000/user/${userId}/activity`
     );
@@ -37,14 +37,14 @@ const UserServices = {
       error: activity.error,
       sessions: activity.data?.sessions,
     };
-  },
+  }
 
   /**
    * Fetch the average sessions of a user per day. The week starts on Monday.
    * @param {Number} userId
    * @returns {Object.<isLoading: Boolean, error: Boolean, sessions: Array.<{day: Integer, sessionLength: Number}>>}
    */
-  useAverageSessions: function (userId) {
+  static useAverageSessions(userId) {
     const averageSessions = useAxiosGet(
       `http://localhost:3000/user/${userId}/average-sessions`
     );
@@ -53,14 +53,14 @@ const UserServices = {
       error: averageSessions.error,
       sessions: averageSessions.data?.sessions,
     };
-  },
+  }
 
   /**
    * Fetch a user's performance (energy, endurance, etc.).
    * @param {Number} userId
    * @returns {Object.<isLoading: Boolean, error: Boolean, kind: Object.<1: String, 2: String, 3: String, 4: String, 5: String, 6: String>, data: Array.<{value: Number, kind: Integer}>>}
    */
-  usePerformance: function (userId) {
+  static usePerformance(userId) {
     const performance = useAxiosGet(
       `http://localhost:3000/user/${userId}/performance`
     );
@@ -72,8 +72,8 @@ const UserServices = {
         data: performance.data?.data,
       },
     };
-  },
-};
+  }
+}
 
 // ************************* Mocked API *******************************
 // import {

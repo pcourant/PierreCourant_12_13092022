@@ -3,6 +3,8 @@ import HeaderMain from '../../components/HeaderMain';
 
 /**
  * Render the setting page
+ *
+ * @component
  */
 const Setting = () => {
   return (

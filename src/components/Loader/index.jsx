@@ -4,6 +4,8 @@ import colors from '../../utils/styles/colors';
 
 /**
  * Render the animated loader
+ *
+ * @component
  */
 const Loader = () => {
   return <StyledLoader></StyledLoader>;

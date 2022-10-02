@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
 
 /**
- * Render the default 404 page
+ * Render the default 404 page if URL is invalid
+ *
+ * @component
  */
 const Error404 = () => {
   return (

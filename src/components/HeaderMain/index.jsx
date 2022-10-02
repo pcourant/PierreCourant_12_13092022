@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
 
 /**
- * Render the header of the main section
+ * Render the header of main sections
+ *
+ * @component
  */
 const HeaderMain = ({ title, highlightTitle, subtitle }) => {
   return (
@@ -19,14 +21,23 @@ const HeaderMain = ({ title, highlightTitle, subtitle }) => {
 };
 
 HeaderMain.propTypes = {
+  /**
+   * Title
+   */
   title: PropTypes.string,
+  /**
+   * Highlighted Title
+   */
   highlightTitle: PropTypes.string,
+  /**
+   * Subtitle
+   */
   subtitle: PropTypes.string,
 };
 HeaderMain.defaultProps = {
-  title: '',
-  highlightTitle: '',
-  subtitle: '',
+  title: 'Title',
+  highlightTitle: 'Highlighted title',
+  subtitle: 'Subtitle',
 };
 
 export default HeaderMain;

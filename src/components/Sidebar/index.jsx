@@ -11,7 +11,9 @@ const bikeIcon = new URL('../../assets/bike.svg', import.meta.url);
 const workoutIcon = new URL('../../assets/workout.svg', import.meta.url);
 
 /**
- * Render the Sidebar, visible on all pages
+ * Render the Sidebar, visible on all pages on the left
+ *
+ * @component
  */
 const Sidebar = () => {
   // 'windowwith' because camelCase 'windowWidth' triggers a console error at runtime

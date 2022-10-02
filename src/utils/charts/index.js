@@ -56,10 +56,10 @@ export function scale1spanChart(mockupValue, currentChartWidth) {
 
 /**
  * Wrap a SVG <text> element in multiple lines if necessary
- * @param {SVG <text> element} textSVG - an SVG <text> element to be wrapped
+ * @param {Object} textSVG - a SVG text element to be wrapped
  * @param {Number} lineHeight - the height of the text lines
  */
-export const wrap = function (textSVG, lineHeight) {
+export function wrap(textSVG, lineHeight) {
   textSVG.each(function () {
     const text = select(this);
     const words = text.text().split(/\s+/).reverse();
@@ -94,7 +94,7 @@ export const wrap = function (textSVG, lineHeight) {
       }
     }
   });
-};
+}
 
 /**
  * Get the coordinates in the hexagon of the value

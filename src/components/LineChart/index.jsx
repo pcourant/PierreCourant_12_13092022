@@ -18,6 +18,8 @@ import {
 
 /**
  * Render a line chart constructed with D3 library
+ *
+ * @component
  */
 const LineChart = (props) => {
   const chartContainerRef = useRef(null);
@@ -297,6 +299,9 @@ const LineChart = (props) => {
 
 LineChart.propTypes = {
   title: PropTypes.string,
+  /**
+   * y unit
+   */
   labels: PropTypes.exact({
     tooltipY: PropTypes.string,
   }),
@@ -312,7 +317,7 @@ LineChart.defaultProps = {
   labels: {
     tooltipY: 'y unit',
   },
-  data: [],
+  data: [{ xTick: 'L', value: 30 }],
 };
 
 export default LineChart;

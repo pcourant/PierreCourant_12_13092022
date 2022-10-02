@@ -26,6 +26,8 @@ const appleIcon = new URL('../../assets/apple.svg', import.meta.url);
 
 /**
  * Render the Profile page of userId
+ *
+ * @component
  */
 const Profile = () => {
   const { userId } = useParams();
@@ -79,8 +81,8 @@ const Profile = () => {
                       labels={{
                         y1: 'Poids (kg)',
                         y2: 'Calories brûlées (kCal)',
-                        tooltipY1: 'kg',
-                        tooltipY2: 'Kcal',
+                        y1Unit: 'kg',
+                        y2Unit: 'Kcal',
                       }}
                       data={formatActivityData(userActivity?.sessions)}
                     />

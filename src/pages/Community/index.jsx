@@ -3,6 +3,8 @@ import HeaderMain from '../../components/HeaderMain';
 
 /**
  * Render the community page
+ *
+ * @component
  */
 const Community = () => {
   return (

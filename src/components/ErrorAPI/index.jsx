@@ -4,7 +4,9 @@ import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
 
 /**
- * Render the error from an API call
+ * Render the error status and message from an API call
+ *
+ * @component
  */
 const ErrorAPI = ({ status, message }) => {
   return (
@@ -16,12 +18,18 @@ const ErrorAPI = ({ status, message }) => {
 };
 
 ErrorAPI.propTypes = {
+  /**
+   * Error status
+   */
   status: PropTypes.string,
+  /**
+   * Error message
+   */
   message: PropTypes.string,
 };
 ErrorAPI.defaultProps = {
-  status: '',
-  message: '',
+  status: 'error status',
+  message: 'error message',
 };
 
 export default ErrorAPI;

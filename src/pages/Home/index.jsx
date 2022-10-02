@@ -3,6 +3,8 @@ import HeaderMain from '../../components/HeaderMain';
 
 /**
  * Render Home page
+ *
+ * @component
  */
 const Home = () => {
   return (

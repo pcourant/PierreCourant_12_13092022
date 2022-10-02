@@ -12,6 +12,8 @@ import { select } from 'd3';
 
 /**
  * Render a radial chart constructed with D3 library
+ *
+ * @component
  */
 const RadialBarChart = (props) => {
   const chartContainerRef = useRef(null);
@@ -143,8 +145,8 @@ RadialBarChart.propTypes = {
   data: PropTypes.number,
 };
 RadialBarChart.defaultProps = {
-  title: '',
-  legend: '',
+  title: 'Title',
+  legend: '% of your capacity',
   data: 0.5,
 };
 
