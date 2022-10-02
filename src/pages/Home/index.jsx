@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <>
       <HeaderMain
-        title={'SORRY !'}
+        highlightTitle={'SORRY !'}
         subtitle={'Home page is under construction...'}
       />
     </>

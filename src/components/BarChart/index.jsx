@@ -6,79 +6,9 @@ import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
 import { select, scaleLinear, extent, axisBottom, axisRight, format } from 'd3';
 
-const ChartContainer = styled.div`
-  width: 100%;
-`;
-
-const StyledBarChart = styled.svg.attrs({
-  version: '1.1',
-  xmlns: 'http://www.w3.org/2000/svg',
-  xmlnsXlink: 'http://www.w3.org/1999/xlink',
-})`
-  background-color: ${colors.backgroundLight};
-  border-radius: 5px;
-
-  #title {
-    font-weight: 500;
-    fill: #20253a;
-  }
-
-  .y1Caption circle {
-    fill: #20253a;
-  }
-  .y2Caption circle {
-    fill: #e60000;
-  }
-  .y1Caption text,
-  .y2Caption text {
-    fill: #74798c;
-    font-weight: 500;
-  }
-
-  .x-axis {
-    color: #dedede;
-  }
-
-  .tick {
-    color: #9b9eac;
-    font-size: 14px;
-    font-weight: 500;
-
-    & line {
-      color: #dedede;
-    }
-  }
-
-  .y1-line {
-    stroke: #282d30;
-  }
-  #y1-marker {
-    fill: #282d30;
-  }
-  .y2-line {
-    stroke: #e60000;
-    fill: #e60000;
-  }
-  #y2-marker {
-    fill: #e60000;
-  }
-
-  #overlay {
-    fill: #c4c4c4;
-  }
-
-  #tooltip {
-    & rect {
-      fill: red;
-    }
-    & text {
-      font-size: 7px;
-      font-weight: 500;
-      fill: white;
-    }
-  }
-`;
-
+/**
+ * Render a bar chart constructed with D3 library
+ */
 const BarChart = (props) => {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
@@ -87,6 +17,8 @@ const BarChart = (props) => {
   useEffect(
     () => {
       if (chartContainerRef?.current && chartRef?.current && props.data) {
+        //********************* CHART CONSTRUCTION ********************
+
         const height = width * RECT_DIMENSION_RATIO;
         const svg = select(chartRef.current);
         svg.attr('height', height);
@@ -206,7 +138,7 @@ const BarChart = (props) => {
         y1Caption
           .append('circle')
           .attr('cx', caption1.point)
-          .attr('cy', title.margin.top + caption1.fontSize / 2) // 14 is 14px the font-size of caption text
+          .attr('cy', title.margin.top + caption1.fontSize / 2)
           .attr('r', captionRadius);
         y1Caption
           .append('text')
@@ -221,7 +153,7 @@ const BarChart = (props) => {
         y2Caption
           .append('circle')
           .attr('cx', caption2.point)
-          .attr('cy', title.margin.top + caption2.fontSize / 2) // 14 is 14px the font-size of caption text
+          .attr('cy', title.margin.top + caption2.fontSize / 2)
           .attr('r', captionRadius);
         y2Caption
           .append('text')
@@ -249,9 +181,11 @@ const BarChart = (props) => {
           .attr('transform', `translate(${width - margin.right},0)`)
           .call(y1AxisGenerator);
 
+        // Horizontal lines construction
         y1Axis.selectAll('.domain').remove();
         y1Axis.selectAll('.tick line').attr('stroke-width', '1');
         y1Axis.selectAll('.tick line').attr('stroke-dasharray', '2');
+        // Bottom line is plain
         y1Axis.select('.tick line').attr('stroke-dasharray', null);
 
         // X axis construction
@@ -308,7 +242,7 @@ const BarChart = (props) => {
           .attr('stroke-width', barWidth)
           .attr('marker-end', 'url(#y1-marker)');
 
-        // y2 lines construction
+        // Y2 Bars/lines
         svg
           .selectAll('line .y2-line')
           .data(marks)
@@ -398,6 +332,7 @@ const BarChart = (props) => {
               )
               .text(`${d.y2Value}${labels.tooltipY2}`);
           })
+
           // MOUSE OUT => Overlay and tooltip desapparition
           .on('mouseout', () => {
             overlayRect.transition().duration(200).attr('opacity', 0);
@@ -423,6 +358,104 @@ const BarChart = (props) => {
   );
 };
 
-BarChart.propTypes = {};
+BarChart.propTypes = {
+  title: PropTypes.string,
+  labels: PropTypes.exact({
+    y1: PropTypes.string,
+    y2: PropTypes.string,
+    tooltipY1: PropTypes.string,
+    tooltipY2: PropTypes.string,
+  }),
+  data: PropTypes.arrayOf(
+    PropTypes.exact({
+      x: PropTypes.number,
+      y1: PropTypes.number,
+      y2: PropTypes.number,
+    })
+  ),
+};
+BarChart.defaultProps = {
+  title: '',
+  labels: {
+    y1: 'y1 caption',
+    y2: 'y2 caption',
+    tooltipY1: 'y1 unit',
+    tooltipY2: 'y2 unit',
+  },
+  data: [],
+};
 
 export default BarChart;
+
+const ChartContainer = styled.div`
+  width: 100%;
+`;
+
+const StyledBarChart = styled.svg.attrs({
+  version: '1.1',
+  xmlns: 'http://www.w3.org/2000/svg',
+  xmlnsXlink: 'http://www.w3.org/1999/xlink',
+})`
+  background-color: ${colors.backgroundLight};
+  border-radius: 5px;
+
+  #title {
+    font-weight: 500;
+    fill: #20253a;
+  }
+
+  .y1Caption circle {
+    fill: #20253a;
+  }
+  .y2Caption circle {
+    fill: #e60000;
+  }
+  .y1Caption text,
+  .y2Caption text {
+    fill: #74798c;
+    font-weight: 500;
+  }
+
+  .x-axis {
+    color: #dedede;
+  }
+
+  .tick {
+    color: #9b9eac;
+    font-size: 14px;
+    font-weight: 500;
+
+    & line {
+      color: #dedede;
+    }
+  }
+
+  .y1-line {
+    stroke: #282d30;
+  }
+  #y1-marker {
+    fill: #282d30;
+  }
+  .y2-line {
+    stroke: #e60000;
+    fill: #e60000;
+  }
+  #y2-marker {
+    fill: #e60000;
+  }
+
+  #overlay {
+    fill: #c4c4c4;
+  }
+
+  #tooltip {
+    & rect {
+      fill: red;
+    }
+    & text {
+      font-size: 7px;
+      font-weight: 500;
+      fill: white;
+    }
+  }
+`;

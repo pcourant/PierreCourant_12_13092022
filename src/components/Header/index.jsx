@@ -3,6 +3,29 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
 
+const logo = new URL('../../assets/logo.svg', import.meta.url);
+
+/**
+ * Render the header, visible on all pages
+ */
+const Header = () => {
+  return (
+    <StyledHeader>
+      <LogoWrapper>
+        <img src={logo} alt="logo" />
+      </LogoWrapper>
+      <StyledNav>
+        <StyledNavLink to="/home">Accueil</StyledNavLink>
+        <StyledNavLink to="/profile">Profil</StyledNavLink>
+        <StyledNavLink to="/setting">Réglage</StyledNavLink>
+        <StyledNavLink to="/community">Communauté</StyledNavLink>
+      </StyledNav>
+    </StyledHeader>
+  );
+};
+
+export default Header;
+
 const StyledHeader = styled.header`
   position: relative;
   z-index: 1;
@@ -42,23 +65,3 @@ const StyledNavLink = styled(NavLink)`
     border-radius: 30px;
   }
 `;
-
-const logo = new URL('../../assets/logo.svg', import.meta.url);
-
-const Header = () => {
-  return (
-    <StyledHeader>
-      <LogoWrapper>
-        <img src={logo} alt="logo" />
-      </LogoWrapper>
-      <StyledNav>
-        <StyledNavLink to="/home">Accueil</StyledNavLink>
-        <StyledNavLink to="/profile">Profil</StyledNavLink>
-        <StyledNavLink to="/setting">Réglage</StyledNavLink>
-        <StyledNavLink to="/community">Communauté</StyledNavLink>
-      </StyledNav>
-    </StyledHeader>
-  );
-};
-
-export default Header;

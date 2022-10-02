@@ -6,10 +6,8 @@ import {
   wrap,
 } from '../../utils/charts';
 import styled from 'styled-components';
-import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
 import {
-  max,
   select,
   scaleLinear,
   extent,
@@ -18,35 +16,9 @@ import {
   curveCardinal,
 } from 'd3';
 
-const ChartContainer = styled.div`
-  width: 100%;
-`;
-
-const StyledLineChart = styled.svg.attrs({
-  version: '1.1',
-  xmlns: 'http://www.w3.org/2000/svg',
-  xmlnsXlink: 'http://www.w3.org/1999/xlink',
-})`
-  background-color: #ff0000;
-  border-radius: 5px;
-
-  .title {
-    font-weight: 500;
-    fill: #ffffff;
-  }
-
-  .tick {
-    color: #9b9eac;
-    font-size: 12px;
-    font-weight: 500;
-  }
-
-  .tooltipText {
-    font-size: 8px;
-    font-weight: 500;
-  }
-`;
-
+/**
+ * Render a line chart constructed with D3 library
+ */
 const LineChart = (props) => {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
@@ -55,6 +27,8 @@ const LineChart = (props) => {
   useEffect(
     () => {
       if (chartContainerRef?.current && chartRef?.current && props.data) {
+        //********************* CHART CONSTRUCTION ********************
+
         const height = width * SQUARE_DIMENSION_RATIO;
         const svg = select(chartRef.current);
         svg.attr('height', height);
@@ -101,15 +75,6 @@ const LineChart = (props) => {
         };
 
         //********************* DATA PROCESSING *********************
-
-        // meanData = data.map((d, i) => {
-        //   let sum = 0;
-        //   for (let j = 0; j <= i; j++) {
-        //     sum += data[j].y;
-        //   }
-        //   return { x: d.x, y: sum / (i + 1) };
-        // });
-        // console.log('meanData', meanData);
 
         const xValue = (d, i) => i;
         const yValue = (d) => d.value;
@@ -330,6 +295,53 @@ const LineChart = (props) => {
   );
 };
 
-LineChart.propTypes = {};
+LineChart.propTypes = {
+  title: PropTypes.string,
+  labels: PropTypes.exact({
+    tooltipY: PropTypes.string,
+  }),
+  data: PropTypes.arrayOf(
+    PropTypes.exact({
+      xTick: PropTypes.string,
+      value: PropTypes.number,
+    })
+  ),
+};
+LineChart.defaultProps = {
+  title: '',
+  labels: {
+    tooltipY: 'y unit',
+  },
+  data: [],
+};
 
 export default LineChart;
+
+const ChartContainer = styled.div`
+  width: 100%;
+`;
+
+const StyledLineChart = styled.svg.attrs({
+  version: '1.1',
+  xmlns: 'http://www.w3.org/2000/svg',
+  xmlnsXlink: 'http://www.w3.org/1999/xlink',
+})`
+  background-color: #ff0000;
+  border-radius: 5px;
+
+  .title {
+    font-weight: 500;
+    fill: #ffffff;
+  }
+
+  .tick {
+    color: #9b9eac;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .tooltipText {
+    font-size: 8px;
+    font-weight: 500;
+  }
+`;

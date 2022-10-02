@@ -7,59 +7,12 @@ import {
   describeArc,
 } from '../../utils/charts';
 import styled from 'styled-components';
-import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
 import { select } from 'd3';
 
-const ChartContainer = styled.div`
-  width: 100%;
-`;
-
-const StyledRadarChart = styled.svg.attrs({
-  version: '1.1',
-  xmlns: 'http://www.w3.org/2000/svg',
-  xmlnsXlink: 'http://www.w3.org/1999/xlink',
-})`
-  background-color: #fbfbfb;
-  border-radius: 5px;
-
-  .title {
-    font-weight: 500;
-    fill: #20253a;
-  }
-
-  .data {
-    fill: #282d30;
-    font-size: 26px;
-    font-weight: 700;
-    line-height: 26px;
-  }
-  .text {
-    fill: #74798c;
-    font-size: 26px;
-    font-weight: 700;
-    line-height: 26px;
-  }
-
-  #innerCircle {
-    fill: white;
-  }
-
-  #arcPath {
-    fill: transparent;
-    stroke-linecap: round;
-    stroke: red;
-  }
-
-  #legend {
-    fill: #74798c;
-  }
-  #data-legend {
-    font-weight: 700;
-    fill: #282d30;
-  }
-`;
-
+/**
+ * Render a radial chart constructed with D3 library
+ */
 const RadialBarChart = (props) => {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
@@ -68,6 +21,8 @@ const RadialBarChart = (props) => {
   useEffect(
     () => {
       if (chartContainerRef?.current && chartRef?.current) {
+        //********************* CHART CONSTRUCTION ********************
+
         const height = width * SQUARE_DIMENSION_RATIO;
         const svg = select(chartRef.current);
         svg.attr('height', height);
@@ -182,6 +137,64 @@ const RadialBarChart = (props) => {
   );
 };
 
-RadialBarChart.propTypes = {};
+RadialBarChart.propTypes = {
+  title: PropTypes.string,
+  legend: PropTypes.string,
+  data: PropTypes.number,
+};
+RadialBarChart.defaultProps = {
+  title: '',
+  legend: '',
+  data: 0.5,
+};
 
 export default RadialBarChart;
+
+const ChartContainer = styled.div`
+  width: 100%;
+`;
+
+const StyledRadarChart = styled.svg.attrs({
+  version: '1.1',
+  xmlns: 'http://www.w3.org/2000/svg',
+  xmlnsXlink: 'http://www.w3.org/1999/xlink',
+})`
+  background-color: #fbfbfb;
+  border-radius: 5px;
+
+  .title {
+    font-weight: 500;
+    fill: #20253a;
+  }
+
+  .data {
+    fill: #282d30;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 26px;
+  }
+  .text {
+    fill: #74798c;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 26px;
+  }
+
+  #innerCircle {
+    fill: white;
+  }
+
+  #arcPath {
+    fill: transparent;
+    stroke-linecap: round;
+    stroke: red;
+  }
+
+  #legend {
+    fill: #74798c;
+  }
+  #data-legend {
+    font-weight: 700;
+    fill: #282d30;
+  }
+`;

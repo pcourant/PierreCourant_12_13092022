@@ -8,39 +8,12 @@ import {
   pointsToPath,
 } from '../../utils/charts';
 import styled from 'styled-components';
-import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
 import { select, scaleLinear } from 'd3';
 
-const ChartContainer = styled.div`
-  width: 100%;
-`;
-
-const StyledRadarChart = styled.svg.attrs({
-  version: '1.1',
-  xmlns: 'http://www.w3.org/2000/svg',
-  xmlnsXlink: 'http://www.w3.org/1999/xlink',
-})`
-  background-color: #282d30;
-  border-radius: 5px;
-
-  .hexagon {
-    fill: transparent;
-    stroke: white;
-  }
-
-  .label {
-    fill: white;
-    font-weight: 500;
-  }
-
-  .data-polygon {
-    stroke-width: 0;
-    fill: #ff0101;
-    opacity: 0.7;
-  }
-`;
-
+/**
+ * Render a hexagonal radar chart constructed with D3 library
+ */
 const RadarChart = (props) => {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
@@ -49,6 +22,8 @@ const RadarChart = (props) => {
   useEffect(
     () => {
       if (chartContainerRef?.current && chartRef?.current && props.data) {
+        //********************* CHART CONSTRUCTION ********************
+
         const height = width * SQUARE_DIMENSION_RATIO;
         const svg = select(chartRef.current);
         svg.attr('height', height);
@@ -206,6 +181,101 @@ const RadarChart = (props) => {
   );
 };
 
-RadarChart.propTypes = {};
+RadarChart.propTypes = {
+  levels: PropTypes.exact({
+    count: PropTypes.number,
+    max: PropTypes.number,
+  }),
+  features: PropTypes.arrayOf(function (
+    propValue,
+    key,
+    componentName,
+    location,
+    propFullName
+  ) {
+    if (propValue.length !== 6) {
+      return new Error(
+        `\nInvalid prop ${propFullName} supplied to ${componentName}.\n` +
+          `Validation failed.\n` +
+          `It needs to be an array of length 6 (currently ${propValue.length})\n`
+      );
+    } else if (typeof propValue[key] !== 'string') {
+      return new Error(
+        `\nInvalid prop ${propFullName} supplied to ${componentName}.\n` +
+          `Validation failed.\n` +
+          `${propValue[key]} needs to be a string (currently ${typeof propValue[
+            key
+          ]})\n`
+      );
+    }
+  }),
+  data: PropTypes.arrayOf(function (
+    propValue,
+    key,
+    componentName,
+    location,
+    propFullName
+  ) {
+    if (propValue.length !== 6) {
+      return new Error(
+        `\nInvalid prop ${propFullName} supplied to ${componentName}.\n` +
+          `Validation failed.\n` +
+          `It needs to be an array of length 6 (currently ${propValue.length})\n`
+      );
+    } else if (typeof propValue[key] !== 'number') {
+      return new Error(
+        `\nInvalid prop ${propFullName} supplied to ${componentName}.\n` +
+          `Validation failed.\n` +
+          `${propValue[key]} needs to be a number (currently ${typeof propValue[
+            key
+          ]})\n`
+      );
+    }
+  }),
+};
+RadarChart.defaultProps = {
+  levels: {
+    count: 5,
+    max: 250,
+  },
+  features: [
+    'feature1',
+    'feature2',
+    'feature3',
+    'feature4',
+    'feature5',
+    'feature6',
+  ],
+  data: [125, 125, 125, 125, 125, 125],
+};
 
 export default RadarChart;
+
+const ChartContainer = styled.div`
+  width: 100%;
+`;
+
+const StyledRadarChart = styled.svg.attrs({
+  version: '1.1',
+  xmlns: 'http://www.w3.org/2000/svg',
+  xmlnsXlink: 'http://www.w3.org/1999/xlink',
+})`
+  background-color: #282d30;
+  border-radius: 5px;
+
+  .hexagon {
+    fill: transparent;
+    stroke: white;
+  }
+
+  .label {
+    fill: white;
+    font-weight: 500;
+  }
+
+  .data-polygon {
+    stroke-width: 0;
+    fill: #ff0101;
+    opacity: 0.7;
+  }
+`;

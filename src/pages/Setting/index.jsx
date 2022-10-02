@@ -1,12 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
 import HeaderMain from '../../components/HeaderMain';
 
+/**
+ * Render the setting page
+ */
 const Setting = () => {
   return (
     <>
       <HeaderMain
-        title={'SORRY !'}
+        highlightTitle={'SORRY !'}
         subtitle={'Setting page is under construction...'}
       />
     </>

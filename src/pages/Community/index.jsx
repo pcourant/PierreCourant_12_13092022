@@ -8,7 +8,7 @@ const Community = () => {
   return (
     <>
       <HeaderMain
-        title={'SORRY !'}
+        highlightTitle={'SORRY !'}
         subtitle={'Community page is under construction...'}
       />
     </>

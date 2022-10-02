@@ -3,6 +3,29 @@ import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
 import PropTypes from 'prop-types';
 
+/**
+ * Render the error from an API call
+ */
+const ErrorAPI = ({ status, message }) => {
+  return (
+    <MainWrapper>
+      <StyledTitle>{status}</StyledTitle>
+      <StyledText>{message}</StyledText>
+    </MainWrapper>
+  );
+};
+
+ErrorAPI.propTypes = {
+  status: PropTypes.string,
+  message: PropTypes.string,
+};
+ErrorAPI.defaultProps = {
+  status: '',
+  message: '',
+};
+
+export default ErrorAPI;
+
 const MainWrapper = styled.div`
   padding-top: 20px;
   padding-bottom: 20px;
@@ -21,17 +44,3 @@ const StyledText = styled.p`
   color: ${colors.secondary};
   margin-bottom: 20px;
 `;
-
-const ErrorAPI = ({ status, message }) => {
-  //   console.log(status);
-  return (
-    <MainWrapper>
-      <StyledTitle>{status}</StyledTitle>
-      <StyledText>{message}</StyledText>
-    </MainWrapper>
-  );
-};
-
-ErrorAPI.propTypes = {};
-
-export default ErrorAPI;

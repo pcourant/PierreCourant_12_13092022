@@ -4,50 +4,11 @@ import { KEYINFO_DIMENSION_RATIO, scale1spanChart } from '../../utils/charts';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import colors from '../../utils/styles/colors';
-import {
-  max,
-  select,
-  scaleLinear,
-  extent,
-  axisBottom,
-  line,
-  curveCardinal,
-  xml,
-} from 'd3';
+import { select, xml } from 'd3';
 
-const ChartContainer = styled.div`
-  width: 100%;
-`;
-
-const StyledKeyInfoCard = styled.svg.attrs({
-  version: '1.1',
-  xmlns: 'http://www.w3.org/2000/svg',
-  xmlnsXlink: 'http://www.w3.org/1999/xlink',
-})`
-  background-color: ${colors.backgroundLight};
-  border-radius: 5px;
-  position: relative;
-
-  .iconRect {
-    ${(props) => `fill: ${colors[props.title.toLowerCase()]};`}
-    opacity: 0.07;
-  }
-
-  .iconSVG {
-    ${(props) => `fill: ${colors[props.title.toLowerCase()]};`}
-  }
-
-  .title {
-    font-weight: 500;
-    fill: #74798c;
-  }
-
-  .data {
-    font-weight: 700;
-    fill: #282d30;
-  }
-`;
-
+/**
+ * Render a key info card constructed with D3 library
+ */
 const KeyInfoCard = (props) => {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
@@ -56,6 +17,7 @@ const KeyInfoCard = (props) => {
   useEffect(
     () => {
       if (chartContainerRef?.current && chartRef?.current) {
+        //********************* CHART CONSTRUCTION ********************
         const height = width * KEYINFO_DIMENSION_RATIO;
         const svg = select(chartRef.current);
         svg.attr('height', height);
@@ -108,20 +70,21 @@ const KeyInfoCard = (props) => {
           .attr('width', icon.rectWidth)
           .attr('height', icon.rectHeight);
 
-        xml(icon.url).then((data) => {
-          data.documentElement.setAttribute('width', icon.width);
-          data.documentElement.setAttribute('height', icon.height);
-          data.documentElement.classList.add('iconSVG');
-          data.documentElement.setAttribute(
-            'x',
-            icon.rectWidth / 2 - icon.width / 2
-          );
-          data.documentElement.setAttribute(
-            'y',
-            icon.rectHeight / 2 - icon.height / 2
-          );
-          iconGroup.node().append(data.documentElement);
-        });
+        if (icon.url)
+          xml(icon.url).then((data) => {
+            data.documentElement.setAttribute('width', icon.width);
+            data.documentElement.setAttribute('height', icon.height);
+            data.documentElement.classList.add('iconSVG');
+            data.documentElement.setAttribute(
+              'x',
+              icon.rectWidth / 2 - icon.width / 2
+            );
+            data.documentElement.setAttribute(
+              'y',
+              icon.rectHeight / 2 - icon.height / 2
+            );
+            iconGroup.node().append(data.documentElement);
+          });
 
         // Title construction
         svg
@@ -166,6 +129,48 @@ const KeyInfoCard = (props) => {
   );
 };
 
-KeyInfoCard.propTypes = {};
+KeyInfoCard.propTypes = {
+  title: PropTypes.string,
+  data: PropTypes.string,
+  icon: PropTypes.instanceOf(URL),
+};
+KeyInfoCard.defaultProps = {
+  title: '',
+  data: '',
+  icon: null,
+};
 
 export default KeyInfoCard;
+
+const ChartContainer = styled.div`
+  width: 100%;
+`;
+
+const StyledKeyInfoCard = styled.svg.attrs({
+  version: '1.1',
+  xmlns: 'http://www.w3.org/2000/svg',
+  xmlnsXlink: 'http://www.w3.org/1999/xlink',
+})`
+  background-color: ${colors.backgroundLight};
+  border-radius: 5px;
+  position: relative;
+
+  .iconRect {
+    ${(props) => `fill: ${colors[props.title.toLowerCase()]};`}
+    opacity: 0.07;
+  }
+
+  .iconSVG {
+    ${(props) => `fill: ${colors[props.title.toLowerCase()]};`}
+  }
+
+  .title {
+    font-weight: 500;
+    fill: #74798c;
+  }
+
+  .data {
+    font-weight: 700;
+    fill: #282d30;
+  }
+`;

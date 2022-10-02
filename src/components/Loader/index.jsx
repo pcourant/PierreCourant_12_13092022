@@ -2,9 +2,14 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import colors from '../../utils/styles/colors';
 
+/**
+ * Render the animated loader
+ */
 const Loader = () => {
   return <StyledLoader></StyledLoader>;
 };
+
+export default Loader;
 
 const rotate = keyframes`
  from {
@@ -26,5 +31,3 @@ const StyledLoader = styled.div`
   height: 0;
   width: 0;
 `;
-
-export default Loader;

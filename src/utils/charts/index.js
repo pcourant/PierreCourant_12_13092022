@@ -133,13 +133,11 @@ export function formatPerformanceData(data, kind) {
     ];
     for (const [key, k] of Object.entries(kind)) {
       const value = data.find((obj) => obj.kind === +key)?.value;
-      // console.log(value);
+
       if (value !== undefined) {
         const index = dataSorted.indexOf(k);
-        // console.log(k, index);
         if (index > -1) {
           dataSorted[index] = value;
-          // console.log(dataSorted[index]);
         }
       }
     }

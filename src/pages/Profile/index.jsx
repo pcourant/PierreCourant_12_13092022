@@ -16,28 +16,6 @@ import ErrorAPI from '../../components/ErrorAPI';
 import Loader from '../../components/Loader';
 import UserServices from '../../services/user';
 
-const StyledSection = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto;
-  gap: 2vw;
-`;
-
-const ChartRectContainer = styled.div`
-  grid-row: 1 / 1;
-  grid-column: 1 / span 3;
-`;
-
-const KeysInfoContainer = styled.div`
-  grid-row: 1 / span 2;
-  grid-column: 4 / 5;
-
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  align-items: center;
-`;
-
 const energyIcon = new URL('../../assets/energy.svg', import.meta.url);
 const chickenIcon = new URL('../../assets/chicken.svg', import.meta.url);
 const cheeseburgerIcon = new URL(
@@ -52,7 +30,7 @@ const appleIcon = new URL('../../assets/apple.svg', import.meta.url);
 const Profile = () => {
   const { userId } = useParams();
 
-  // Get all user information
+  // Get all user information with UserServices through API calls
   const user = UserServices.useUser(userId);
   const userActivity = UserServices.useActivity(userId);
   const userPerformance = UserServices.usePerformance(userId);
@@ -81,7 +59,7 @@ const Profile = () => {
             <>
               <HeaderMain
                 title={`Bonjour `}
-                firstName={user.infos?.firstName}
+                highlightTitle={user.infos?.firstName}
                 subtitle={
                   'Félicitation ! Vous avez explosé vos objectifs hier 👏'
                 }
@@ -99,7 +77,6 @@ const Profile = () => {
                     <BarChart
                       title={'Activité quotidienne'}
                       labels={{
-                        x: '',
                         y1: 'Poids (kg)',
                         y2: 'Calories brûlées (kCal)',
                         tooltipY1: 'kg',
@@ -136,7 +113,6 @@ const Profile = () => {
                   />
                 ) : (
                   <RadarChart
-                    margin={{ top: 41, right: 39, bottom: 42, left: 39 }}
                     levels={{ count: 5, max: 250 }}
                     features={[
                       'Intensité',
@@ -189,3 +165,25 @@ const Profile = () => {
 };
 
 export default Profile;
+
+const StyledSection = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  gap: 2vw;
+`;
+
+const ChartRectContainer = styled.div`
+  grid-row: 1 / 1;
+  grid-column: 1 / span 3;
+`;
+
+const KeysInfoContainer = styled.div`
+  grid-row: 1 / span 2;
+  grid-column: 4 / 5;
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+`;
