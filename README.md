@@ -12,6 +12,11 @@
 - D3
 - Axios
 
+## Prerequisites
+
+- NodeJS (version 16.17)
+- Yarn
+
 ## Installation
 
 ```console
