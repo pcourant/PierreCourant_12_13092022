@@ -14,8 +14,7 @@
 
 ## Prerequisites
 
-- NodeJS (version 16.17)
-- Yarn
+- [Yarn](https://classic.yarnpkg.com/)
 
 ## Installation
 
