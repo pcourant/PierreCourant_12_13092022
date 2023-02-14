@@ -1,5 +1,5 @@
 {
-  "name": "my-project",
+  "name": "sportsee",
   "source": "src/index.html",
   "scripts": {
     "lint:css": "stylelint './src/**/*.js'",
@@ -34,6 +34,7 @@
     "d3": "^7.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-is": "^18.2.0",
     "react-router": "^6.4.0",
     "react-router-dom": "^6.4.0",
     "styled-components": "^5.3.5",

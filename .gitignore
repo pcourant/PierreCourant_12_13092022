@@ -9,3 +9,4 @@ coverage/
 .yarnrc.yml
 .yarn/
 yarn.lock
+pnpm-lock.yaml
