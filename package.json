@@ -9,7 +9,7 @@
     "lint:css": "stylelint './src/**/*.js'",
     "docs": "jsdoc -c jsdoc.conf.json",
     "start": "parcel --open -p 3001",
-    "build": "parcel build",
+    "build": "parcel build src/index.html",
     "predeploy": "pnpm build",
     "deploy": "gh-pages -d dist"
   },
