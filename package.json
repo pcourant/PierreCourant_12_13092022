@@ -8,7 +8,7 @@
     "lint:css": "stylelint './src/**/*.js'",
     "docs": "jsdoc -c jsdoc.conf.json",
     "start": "parcel --open -p 3001",
-    "build": "parcel build src/index.html",
+    "build": "parcel build src/index.html --public-url /PierreCourant_12_13092022/",
     "predeploy": "pnpm build",
     "deploy": "gh-pages -d dist"
   },
